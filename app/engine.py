@@ -9,6 +9,8 @@ turn came while they were not checked in).
 """
 from datetime import timedelta
 
+VERSION = "1.0.0"  # recorded with every simulation run (NFR-016)
+
 WAITING = ("booked", "checked_in")
 ACTIVE = ("in_consultation", "called") + WAITING
 
@@ -23,11 +25,16 @@ def order(entries):
     )
 
 
+PRIOR_WEIGHT = 5   # the doctor's usual time counts as this many observations
+WINDOW = 10        # most recent consultations considered
+
+
 def expected_minutes(durations, default):
-    """Expected consultation length from today's observed durations."""
-    # ponytail: rolling mean of the last 5 consultations; swap for a better estimator once the simulator measures MAE
-    recent = [d for d in durations if d >= 1][-5:]  # under a minute is an accidental start/complete, not a consultation
-    return sum(recent) / len(recent) if recent else default
+    """Expected consultation length: today's recent durations blended with the
+    doctor's usual time, so one quick early consultation cannot swing every ETA.
+    Chosen over a plain rolling mean after simulation (lower MAE, fewer alerts)."""
+    recent = [d for d in durations if d >= 1][-WINDOW:]  # under a minute is an accidental start/complete
+    return (default * PRIOR_WEIGHT + sum(recent)) / (PRIOR_WEIGHT + len(recent))
 
 
 def compute_etas(entries, now, avg_minutes, opd_start=None, available=True, break_until=None):
@@ -52,15 +59,24 @@ def compute_etas(entries, now, avg_minutes, opd_start=None, available=True, brea
 def next_to_call(entries):
     """Who the doctor should call next (decision tree DT-3).
 
-    Returns (entry or None, missed) where missed lists waiting entries that were
-    passed over because they have not checked in. They keep their place."""
+    Returns (entry or None, missed). missed lists the not-checked-in entries whose
+    turn has come: everyone passed over to reach the chosen patient, or only the
+    head of the queue when nobody is checked in. They keep their place."""
     missed = []
     for e in order(entries):
         if e["status"] == "checked_in":
             return e, missed
         if e["status"] == "booked":
             missed.append(e)
-    return None, missed
+    return None, missed[:1]
+
+
+def turn_cutoff(entry, now):
+    """When a missed turn starts counting toward the grace period: now, but never
+    before the time the patient was told to come (entry["promised"]), so running
+    ahead of schedule cannot make someone a no-show."""
+    promised = entry.get("promised")
+    return max(now, promised) if promised else now
 
 
 def can_skip(entry, now, grace_minutes):

@@ -38,7 +38,8 @@ def test_overrunning_consultation_starts_next_now():
 
 def test_expected_minutes():
     assert engine.expected_minutes([], 12) == 12
-    assert engine.expected_minutes([1, 100, 10, 10, 10, 10, 10], 12) == 10, "only the last 5 count"
+    assert engine.expected_minutes([20], 10) == (10 * 5 + 20) / 6, "one observation only nudges the estimate"
+    assert engine.expected_minutes([100] + [10] * 10, 10) == 10, "only the last 10 count"
     assert engine.expected_minutes([0, 0.2], 12) == 12, "sub-minute clicks are ignored"
 
 
@@ -46,7 +47,15 @@ def test_next_to_call_passes_over_absent_patients():
     chosen, missed = engine.next_to_call([e(1), e(2), e(3, "checked_in"), e(4, "checked_in")])
     assert chosen["id"] == 3 and [m["id"] for m in missed] == [1, 2]
     assert engine.next_to_call([e(1)]) == (None, [e(1)])
+    assert engine.next_to_call([e(1), e(2), e(3)]) == (None, [e(1)]), "nobody here: only the head's turn has come"
     assert engine.next_to_call([e(1, "checked_in"), e(2, "checked_in", priority=1)])[0]["id"] == 2
+
+
+def test_turn_cutoff_never_before_promised_time():
+    assert engine.turn_cutoff(e(1), T) == T
+    early = dict(e(1), promised=T + timedelta(minutes=20))
+    assert engine.turn_cutoff(early, T) == T + timedelta(minutes=20)
+    assert not engine.can_skip(dict(early, due_at=engine.turn_cutoff(early, T)), T + timedelta(minutes=25), 10)
 
 
 def test_can_skip_only_after_grace():
@@ -61,6 +70,16 @@ def test_reinsert_positions():
     assert engine.end_position(q) == 5
     assert engine.front_position(q) == 2
     assert engine.front_position([e(1, "completed")]) == 2
+
+
+def test_alert_rule_matches_decision_table_4():
+    from notify import alert_purposes as rule
+    assert rule(None, None, False, 30, 15) == [], "no ETA: in-app status only"
+    assert rule(25, None, False, 30, 15) == ["arrival"], "R2: within threshold, not yet sent"
+    assert rule(25, 5, True, 30, 15) == [], "R3: already sent, change not material"
+    assert rule(25, 20, True, 30, 15) == ["eta_change"], "R4"
+    assert rule(90, 15, False, 30, 15) == ["eta_change"], "R5: outside threshold, material change"
+    assert rule(90, 14, False, 30, 15) == [], "R6"
 
 
 if __name__ == "__main__":

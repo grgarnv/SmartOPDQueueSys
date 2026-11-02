@@ -1,2 +1,5 @@
 app/opd.db
+app/opd.db-wal
+app/opd.db-shm
+app/sim_results/
 __pycache__/

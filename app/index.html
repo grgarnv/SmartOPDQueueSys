@@ -10,19 +10,26 @@
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
 header { background: var(--ink); color: #fff; padding: 12px 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
 header h1 { font-size: 18px; margin: 0; flex: 1; }
-main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; display: grid; gap: 20px; }
-section { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 12px; min-width: 0; }
+main { max-width: 1150px; margin: 0 auto; padding: 20px 16px 60px; display: grid; gap: 20px; }
+section { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 12px; min-width: 0; align-content: start; }
 h2 { font-size: 17px; margin: 0; }
+h3 { font-size: 15px; margin: 0; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
-.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.spread { justify-content: space-between; align-items: center; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
 label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+label.inline { display: flex; align-items: center; gap: 6px; color: var(--ink); font-size: 14px; }
 input, select { font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); min-width: 0; }
-button { font: inherit; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
-button.ghost { background: #fff; color: var(--accent); }
+input[type=checkbox] { padding: 0; }
+button, a.btn { font: inherit; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; text-decoration: none; display: inline-block; }
+button.ghost, a.btn.ghost { background: #fff; color: var(--accent); }
 button.danger { border-color: var(--bad); background: #fff; color: var(--bad); }
 button:disabled { opacity: .5; cursor: default; }
-button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 header button { background: transparent; border-color: #fff; }
+nav.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+nav.tabs button { background: #fff; color: var(--ink); border-color: var(--line); }
+nav.tabs button[aria-selected=true] { background: var(--ink); color: #fff; border-color: var(--ink); }
 .msg { min-height: 1.5em; font-size: 14px; }
 .msg.err { color: var(--bad); }
 .msg.ok { color: var(--good); }
@@ -42,6 +49,9 @@ td button { padding: 4px 10px; font-size: 13px; }
 .token { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .eta { font-size: 20px; font-weight: 600; }
 .alert { background: #fff4e0; border: 1px solid var(--warn); border-radius: 6px; padding: 8px 12px; color: #6b3d00; }
+.note { background: #eef6f6; border: 1px solid #b9d9da; border-radius: 6px; padding: 8px 12px; }
+details summary { cursor: pointer; font-weight: 600; }
+pre.report { white-space: pre-wrap; font-size: 13px; background: var(--bg); padding: 12px; border-radius: 6px; max-height: 480px; overflow: auto; }
 </style>
 </head>
 <body>
@@ -54,17 +64,23 @@ td button { padding: 4px 10px; font-size: 13px; }
 
 <script>
 const app = document.getElementById("app");
-let me = null, timer = null, refresh = null;
+const $ = (id) => document.getElementById(id);
+let me = null, timer = null, refresh = null, demo = false;
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const hhmm = (iso) => iso ? iso.slice(11, 16) : "–";
 const today = () => new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 const STATUS = { booked: "Booked", checked_in: "Checked in", called: "Called", in_consultation: "In consultation", completed: "Completed", skipped: "Skipped" };
+const DOCSTATUS = { available: "available", break: "on break", delayed: "delayed", unavailable: "unavailable" };
+const ALERT = { arrival: "Your turn is near", eta_change: "Time changed", called: "Called in", skipped: "Missed turn", doctor_unavailable: "Doctor unavailable" };
+const SENT = { pending: "sending", sent: "sent", delivered: "delivered", unconfirmed: "sent, delivery not confirmed", failed: "failed" };
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 async function api(path, body) {
   const res = await fetch(path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || `Request failed (${res.status}).`);
+  if (res.status === 401 && me) { showLogin("Your session ended. Please sign in again."); throw new Error("Please sign in."); }
+  if (!res.ok) throw new Error(data.error || `Request failed (${res.status}). Try again.`);
   return data;
 }
 
@@ -75,12 +91,33 @@ function startPolling(fn) {
   fn(); timer = setInterval(() => refresh && refresh(), 5000);  // SRS 4.3: polling fallback for live updates
 }
 
+function bindForm(id, msgId, send, after, okText = "Saved.") {
+  $(id).onsubmit = async (e) => {
+    e.preventDefault();
+    try { const r = await send(); say($(msgId), typeof okText === "function" ? okText(r) : okText, true); after && after(r); }
+    catch (err) { say($(msgId), err.message); }
+  };
+}
+
+function tabs(names, render) {
+  const key = "opd-tab-" + me.role;
+  let current = names[0][0];
+  try { current = localStorage.getItem(key) || current; } catch (_) {}
+  if (!names.some(([k]) => k === current)) current = names[0][0];
+  const draw = () => {
+    app.innerHTML = `<nav class="tabs" role="tablist">${names.map(([k, label]) => `<button role="tab" aria-selected="${k === current}" data-tab="${k}">${label}</button>`).join("")}</nav><div id="tabbody" style="display:grid;gap:20px"></div>`;
+    app.querySelectorAll("[data-tab]").forEach((b) => b.onclick = () => { current = b.dataset.tab; try { localStorage.setItem(key, current); } catch (_) {} draw(); });
+    render(current);
+  };
+  draw();
+}
+
 // ---------- sign in ----------
-function showLogin() {
-  clearInterval(timer); me = null;
-  document.getElementById("who").textContent = "";
-  document.getElementById("logout").hidden = true;
+function showLogin(notice) {
+  clearInterval(timer); me = null; refresh = null;
+  $("who").textContent = ""; $("logout").hidden = true;
   app.innerHTML = `
+  ${notice ? `<div class="alert" role="status">${esc(notice)}</div>` : ""}
   <div class="grid2">
     <section><h2>Sign in</h2>
       <form id="login" class="row">
@@ -88,37 +125,39 @@ function showLogin() {
         <label>Password <input id="lp" type="password" autocomplete="current-password" required></label>
         <button>Sign in</button>
       </form><div class="msg" id="lmsg"></div>
-      <p class="muted">Demo accounts: patient / patient123, staff / staff123, admin / admin123, dr.rao / doctor123</p>
+      ${demo ? `<p class="muted">Demo accounts: patient / patient123, staff / staff123, admin / admin123, tester / tester123, dr.rao / doctor123</p>` : ""}
     </section>
     <section><h2>New patient? Register</h2>
       <form id="reg" class="row">
-        <label>Full name <input id="rn" required></label>
-        <label>Phone <input id="rph" type="tel" autocomplete="tel"></label>
+        <label>Full name <input id="rn" required autocomplete="name"></label>
+        <label>Phone <input id="rph" type="tel" autocomplete="tel" placeholder="+91 98765 43210"></label>
+        <label>Email <input id="rem" type="email" autocomplete="email"></label>
+        <label>Send alerts by <select id="rch"><option value="sms">SMS</option><option value="email">Email</option><option value="none">No alerts, app only</option></select></label>
         <label>Username <input id="ru" autocomplete="username" required></label>
-        <label>Password <input id="rp" type="password" minlength="6" autocomplete="new-password" required></label>
+        <label>Password <input id="rp" type="password" minlength="8" autocomplete="new-password" required></label>
         <button>Register</button>
       </form><div class="msg" id="rmsg"></div>
+      <p class="muted">We only ask for what is needed to book and to reach you about your turn.</p>
     </section>
   </div>`;
-  document.getElementById("login").onsubmit = async (e) => {
+  $("login").onsubmit = async (e) => {
     e.preventDefault();
-    try { start(await api("/api/login", { username: lu.value, password: lp.value })); }
-    catch (err) { say(lmsg, err.message); }
+    try { start(await api("/api/login", { username: lu.value, password: lp.value })); } catch (err) { say(lmsg, err.message); }
   };
-  document.getElementById("reg").onsubmit = async (e) => {
+  $("reg").onsubmit = async (e) => {
     e.preventDefault();
-    try { start(await api("/api/register", { name: rn.value, phone: rph.value, username: ru.value, password: rp.value })); }
+    try { start(await api("/api/register", { name: rn.value, phone: rph.value, email: rem.value, channel: rch.value, username: ru.value, password: rp.value })); }
     catch (err) { say(rmsg, err.message); }
   };
 }
 
-document.getElementById("logout").onclick = async () => { await api("/api/logout", {}).catch(() => {}); showLogin(); };
+$("logout").onclick = async () => { await api("/api/logout", {}).catch(() => {}); showLogin(); };
 
 function start(user) {
   me = user;
-  document.getElementById("who").textContent = `${user.name} · ${user.role}`;
-  document.getElementById("logout").hidden = false;
-  ({ patient: patientView, doctor: doctorView, staff: staffView, admin: adminView })[user.role]();
+  $("who").textContent = `${user.name} · ${user.role}`;
+  $("logout").hidden = false;
+  ({ patient: patientView, doctor: doctorView, staff: staffView, admin: adminView, tester: testerView })[user.role]();
 }
 
 // ---------- patient ----------
@@ -126,55 +165,77 @@ async function patientView() {
   app.innerHTML = `
   <section><h2>Book an appointment</h2>
     <form id="book" class="row">
+      <label>Date <input id="day" type="date" required></label>
       <label>Department <select id="dep" required></select></label>
       <label>Doctor <select id="doc" required></select></label>
-      <label>Date <input id="day" type="date" required></label>
       <button>Book</button>
     </form>
+    <div id="suggest"></div>
     <div class="msg" id="bmsg"></div>
-    <p class="muted">Each doctor shows how many patients are waiting today and when the queue should clear. Pick a less busy doctor if that suits you.</p>
+    <p class="muted">Each doctor shows how many patients are booked and when their queue should clear. Times are estimates.</p>
   </section>
-  <section><h2>Your appointments</h2><div id="appts" class="grid2"></div></section>`;
+  <section><h2>Your appointments</h2><div id="appts" class="grid2"></div></section>
+  <section><details><summary>Contact details and alerts</summary>
+    <form id="prof" class="row" style="margin-top:12px">
+      <label>Phone <input id="pph" type="tel" value="${esc(me.phone)}"></label>
+      <label>Email <input id="pem" type="email" value="${esc(me.email)}"></label>
+      <label>Send alerts by <select id="pch">${["sms", "email", "none"].map((c) => `<option value="${c}" ${me.channel === c ? "selected" : ""}>${{ sms: "SMS", email: "Email", none: "No alerts, app only" }[c]}</option>`).join("")}</select></label>
+      <button>Save</button>
+    </form><div class="msg" id="pmsg"></div></details></section>`;
   day.value = day.min = today();
-  const { departments } = await api("/api/departments");
-  dep.innerHTML = departments.map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join("");
+  let departments = [];
   const fillDocs = () => {
     const d = departments.find((x) => x.id == dep.value);
-    doc.innerHTML = (d ? d.doctors : []).map((x) => `<option value="${x.id}" ${x.status === "unavailable" ? "disabled" : ""}>
-      ${esc(x.name)} · ${x.status === "unavailable" ? "not available today" : `${x.waiting} waiting${x.clears_at ? `, clears ~${hhmm(x.clears_at)}` : ""}`}</option>`).join("");
+    const docs = d ? d.doctors : [];
+    doc.innerHTML = docs.map((x) => `<option value="${x.id}" ${x.bookable ? "" : "disabled"}>${esc(x.name)} · ${x.bookable ? `${x.waiting} booked${x.clears_at ? `, clears ~${hhmm(x.clears_at)}` : ""}` : "no OPD on this date"}</option>`).join("");
+    const firstOpen = docs.find((x) => x.bookable);
+    if (firstOpen && doc.selectedOptions[0]?.disabled) doc.value = firstOpen.id;
+    suggestAlternative(docs);
   };
-  dep.onchange = fillDocs; fillDocs();
-  book.onsubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const a = await api("/api/book", { doctor_id: +doc.value, day: day.value });
-      say(bmsg, a.existing ? `You already have token ${a.token} with ${a.doctor.name} on ${a.day}.` : `Booked. Your token is ${a.token}.`, true);
-      loadAppts();
-    } catch (err) { say(bmsg, err.message); }
+  const suggestAlternative = (docs) => {  // FR-034/035: advisory only, the patient decides
+    const chosen = docs.find((x) => x.id == doc.value);
+    const better = docs.filter((x) => x.bookable && x.id != doc.value && chosen && x.waiting + 2 <= chosen.waiting).sort((a, b) => a.waiting - b.waiting)[0];
+    $("suggest").innerHTML = better ? `<div class="note">${esc(better.name)} in the same department has a shorter queue (${better.waiting} booked against ${chosen.waiting}). <button class="ghost" id="usealt" type="button">Choose ${esc(better.name)}</button></div>` : "";
+    if (better) $("usealt").onclick = () => { doc.value = better.id; suggestAlternative(docs); };
   };
+  const loadDeps = async () => {
+    const keep = dep.value;
+    departments = (await api(`/api/departments?day=${day.value}`)).departments;
+    dep.innerHTML = departments.map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join("");
+    if (keep) dep.value = keep;
+    fillDocs();
+  };
+  dep.onchange = fillDocs; doc.onchange = () => suggestAlternative(departments.find((x) => x.id == dep.value)?.doctors || []);
+  day.onchange = loadDeps;
+  await loadDeps();
+  bindForm("book", "bmsg", () => api("/api/book", { doctor_id: +doc.value, day: day.value }),
+    () => { loadAppts(); loadDeps(); }, (a) => a.existing ? `You already have token ${a.token} with ${a.doctor.name} on ${a.day}.` : `Booked. Your token is ${a.token}.`);
+  bindForm("prof", "pmsg", async () => { me = { ...me, ...(await api("/api/profile", { phone: pph.value, email: pem.value, channel: pch.value })) }; });
   startPolling(loadAppts);
 }
 
 async function loadAppts() {
-  const box = document.getElementById("appts");
+  const box = $("appts");
   if (!box) return;
   const { appointments } = await api("/api/my-appointments");
   box.innerHTML = appointments.length ? appointments.map((a) => {
     const isToday = a.day === today();
-    const waiting = ["booked", "checked_in", "called"].includes(a.status);
+    const waiting = ["booked", "checked_in"].includes(a.status);
     const etaText = !waiting ? "" : a.eta
       ? `<div class="eta">Expected around ${hhmm(a.eta)}${isToday ? "" : ` on ${a.day}`}</div>
          <div class="muted">This is an estimate and may change. Updated ${hhmm(a.updated_at)}. ${a.ahead} ${a.ahead === 1 ? "patient" : "patients"} ahead of you.</div>`
-      : `<div class="eta">Time not available right now</div><div class="muted">The doctor is currently unavailable. We will update this when they are back.</div>`;
+      : `<div class="eta">Time not available right now</div><div class="muted">${a.doctor.holds_opd ? "The doctor is currently unavailable. This will update when they are back." : "The doctor has no OPD on this date. Please book another date or doctor."}</div>`;
+    const notes = a.notifications.map((n) => `<li>${ALERT[n.purpose] || n.purpose}: ${n.channel.toUpperCase()} ${SENT[n.status]} at ${hhmm(n.updated_at)}</li>`).join("");
     return `<div class="appt">
       ${a.arrival_alert ? `<div class="alert" role="status">Your turn is close. ${a.status === "booked" ? "Please come to the OPD and check in." : "Please stay near the consultation room."}</div>` : ""}
-      ${a.status === "called" ? `<div class="alert" role="status">You have been called. Please go to ${esc(a.doctor.name)}'s room.</div>` : ""}
-      <div class="row" style="justify-content:space-between"><span class="token">Token ${a.token}</span>
+      ${a.status === "called" ? `<div class="alert" role="status">You have been called. Please go to ${esc(a.doctor.name)}'s room now.</div>` : ""}
+      <div class="row spread"><span class="token">Token ${a.token}</span>
         <span class="pill ${a.status === "skipped" ? "warn" : ""}">${STATUS[a.status]}${a.emergency ? " · priority" : ""}</span></div>
       <div>${esc(a.doctor.name)} · ${esc(a.doctor.department)} · ${a.day}</div>
       ${etaText}
-      ${a.status === "skipped" ? `<div class="muted">You missed your turn. Check in to rejoin at the end of the queue.</div>` : ""}
+      ${a.status === "skipped" ? `<div class="muted">You missed your turn. Check in when you arrive to rejoin at the end of the queue.</div>` : ""}
       ${isToday && ["booked", "skipped"].includes(a.status) ? `<div><button data-checkin="${a.id}">I have arrived, check me in</button></div>` : ""}
+      ${notes ? `<div class="muted">Alerts:<ul style="margin:4px 0 0;padding-left:18px">${notes}</ul></div>` : ""}
     </div>`;
   }).join("") : `<p class="muted">No upcoming appointments. Book one above.</p>`;
   box.querySelectorAll("[data-checkin]").forEach((b) => b.onclick = async () => {
@@ -184,35 +245,36 @@ async function loadAppts() {
 
 // ---------- shared queue panel ----------
 function queuePanel(title) {
-  return `<section><div class="row" style="justify-content:space-between"><h2>${title}</h2><span class="muted" id="qinfo"></span></div>
+  return `<section><div class="row spread"><h2>${title}</h2><span class="muted" id="qinfo"></span></div>
     <div class="row" id="qcontrols"></div><div class="msg" id="qmsg"></div><div class="tbl" id="queue"></div></section>`;
 }
 
 async function loadQueue(doctorId) {
-  if (!document.getElementById("queue")) return;
+  if (!$("queue")) return;
   const q = await api("/api/queue" + (doctorId ? `?doctor_id=${doctorId}` : ""));
   const d = q.doctor;
-  const statusText = d.status === "break" ? `on break until ${hhmm(d.break_until)}` : d.status;
-  qinfo.textContent = `${d.name} · ${statusText} · avg ${q.avg_minutes} min · updated ${hhmm(q.updated_at)}`;
+  const st = ["break", "delayed"].includes(d.status) ? `${DOCSTATUS[d.status]} until ${hhmm(d.break_until)}` : d.holds_opd ? DOCSTATUS[d.status] : "no OPD today";
+  qinfo.textContent = `${d.name} · ${st} · usual consult ${q.avg_minutes} min · updated ${hhmm(q.updated_at)}`;
   const isDoc = me.role === "doctor", isStaff = me.role === "staff", isAdmin = me.role === "admin";
   qcontrols.innerHTML = `
     ${isDoc || isStaff ? `<button data-call>Call next patient</button>` : ""}
     <button class="ghost" data-status="available" ${d.status === "available" ? "disabled" : ""}>Available</button>
-    <button class="ghost" data-status="break">Break 15 min</button>
+    <button class="ghost" data-status="break" data-minutes="15">Break 15 min</button>
+    <button class="ghost" data-status="delayed" data-minutes="10">Running 10 min late</button>
     <button class="danger" data-status="unavailable" ${d.status === "unavailable" ? "disabled" : ""}>Unavailable</button>`;
   const rows = q.entries.map((e) => {
     const acts = [];
     if (isDoc && e.status === "called") acts.push(`<button data-act="start" data-id="${e.id}">Start</button>`);
     if (isDoc && e.status === "in_consultation") acts.push(`<button data-act="complete" data-id="${e.id}">Complete</button>`);
     if ((isStaff || isAdmin) && ["booked", "skipped"].includes(e.status)) acts.push(`<button class="ghost" data-checkin="${e.id}">Check in</button>`);
-    if ((isDoc || isStaff) && e.can_skip) acts.push(`<button class="danger" data-act="skip" data-id="${e.id}" data-reason="Reason for skipping (default: no-show)">Skip</button>`);
+    if ((isDoc || isStaff) && e.can_skip) acts.push(`<button class="danger" data-act="skip" data-id="${e.id}" data-reason="Reason for skipping (leave empty for no-show)">Skip</button>`);
     if ((isStaff || isAdmin) && ["booked", "checked_in"].includes(e.status) && !e.emergency)
       acts.push(`<button class="danger" data-act="emergency" data-id="${e.id}" data-reason="Reason for emergency priority (required)" data-required>Emergency</button>`);
     if ((isStaff || isAdmin) && e.status === "skipped")
       acts.push(`<button class="ghost" data-act="reinsert_front" data-id="${e.id}" data-reason="Reason for putting this patient next (policy exception, required)" data-required>Reinsert next</button>`);
     const flags = [e.emergency ? `<span class="pill em">Emergency</span>` : "", e.turn_missed ? `<span class="pill warn">${e.can_skip ? "Grace over" : "Turn missed, in grace"}</span>` : ""].join(" ");
     return `<tr><td class="num">${e.ahead == null ? "–" : e.ahead + 1}</td><td class="num"><b>${e.token}</b></td><td>${esc(e.patient_name)}</td>
-      <td><span class="pill ${e.status === "in_consultation" || e.status === "called" ? "go" : ""}">${STATUS[e.status]}</span> ${flags}
+      <td><span class="pill ${["in_consultation", "called"].includes(e.status) ? "go" : ""}">${STATUS[e.status]}</span> ${flags}
         ${e.skip_reason ? `<span class="muted">(${esc(e.skip_reason)})</span>` : ""}</td>
       <td class="num">${e.eta ? hhmm(e.eta) : e.ahead != null ? "unavailable" : ""}</td><td><div class="row">${acts.join("")}</div></td></tr>`;
   }).join("");
@@ -226,7 +288,7 @@ async function loadQueue(doctorId) {
     return r.called ? { message: `Called token ${r.called}.` } : r;
   }));
   qcontrols.querySelectorAll("[data-status]").forEach((b) => b.onclick = () =>
-    run(() => api("/api/doctor/status", { doctor_id: d.id, status: b.dataset.status, minutes: 15 })));
+    run(() => api("/api/doctor/status", { doctor_id: d.id, status: b.dataset.status, minutes: +b.dataset.minutes || undefined })));
   queue.querySelectorAll("[data-checkin]").forEach((b) => b.onclick = () => run(() => api("/api/checkin", { appointment_id: +b.dataset.checkin })));
   queue.querySelectorAll("[data-act]").forEach((b) => b.onclick = () => {
     let reason = "";
@@ -244,20 +306,24 @@ function doctorView() {
   startPolling(() => loadQueue());
 }
 
-// ---------- staff and admin ----------
+// ---------- staff ----------
 function overviewPanel() {
-  return `<section><div class="row" style="justify-content:space-between"><h2>Workload today</h2><span class="muted" id="oinfo"></span></div><div class="tbl" id="overview"></div></section>`;
+  return `<section><div class="row spread"><h2>Workload today</h2><span class="muted" id="oinfo"></span></div><div class="tbl" id="overview"></div>
+    <details><summary>Today's exceptions</summary><div class="tbl" id="exceptions"></div></details></section>`;
 }
 
 async function loadOverview() {
-  if (!document.getElementById("overview")) return;
+  if (!$("overview")) return;
   const o = await api("/api/admin/overview");
-  oinfo.textContent = `OPD closes ${o.opd_end} · updated ${hhmm(o.updated_at)}`;
-  overview.innerHTML = `<table><thead><tr><th>Doctor</th><th>Department</th><th>Status</th><th>Waiting</th><th>Current token</th>
+  oinfo.textContent = `OPD closes ${o.opd_end} · ${o.failed_alerts} failed alerts today · updated ${hhmm(o.updated_at)}`;
+  overview.innerHTML = `<table><thead><tr><th>Doctor</th><th>Department</th><th>Status</th><th>Waiting</th><th>Current</th>
     <th>Avg consult</th><th>Queue clears</th><th>Done / skipped</th><th>Load</th></tr></thead><tbody>${o.doctors.map((d) => `<tr>
-    <td>${esc(d.name)}</td><td>${esc(d.department)}</td><td>${d.status}</td><td class="num">${d.waiting}</td><td class="num">${d.current_token ?? "–"}</td>
+    <td>${esc(d.name)}</td><td>${esc(d.department)}</td><td>${d.holds_opd ? DOCSTATUS[d.status] : "no OPD today"}</td><td class="num">${d.waiting}</td>
+    <td class="num">${d.current_token ? `${d.current_token} (${STATUS[d.current_status].toLowerCase()})` : "–"}</td>
     <td class="num">${d.avg_minutes} min</td><td class="num">${hhmm(d.clears_at)}</td><td class="num">${d.completed} / ${d.skipped}</td>
     <td><span class="pill ${d.congestion === "normal" ? "go" : d.congestion === "busy" ? "warn" : "em"}">${d.congestion}</span></td></tr>`).join("")}</tbody></table>`;
+  exceptions.innerHTML = o.exceptions.length ? `<table><thead><tr><th>Time</th><th>Doctor</th><th>Token</th><th>What</th><th>Detail</th></tr></thead><tbody>
+    ${o.exceptions.map((x) => `<tr><td class="num">${hhmm(x.at)}</td><td>${esc(x.doctor)}</td><td class="num">${x.token ?? ""}</td><td>${esc(x.action.replace(/_/g, " "))}</td><td>${esc(x.detail)}</td></tr>`).join("")}</tbody></table>` : `<p class="muted">No exceptions yet today.</p>`;
 }
 
 async function doctorPicker() {
@@ -266,68 +332,207 @@ async function doctorPicker() {
   return `<label>Queue for <select id="qdoc">${docs.map((x) => `<option value="${x.id}">${esc(x.name)} (${esc(x.dep)})</option>`).join("")}</select></label>`;
 }
 
-async function staffView() {
-  app.innerHTML = overviewPanel() + `<section class="row">${await doctorPicker()}</section>` + queuePanel("Queue");
-  qdoc.onchange = () => loadQueue(qdoc.value);
-  startPolling(() => { loadOverview(); loadQueue(qdoc.value); });
+function lookupPanel() {
+  return `<section><h2>Find a patient</h2>
+    <form id="look" class="row"><label>Name, phone or token <input id="lq" required></label><button>Search today's list</button></form>
+    <div class="msg" id="lkmsg"></div><div class="tbl" id="lres"></div></section>`;
 }
 
-async function adminView() {
-  const { departments } = await api("/api/departments");
-  const p = await api("/api/admin/policy");
-  app.innerHTML = overviewPanel() + `<section class="row">${await doctorPicker()}</section>` + queuePanel("Queue") + `
+function bindLookup() {
+  bindForm("look", "lkmsg", () => api(`/api/lookup?q=${encodeURIComponent(lq.value)}`), (r) => {
+    lres.innerHTML = r.results.length ? `<table><thead><tr><th>Token</th><th>Patient</th><th>Phone</th><th>Doctor</th><th>Status</th><th></th></tr></thead><tbody>
+      ${r.results.map((x) => `<tr><td class="num">${x.token}</td><td>${esc(x.patient_name)}</td><td>${esc(x.phone)}</td><td>${esc(x.doctor)}</td><td>${STATUS[x.status]}</td>
+      <td>${["booked", "skipped"].includes(x.status) ? `<button class="ghost" data-ci="${x.id}">Check in</button>` : ""} <button class="ghost" data-open="${x.doctor_id}">Open queue</button></td></tr>`).join("")}</tbody></table>` : `<p class="muted">Nobody on today's list matches.</p>`;
+    lres.querySelectorAll("[data-ci]").forEach((b) => b.onclick = async () => { try { await api("/api/checkin", { appointment_id: +b.dataset.ci }); say(lkmsg, "Checked in.", true); refresh(); } catch (err) { say(lkmsg, err.message); } });
+    lres.querySelectorAll("[data-open]").forEach((b) => b.onclick = () => { qdoc.value = b.dataset.open; loadQueue(qdoc.value); $("queue").scrollIntoView({ behavior: "smooth" }); });
+  }, (r) => `${r.results.length} found.`);
+}
+
+async function staffView() {
+  app.innerHTML = overviewPanel() + lookupPanel() + `<section class="row">${await doctorPicker()}</section>` + queuePanel("Queue") + notificationsPanel();
+  bindLookup();
+  qdoc.onchange = () => loadQueue(qdoc.value);
+  startPolling(() => { loadOverview(); loadQueue(qdoc.value); loadNotifications(); });
+}
+
+function notificationsPanel() {
+  return `<section><h2>Patient alerts</h2><p class="muted">Failed alerts never hold up the queue. Patients also see their status in the app.</p><div class="tbl" id="notes"></div></section>`;
+}
+
+async function loadNotifications() {
+  if (!$("notes")) return;
+  const { notifications } = await api("/api/admin/notifications");
+  notes.innerHTML = notifications.length ? `<table><thead><tr><th>Created</th><th>Patient</th><th>Doctor</th><th>Token</th><th>Alert</th><th>Channel</th><th>Status</th><th>Tries</th><th>Detail</th></tr></thead><tbody>
+    ${notifications.map((n) => `<tr><td class="num">${n.created_at.replace("T", " ").slice(0, 16)}</td><td>${esc(n.patient)}</td><td>${esc(n.doctor)}</td><td class="num">${n.token ?? ""}</td>
+    <td>${ALERT[n.purpose] || esc(n.purpose)}</td><td>${n.channel.toUpperCase()}</td><td><span class="pill ${n.status === "failed" ? "em" : n.status === "pending" ? "warn" : "go"}">${SENT[n.status]}</span></td>
+    <td class="num">${n.attempts}</td><td class="muted">${esc(n.detail)}</td></tr>`).join("")}</tbody></table>` : `<p class="muted">No alerts sent yet.</p>`;
+}
+
+// ---------- admin ----------
+function adminView() {
+  tabs([["ops", "Operations"], ["doctors", "Doctors and departments"], ["people", "Staff and policy"], ["alerts", "Alerts and audit"], ["reports", "Reports and exports"]], async (tab) => {
+    const body = $("tabbody");
+    refresh = null;
+    if (tab === "ops") {
+      body.innerHTML = overviewPanel() + lookupPanel() + `<section class="row">${await doctorPicker()}</section>` + queuePanel("Queue");
+      bindLookup();
+      qdoc.onchange = () => loadQueue(qdoc.value);
+      startPolling(() => { loadOverview(); loadQueue(qdoc.value); });
+    } else if (tab === "doctors") {
+      await doctorsTab(body);
+    } else if (tab === "people") {
+      await peopleTab(body);
+    } else if (tab === "alerts") {
+      body.innerHTML = notificationsPanel() + `<section><h2>Audit log</h2><p class="muted">Every queue change and admin action, newest first.</p><div class="tbl" id="events"></div></section>`;
+      startPolling(() => { loadNotifications(); loadEvents(); });
+    } else {
+      await reportsTab(body);
+    }
+  });
+}
+
+async function doctorsTab(body) {
+  const { doctors, departments } = await api("/api/admin/doctors");
+  const depOpts = (sel) => departments.map((d) => `<option value="${d.id}" ${d.id == sel ? "selected" : ""}>${esc(d.name)}</option>`).join("");
+  const dayBoxes = (prefix, days) => DAYS.map((n, i) => `<label class="inline"><input type="checkbox" name="${prefix}" value="${i}" ${days.includes(String(i)) ? "checked" : ""}>${n}</label>`).join("");
+  const days = (prefix) => [...document.querySelectorAll(`input[name=${prefix}]:checked`)].map((x) => x.value).join("");
+  body.innerHTML = `
+  <section><h2>Doctors</h2><div class="tbl"><table><thead><tr><th>Name</th><th>Department</th><th>Sign-in</th><th>Usual consult</th><th>OPD days</th><th>Upcoming leave</th><th>Status</th><th></th></tr></thead><tbody>
+    ${doctors.map((d) => `<tr><td>${esc(d.name)}</td><td>${esc(d.department)}</td><td>${esc(d.username)}</td><td class="num">${d.avg_minutes} min</td>
+    <td>${[...d.work_days].map((i) => DAYS[i]).join(" ")}</td><td>${d.leave.map((x) => `${x} <button class="ghost" data-unleave="${d.id}" data-day="${x}" title="Remove leave">×</button>`).join("<br>") || "–"}</td>
+    <td>${d.active ? "active" : "inactive"}</td><td><button class="ghost" data-edit="${d.id}">Edit</button></td></tr>`).join("")}</tbody></table></div><div class="msg" id="lvmsg"></div></section>
+  <div class="grid2">
+    <section id="editbox"><h2>Edit doctor</h2><p class="muted">Choose Edit on a doctor above.</p></section>
+    <section><h2>Record leave</h2>
+      <form id="lv" class="row"><label>Doctor <select id="lvd">${doctors.filter((d) => d.active).map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join("")}</select></label>
+        <label>Date <input id="lvday" type="date" min="${today()}" required></label><button>Add leave</button></form>
+      <div class="msg" id="lvmsg2"></div><p class="muted">Patients cannot book a doctor on leave. Existing bookings for that date show the ETA as unavailable.</p></section>
+    <section><h2>Add doctor</h2>
+      <form id="adoc" class="row">
+        <label>Name <input id="an" required placeholder="Dr. Shah"></label>
+        <label>Department <select id="ad">${depOpts()}</select></label>
+        <label>Usual consult (min) <input id="aa" type="number" min="1" max="120" value="10"></label>
+        <div class="row">${dayBoxes("newdays", "012345")}</div>
+        <label>Sign-in username <input id="au" required></label>
+        <label>Password <input id="ap" type="password" minlength="8" required></label>
+        <button>Add doctor</button>
+      </form><div class="msg" id="amsg"></div></section>
+    <section><h2>Departments</h2>
+      <form id="adep" class="row"><label>New department <input id="dn" required></label><button>Add</button></form><div class="msg" id="dmsg"></div>
+      <form id="rdep" class="row"><label>Rename <select id="rd">${depOpts()}</select></label><label>New name <input id="rdn" required></label><button class="ghost">Rename</button></form><div class="msg" id="rdmsg"></div></section>
+  </div>`;
+  const redraw = () => doctorsTab(body);
+  body.querySelectorAll("[data-edit]").forEach((b) => b.onclick = () => {
+    const d = doctors.find((x) => x.id == b.dataset.edit);
+    $("editbox").innerHTML = `<h2>Edit ${esc(d.name)}</h2>
+      <form id="ed" class="row">
+        <label>Name <input id="en" value="${esc(d.name)}" required></label>
+        <label>Department <select id="edp">${depOpts(d.department_id)}</select></label>
+        <label>Usual consult (min) <input id="ea" type="number" min="1" max="120" value="${d.avg_minutes}"></label>
+        <div class="row">${dayBoxes("editdays", d.work_days)}</div>
+        <label class="inline"><input type="checkbox" id="eact" ${d.active ? "checked" : ""}> Active (can take bookings and sign in)</label>
+        <button>Save changes</button></form><div class="msg" id="emsg"></div>`;
+    bindForm("ed", "emsg", () => api("/api/admin/doctor/update", { doctor_id: d.id, name: en.value, department_id: +edp.value, avg_minutes: ea.value, work_days: days("editdays"), active: eact.checked }), redraw);
+  });
+  body.querySelectorAll("[data-unleave]").forEach((b) => b.onclick = async () => {
+    try { await api("/api/admin/leave", { doctor_id: +b.dataset.unleave, day: b.dataset.day, remove: true }); redraw(); } catch (err) { say(lvmsg, err.message); }
+  });
+  bindForm("lv", "lvmsg2", () => api("/api/admin/leave", { doctor_id: +lvd.value, day: lvday.value }),
+    (r) => setTimeout(redraw, 1500), (r) => r.affected_appointments ? `Leave saved. ${r.affected_appointments} patients are booked that day: please contact them.` : "Leave saved.");
+  bindForm("adoc", "amsg", () => api("/api/admin/doctor", { name: an.value, department_id: +ad.value, avg_minutes: aa.value, work_days: days("newdays"), username: au.value, password: ap.value }), redraw);
+  bindForm("adep", "dmsg", () => api("/api/admin/department", { name: dn.value }), redraw);
+  bindForm("rdep", "rdmsg", () => api("/api/admin/department/update", { department_id: +rd.value, name: rdn.value }), redraw);
+}
+
+async function peopleTab(body) {
+  const [p, { users }] = await Promise.all([api("/api/admin/policy"), api("/api/admin/users")]);
+  const roleOpts = (sel) => ["staff", "admin", "tester"].map((r) => `<option value="${r}" ${r === sel ? "selected" : ""}>${{ staff: "Front-desk staff", admin: "Administrator", tester: "Developer / tester" }[r]}</option>`).join("");
+  body.innerHTML = `
   <div class="grid2">
     <section><h2>Queue policy</h2>
       <form id="pol" class="row">
         <label>OPD opens <input id="p1" type="time" value="${p.opd_start}" required></label>
         <label>OPD closes <input id="p2" type="time" value="${p.opd_end}" required></label>
         <label>No-show grace (min) <input id="p3" type="number" min="0" max="180" value="${p.grace_minutes}" required></label>
-        <label>Arrival alert (min before) <input id="p4" type="number" min="0" max="180" value="${p.alert_minutes}" required></label>
+        <label>Arrival alert (min before ETA) <input id="p4" type="number" min="0" max="180" value="${p.alert_minutes}" required></label>
+        <label>Alert when ETA moves by (min) <input id="p5" type="number" min="1" max="180" value="${p.eta_change_minutes}" required></label>
+        <label>Alert retries <input id="p6" type="number" min="0" max="10" value="${p.notify_retries}" required></label>
         <button>Save policy</button>
       </form><div class="msg" id="pmsg"></div></section>
-    <section><h2>Add department</h2>
-      <form id="adep" class="row"><label>Name <input id="dn" required></label><button>Add</button></form><div class="msg" id="dmsg"></div></section>
-    <section><h2>Add doctor</h2>
-      <form id="adoc" class="row">
-        <label>Name <input id="an" required placeholder="Dr. Shah"></label>
-        <label>Department <select id="ad">${departments.map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join("")}</select></label>
-        <label>Usual consult (min) <input id="aa" type="number" min="1" max="120" value="10"></label>
-        <label>Username <input id="au" required></label>
-        <label>Password <input id="ap" type="password" minlength="6" required></label>
-        <button>Add doctor</button>
-      </form><div class="msg" id="amsg"></div></section>
-    <section><h2>Add staff or admin</h2>
+    <section><h2>Add staff, admin or tester</h2>
       <form id="astf" class="row">
         <label>Name <input id="sn" required></label>
-        <label>Role <select id="sr"><option value="staff">Front-desk staff</option><option value="admin">Administrator</option></select></label>
+        <label>Role <select id="sr">${roleOpts("staff")}</select></label>
         <label>Username <input id="su" required></label>
-        <label>Password <input id="sp" type="password" minlength="6" required></label>
+        <label>Password <input id="sp" type="password" minlength="8" required></label>
         <button>Add user</button>
       </form><div class="msg" id="smsg"></div></section>
   </div>
-  <section><h2>Audit log</h2><div class="tbl" id="events"></div></section>`;
-  const form = (id, msg, path, body, done) => document.getElementById(id).onsubmit = async (e) => {
-    e.preventDefault();
-    try { await api(path, body()); say(document.getElementById(msg), "Saved.", true); done && done(); }
-    catch (err) { say(document.getElementById(msg), err.message); }
-  };
-  form("pol", "pmsg", "/api/admin/policy", () => ({ opd_start: p1.value, opd_end: p2.value, grace_minutes: p3.value, alert_minutes: p4.value }));
-  form("adep", "dmsg", "/api/admin/department", () => ({ name: dn.value }), adminView);
-  form("adoc", "amsg", "/api/admin/doctor", () => ({ name: an.value, department_id: +ad.value, avg_minutes: aa.value, username: au.value, password: ap.value }), adminView);
-  form("astf", "smsg", "/api/admin/staff", () => ({ name: sn.value, role: sr.value, username: su.value, password: sp.value }));
-  qdoc.onchange = () => loadQueue(qdoc.value);
-  startPolling(() => { loadOverview(); loadQueue(qdoc.value); loadEvents(); });
+  <section><h2>Staff accounts</h2><div class="tbl"><table><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Access</th><th></th></tr></thead><tbody>
+    ${users.map((u) => `<tr><td>${esc(u.name)}</td><td>${esc(u.username)}</td><td><select data-role="${u.id}" ${u.id === me.id ? "disabled" : ""}>${roleOpts(u.role)}</select></td>
+    <td>${u.active ? "active" : "disabled"}</td><td>${u.id === me.id ? `<span class="muted">you</span>` : `<button class="ghost" data-toggle="${u.id}" data-active="${u.active}">${u.active ? "Disable" : "Enable"}</button>
+    <button class="ghost" data-reset="${u.id}">Reset password</button>`}</td></tr>`).join("")}</tbody></table></div><div class="msg" id="umsg"></div></section>`;
+  const redraw = () => peopleTab(body);
+  const upd = async (data) => { try { await api("/api/admin/user/update", data); redraw(); } catch (err) { say(umsg, err.message); } };
+  body.querySelectorAll("[data-role]").forEach((s) => s.onchange = () => upd({ user_id: +s.dataset.role, role: s.value }));
+  body.querySelectorAll("[data-toggle]").forEach((b) => b.onclick = () => upd({ user_id: +b.dataset.toggle, active: b.dataset.active !== "1" }));
+  body.querySelectorAll("[data-reset]").forEach((b) => b.onclick = () => { const pw = prompt("New password (at least 8 characters)"); if (pw) upd({ user_id: +b.dataset.reset, password: pw }); });
+  bindForm("pol", "pmsg", () => api("/api/admin/policy", { opd_start: p1.value, opd_end: p2.value, grace_minutes: p3.value, alert_minutes: p4.value, eta_change_minutes: p5.value, notify_retries: p6.value }));
+  bindForm("astf", "smsg", () => api("/api/admin/staff", { name: sn.value, role: sr.value, username: su.value, password: sp.value }), redraw);
 }
 
 async function loadEvents() {
-  if (!document.getElementById("events")) return;
+  if (!$("events")) return;
   const { events } = await api("/api/admin/events");
-  document.getElementById("events").innerHTML = `<table><thead><tr><th>Time</th><th>Who</th><th>Action</th><th>Doctor</th><th>Token</th><th>Detail</th></tr></thead><tbody>
-    ${events.map((e) => `<tr><td class="num">${e.at.replace("T", " ")}</td><td>${esc(e.actor)}</td><td>${esc(e.action)}</td>
+  $("events").innerHTML = `<table><thead><tr><th>Time</th><th>Who</th><th>Action</th><th>Doctor</th><th>Token</th><th>Detail</th></tr></thead><tbody>
+    ${events.map((e) => `<tr><td class="num">${e.at.replace("T", " ")}</td><td>${esc(e.actor || "system")}</td><td>${esc(e.action.replace(/_/g, " "))}</td>
     <td>${esc(e.doctor)}</td><td class="num">${e.token ?? ""}</td><td>${esc(e.detail)}</td></tr>`).join("")}</tbody></table>`;
 }
 
-api("/api/me").then(start).catch(showLogin);
+async function reportsTab(body) {
+  body.innerHTML = `<section><h2>Export operational data</h2>
+    <div class="row"><label>Date <input id="exday" type="date" value="${today()}"></label>
+    <a class="btn ghost" id="ex1">Queue (CSV)</a><a class="btn ghost" id="ex2">Audit log (CSV)</a><a class="btn ghost" id="ex3">Alerts (CSV)</a></div></section>
+    <section><h2>Simulation reports</h2><p class="muted">Simulated results from synthetic data. They do not show real-world effectiveness. Testers run new simulations from their own account.</p><div id="runs"></div></section>`;
+  const links = () => { ex1.href = `/api/admin/export?kind=queue&day=${exday.value}`; ex2.href = `/api/admin/export?kind=events&day=${exday.value}`; ex3.href = `/api/admin/export?kind=notifications&day=${exday.value}`; };
+  exday.onchange = links; links();
+  await loadRuns();
+}
+
+// ---------- tester ----------
+async function testerView() {
+  const { scenarios } = await api("/api/sim/runs");
+  app.innerHTML = `<section><h2>Run a simulation</h2>
+    <p class="muted">Runs synthetic OPD days through the same queue and ETA logic as the live system, against a fixed-token FIFO baseline. It never touches real patients, the live queue or real alerts.</p>
+    <form id="simf" class="row">
+      <div class="row">${Object.entries(scenarios).map(([k, v]) => `<label class="inline" title="${esc(v)}"><input type="checkbox" name="sc" value="${k}" checked>${k.replace(/_/g, " ")}</label>`).join("")}</div>
+      <label>Seeds per scenario <input id="seeds" type="number" min="1" max="1000" value="100" required></label>
+      <button>Run</button></form><div class="msg" id="simmsg"></div>
+    <ul class="muted" style="margin:0;padding-left:18px">${Object.entries(scenarios).map(([k, v]) => `<li><b>${k.replace(/_/g, " ")}</b>: ${esc(v)}</li>`).join("")}</ul></section>
+    <section><h2>Results</h2><div id="runs"></div></section>`;
+  bindForm("simf", "simmsg", () => api("/api/sim/run", { scenarios: [...document.querySelectorAll("input[name=sc]:checked")].map((x) => x.value), seeds: +seeds.value }),
+    loadRuns, "Started. Results appear below when finished.");
+  startPolling(loadRuns);
+}
+
+async function loadRuns() {
+  const box = $("runs");
+  if (!box) return;
+  const { runs, jobs } = await api("/api/sim/runs");
+  const pct = (s) => s ? `${(s.mean * 100).toFixed(1)}%` : "n/a";
+  const num = (s) => s ? s.mean.toFixed(1) : "n/a";
+  const running = jobs.filter((j) => j.status === "running").map((j) => `<div class="note">Running ${j.scenarios.join(", ")}: ${j.done} of ${j.total} seed runs done.</div>`).join("");
+  const failed = jobs.filter((j) => j.status === "failed").map((j) => `<div class="alert">A simulation failed: ${esc(j.error)}</div>`).join("");
+  box.innerHTML = running + failed + (runs.length ? runs.map((r) => `<details class="appt" ${r === runs[0] ? "open" : ""}><summary>${esc(r.run_id)} · ${r.runs_per_scenario} seeds · ${esc(r.software_version)}</summary>
+    <p class="muted"><b>${esc(r.label)}.</b> Created ${r.created_at.replace("T", " ")} in ${r.runtime_seconds} s.</p>
+    <div class="tbl"><table><thead><tr><th>Scenario</th><th>ETA within 15 min<br>baseline / smart</th><th>ETA error (min)<br>baseline / smart</th><th>Wait after check-in (min)<br>baseline / smart</th></tr></thead><tbody>
+    ${Object.entries(r.summary).map(([k, s]) => `<tr><td>${k.replace(/_/g, " ")}</td><td class="num">${pct(s.eta_within_15.baseline)} / <b>${pct(s.eta_within_15.smart)}</b></td>
+    <td class="num">${num(s.eta_mae.baseline)} / <b>${num(s.eta_mae.smart)}</b></td><td class="num">${num(s.wait_after_checkin.baseline)} / <b>${num(s.wait_after_checkin.smart)}</b></td></tr>`).join("")}</tbody></table></div>
+    <div class="row"><a class="btn ghost" href="/api/sim/report?run_id=${encodeURIComponent(r.run_id)}&format=md">Full report (Markdown)</a>
+    <a class="btn ghost" href="/api/sim/report?run_id=${encodeURIComponent(r.run_id)}&format=json">Raw results (JSON)</a></div></details>`).join("") : `<p class="muted">No simulation reports yet.</p>`);
+}
+
+api("/api/health").then((h) => { demo = h.demo; }).catch(() => {}).finally(() => api("/api/me").then(start).catch(() => showLogin()));
 </script>
 </body>
 </html>
