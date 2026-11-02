@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart OPD</title>
+<style>
+:root { --bg: #f4f7f8; --card: #fff; --ink: #17252d; --muted: #5b6b73; --line: #d6dfe3; --accent: #0d6b70; --warn: #a35a00; --bad: #b3261e; --good: #1e7a3c; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { background: var(--ink); color: #fff; padding: 12px 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+header h1 { font-size: 18px; margin: 0; flex: 1; }
+main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; display: grid; gap: 20px; }
+section { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 12px; min-width: 0; }
+h2 { font-size: 17px; margin: 0; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+input, select { font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); min-width: 0; }
+button { font: inherit; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+button.ghost { background: #fff; color: var(--accent); }
+button.danger { border-color: var(--bad); background: #fff; color: var(--bad); }
+button:disabled { opacity: .5; cursor: default; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+header button { background: transparent; border-color: #fff; }
+.msg { min-height: 1.5em; font-size: 14px; }
+.msg.err { color: var(--bad); }
+.msg.ok { color: var(--good); }
+.muted { color: var(--muted); font-size: 13px; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { border-bottom: 1px solid var(--line); padding: 7px 8px; text-align: left; vertical-align: middle; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+td.num { font-variant-numeric: tabular-nums; }
+td .row { gap: 6px; }
+td button { padding: 4px 10px; font-size: 13px; }
+.pill { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 12px; border: 1px solid var(--line); background: var(--bg); white-space: nowrap; }
+.pill.em { border-color: var(--bad); color: var(--bad); }
+.pill.warn { border-color: var(--warn); color: var(--warn); }
+.pill.go { border-color: var(--good); color: var(--good); }
+.appt { border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; gap: 6px; }
+.token { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.eta { font-size: 20px; font-weight: 600; }
+.alert { background: #fff4e0; border: 1px solid var(--warn); border-radius: 6px; padding: 8px 12px; color: #6b3d00; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Smart OPD Queue</h1>
+  <span id="who"></span>
+  <button id="logout" hidden>Sign out</button>
+</header>
+<main id="app"></main>
+
+<script>
+const app = document.getElementById("app");
+let me = null, timer = null, refresh = null;
+
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const hhmm = (iso) => iso ? iso.slice(11, 16) : "–";
+const today = () => new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+const STATUS = { booked: "Booked", checked_in: "Checked in", called: "Called", in_consultation: "In consultation", completed: "Completed", skipped: "Skipped" };
+
+async function api(path, body) {
+  const res = await fetch(path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `Request failed (${res.status}).`);
+  return data;
+}
+
+function say(el, text, ok) { el.textContent = text; el.className = "msg " + (ok ? "ok" : "err"); }
+
+function startPolling(fn) {
+  refresh = fn; clearInterval(timer);
+  fn(); timer = setInterval(() => refresh && refresh(), 5000);  // SRS 4.3: polling fallback for live updates
+}
+
+// ---------- sign in ----------
+function showLogin() {
+  clearInterval(timer); me = null;
+  document.getElementById("who").textContent = "";
+  document.getElementById("logout").hidden = true;
+  app.innerHTML = `
+  <div class="grid2">
+    <section><h2>Sign in</h2>
+      <form id="login" class="row">
+        <label>Username <input id="lu" autocomplete="username" required></label>
+        <label>Password <input id="lp" type="password" autocomplete="current-password" required></label>
+        <button>Sign in</button>
+      </form><div class="msg" id="lmsg"></div>
+      <p class="muted">Demo accounts: patient / patient123, staff / staff123, admin / admin123, dr.rao / doctor123</p>
+    </section>
+    <section><h2>New patient? Register</h2>
+      <form id="reg" class="row">
+        <label>Full name <input id="rn" required></label>
+        <label>Phone <input id="rph" type="tel" autocomplete="tel"></label>
+        <label>Username <input id="ru" autocomplete="username" required></label>
+        <label>Password <input id="rp" type="password" minlength="6" autocomplete="new-password" required></label>
+        <button>Register</button>
+      </form><div class="msg" id="rmsg"></div>
+    </section>
+  </div>`;
+  document.getElementById("login").onsubmit = async (e) => {
+    e.preventDefault();
+    try { start(await api("/api/login", { username: lu.value, password: lp.value })); }
+    catch (err) { say(lmsg, err.message); }
+  };
+  document.getElementById("reg").onsubmit = async (e) => {
+    e.preventDefault();
+    try { start(await api("/api/register", { name: rn.value, phone: rph.value, username: ru.value, password: rp.value })); }
+    catch (err) { say(rmsg, err.message); }
+  };
+}
+
+document.getElementById("logout").onclick = async () => { await api("/api/logout", {}).catch(() => {}); showLogin(); };
+
+function start(user) {
+  me = user;
+  document.getElementById("who").textContent = `${user.name} · ${user.role}`;
+  document.getElementById("logout").hidden = false;
+  ({ patient: patientView, doctor: doctorView, staff: staffView, admin: adminView })[user.role]();
+}
+
+// ---------- patient ----------
+async function patientView() {
+  app.innerHTML = `
+  <section><h2>Book an appointment</h2>
+    <form id="book" class="row">
+      <label>Department <select id="dep" required></select></label>
+      <label>Doctor <select id="doc" required></select></label>
+      <label>Date <input id="day" type="date" required></label>
+      <button>Book</button>
+    </form>
+    <div class="msg" id="bmsg"></div>
+    <p class="muted">Each doctor shows how many patients are waiting today and when the queue should clear. Pick a less busy doctor if that suits you.</p>
+  </section>
+  <section><h2>Your appointments</h2><div id="appts" class="grid2"></div></section>`;
+  day.value = day.min = today();
+  const { departments } = await api("/api/departments");
+  dep.innerHTML = departments.map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join("");
+  const fillDocs = () => {
+    const d = departments.find((x) => x.id == dep.value);
+    doc.innerHTML = (d ? d.doctors : []).map((x) => `<option value="${x.id}" ${x.status === "unavailable" ? "disabled" : ""}>
+      ${esc(x.name)} · ${x.status === "unavailable" ? "not available today" : `${x.waiting} waiting${x.clears_at ? `, clears ~${hhmm(x.clears_at)}` : ""}`}</option>`).join("");
+  };
+  dep.onchange = fillDocs; fillDocs();
+  book.onsubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const a = await api("/api/book", { doctor_id: +doc.value, day: day.value });
+      say(bmsg, a.existing ? `You already have token ${a.token} with ${a.doctor.name} on ${a.day}.` : `Booked. Your token is ${a.token}.`, true);
+      loadAppts();
+    } catch (err) { say(bmsg, err.message); }
+  };
+  startPolling(loadAppts);
+}
+
+async function loadAppts() {
+  const box = document.getElementById("appts");
+  if (!box) return;
+  const { appointments } = await api("/api/my-appointments");
+  box.innerHTML = appointments.length ? appointments.map((a) => {
+    const isToday = a.day === today();
+    const waiting = ["booked", "checked_in", "called"].includes(a.status);
+    const etaText = !waiting ? "" : a.eta
+      ? `<div class="eta">Expected around ${hhmm(a.eta)}${isToday ? "" : ` on ${a.day}`}</div>
+         <div class="muted">This is an estimate and may change. Updated ${hhmm(a.updated_at)}. ${a.ahead} ${a.ahead === 1 ? "patient" : "patients"} ahead of you.</div>`
+      : `<div class="eta">Time not available right now</div><div class="muted">The doctor is currently unavailable. We will update this when they are back.</div>`;
+    return `<div class="appt">
+      ${a.arrival_alert ? `<div class="alert" role="status">Your turn is close. ${a.status === "booked" ? "Please come to the OPD and check in." : "Please stay near the consultation room."}</div>` : ""}
+      ${a.status === "called" ? `<div class="alert" role="status">You have been called. Please go to ${esc(a.doctor.name)}'s room.</div>` : ""}
+      <div class="row" style="justify-content:space-between"><span class="token">Token ${a.token}</span>
+        <span class="pill ${a.status === "skipped" ? "warn" : ""}">${STATUS[a.status]}${a.emergency ? " · priority" : ""}</span></div>
+      <div>${esc(a.doctor.name)} · ${esc(a.doctor.department)} · ${a.day}</div>
+      ${etaText}
+      ${a.status === "skipped" ? `<div class="muted">You missed your turn. Check in to rejoin at the end of the queue.</div>` : ""}
+      ${isToday && ["booked", "skipped"].includes(a.status) ? `<div><button data-checkin="${a.id}">I have arrived, check me in</button></div>` : ""}
+    </div>`;
+  }).join("") : `<p class="muted">No upcoming appointments. Book one above.</p>`;
+  box.querySelectorAll("[data-checkin]").forEach((b) => b.onclick = async () => {
+    try { await api("/api/checkin", { appointment_id: +b.dataset.checkin }); loadAppts(); } catch (err) { alert(err.message); }
+  });
+}
+
+// ---------- shared queue panel ----------
+function queuePanel(title) {
+  return `<section><div class="row" style="justify-content:space-between"><h2>${title}</h2><span class="muted" id="qinfo"></span></div>
+    <div class="row" id="qcontrols"></div><div class="msg" id="qmsg"></div><div class="tbl" id="queue"></div></section>`;
+}
+
+async function loadQueue(doctorId) {
+  if (!document.getElementById("queue")) return;
+  const q = await api("/api/queue" + (doctorId ? `?doctor_id=${doctorId}` : ""));
+  const d = q.doctor;
+  const statusText = d.status === "break" ? `on break until ${hhmm(d.break_until)}` : d.status;
+  qinfo.textContent = `${d.name} · ${statusText} · avg ${q.avg_minutes} min · updated ${hhmm(q.updated_at)}`;
+  const isDoc = me.role === "doctor", isStaff = me.role === "staff", isAdmin = me.role === "admin";
+  qcontrols.innerHTML = `
+    ${isDoc || isStaff ? `<button data-call>Call next patient</button>` : ""}
+    <button class="ghost" data-status="available" ${d.status === "available" ? "disabled" : ""}>Available</button>
+    <button class="ghost" data-status="break">Break 15 min</button>
+    <button class="danger" data-status="unavailable" ${d.status === "unavailable" ? "disabled" : ""}>Unavailable</button>`;
+  const rows = q.entries.map((e) => {
+    const acts = [];
+    if (isDoc && e.status === "called") acts.push(`<button data-act="start" data-id="${e.id}">Start</button>`);
+    if (isDoc && e.status === "in_consultation") acts.push(`<button data-act="complete" data-id="${e.id}">Complete</button>`);
+    if ((isStaff || isAdmin) && ["booked", "skipped"].includes(e.status)) acts.push(`<button class="ghost" data-checkin="${e.id}">Check in</button>`);
+    if ((isDoc || isStaff) && e.can_skip) acts.push(`<button class="danger" data-act="skip" data-id="${e.id}" data-reason="Reason for skipping (default: no-show)">Skip</button>`);
+    if ((isStaff || isAdmin) && ["booked", "checked_in"].includes(e.status) && !e.emergency)
+      acts.push(`<button class="danger" data-act="emergency" data-id="${e.id}" data-reason="Reason for emergency priority (required)" data-required>Emergency</button>`);
+    if ((isStaff || isAdmin) && e.status === "skipped")
+      acts.push(`<button class="ghost" data-act="reinsert_front" data-id="${e.id}" data-reason="Reason for putting this patient next (policy exception, required)" data-required>Reinsert next</button>`);
+    const flags = [e.emergency ? `<span class="pill em">Emergency</span>` : "", e.turn_missed ? `<span class="pill warn">${e.can_skip ? "Grace over" : "Turn missed, in grace"}</span>` : ""].join(" ");
+    return `<tr><td class="num">${e.ahead == null ? "–" : e.ahead + 1}</td><td class="num"><b>${e.token}</b></td><td>${esc(e.patient_name)}</td>
+      <td><span class="pill ${e.status === "in_consultation" || e.status === "called" ? "go" : ""}">${STATUS[e.status]}</span> ${flags}
+        ${e.skip_reason ? `<span class="muted">(${esc(e.skip_reason)})</span>` : ""}</td>
+      <td class="num">${e.eta ? hhmm(e.eta) : e.ahead != null ? "unavailable" : ""}</td><td><div class="row">${acts.join("")}</div></td></tr>`;
+  }).join("");
+  queue.innerHTML = q.entries.length
+    ? `<table><thead><tr><th>Order</th><th>Token</th><th>Patient</th><th>Status</th><th>ETA</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>`
+    : `<p class="muted">No appointments in this queue today.</p>`;
+
+  const run = async (fn) => { try { const r = await fn(); if (r && r.message) say(qmsg, r.message, true); else qmsg.textContent = ""; } catch (err) { say(qmsg, err.message); } loadQueue(doctorId); };
+  qcontrols.querySelectorAll("[data-call]").forEach((b) => b.onclick = () => run(async () => {
+    const r = await api("/api/queue/action", { action: "call_next", doctor_id: d.id, version: q.version });
+    return r.called ? { message: `Called token ${r.called}.` } : r;
+  }));
+  qcontrols.querySelectorAll("[data-status]").forEach((b) => b.onclick = () =>
+    run(() => api("/api/doctor/status", { doctor_id: d.id, status: b.dataset.status, minutes: 15 })));
+  queue.querySelectorAll("[data-checkin]").forEach((b) => b.onclick = () => run(() => api("/api/checkin", { appointment_id: +b.dataset.checkin })));
+  queue.querySelectorAll("[data-act]").forEach((b) => b.onclick = () => {
+    let reason = "";
+    if (b.dataset.reason) {
+      reason = prompt(b.dataset.reason);
+      if (reason === null || (b.dataset.required !== undefined && !reason.trim())) return;
+    }
+    run(() => api("/api/queue/action", { action: b.dataset.act, appointment_id: +b.dataset.id, reason, version: q.version }));
+  });
+}
+
+// ---------- doctor ----------
+function doctorView() {
+  app.innerHTML = queuePanel("Your queue today");
+  startPolling(() => loadQueue());
+}
+
+// ---------- staff and admin ----------
+function overviewPanel() {
+  return `<section><div class="row" style="justify-content:space-between"><h2>Workload today</h2><span class="muted" id="oinfo"></span></div><div class="tbl" id="overview"></div></section>`;
+}
+
+async function loadOverview() {
+  if (!document.getElementById("overview")) return;
+  const o = await api("/api/admin/overview");
+  oinfo.textContent = `OPD closes ${o.opd_end} · updated ${hhmm(o.updated_at)}`;
+  overview.innerHTML = `<table><thead><tr><th>Doctor</th><th>Department</th><th>Status</th><th>Waiting</th><th>Current token</th>
+    <th>Avg consult</th><th>Queue clears</th><th>Done / skipped</th><th>Load</th></tr></thead><tbody>${o.doctors.map((d) => `<tr>
+    <td>${esc(d.name)}</td><td>${esc(d.department)}</td><td>${d.status}</td><td class="num">${d.waiting}</td><td class="num">${d.current_token ?? "–"}</td>
+    <td class="num">${d.avg_minutes} min</td><td class="num">${hhmm(d.clears_at)}</td><td class="num">${d.completed} / ${d.skipped}</td>
+    <td><span class="pill ${d.congestion === "normal" ? "go" : d.congestion === "busy" ? "warn" : "em"}">${d.congestion}</span></td></tr>`).join("")}</tbody></table>`;
+}
+
+async function doctorPicker() {
+  const { departments } = await api("/api/departments");
+  const docs = departments.flatMap((d) => d.doctors.map((x) => ({ ...x, dep: d.name })));
+  return `<label>Queue for <select id="qdoc">${docs.map((x) => `<option value="${x.id}">${esc(x.name)} (${esc(x.dep)})</option>`).join("")}</select></label>`;
+}
+
+async function staffView() {
+  app.innerHTML = overviewPanel() + `<section class="row">${await doctorPicker()}</section>` + queuePanel("Queue");
+  qdoc.onchange = () => loadQueue(qdoc.value);
+  startPolling(() => { loadOverview(); loadQueue(qdoc.value); });
+}
+
+async function adminView() {
+  const { departments } = await api("/api/departments");
+  const p = await api("/api/admin/policy");
+  app.innerHTML = overviewPanel() + `<section class="row">${await doctorPicker()}</section>` + queuePanel("Queue") + `
+  <div class="grid2">
+    <section><h2>Queue policy</h2>
+      <form id="pol" class="row">
+        <label>OPD opens <input id="p1" type="time" value="${p.opd_start}" required></label>
+        <label>OPD closes <input id="p2" type="time" value="${p.opd_end}" required></label>
+        <label>No-show grace (min) <input id="p3" type="number" min="0" max="180" value="${p.grace_minutes}" required></label>
+        <label>Arrival alert (min before) <input id="p4" type="number" min="0" max="180" value="${p.alert_minutes}" required></label>
+        <button>Save policy</button>
+      </form><div class="msg" id="pmsg"></div></section>
+    <section><h2>Add department</h2>
+      <form id="adep" class="row"><label>Name <input id="dn" required></label><button>Add</button></form><div class="msg" id="dmsg"></div></section>
+    <section><h2>Add doctor</h2>
+      <form id="adoc" class="row">
+        <label>Name <input id="an" required placeholder="Dr. Shah"></label>
+        <label>Department <select id="ad">${departments.map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join("")}</select></label>
+        <label>Usual consult (min) <input id="aa" type="number" min="1" max="120" value="10"></label>
+        <label>Username <input id="au" required></label>
+        <label>Password <input id="ap" type="password" minlength="6" required></label>
+        <button>Add doctor</button>
+      </form><div class="msg" id="amsg"></div></section>
+    <section><h2>Add staff or admin</h2>
+      <form id="astf" class="row">
+        <label>Name <input id="sn" required></label>
+        <label>Role <select id="sr"><option value="staff">Front-desk staff</option><option value="admin">Administrator</option></select></label>
+        <label>Username <input id="su" required></label>
+        <label>Password <input id="sp" type="password" minlength="6" required></label>
+        <button>Add user</button>
+      </form><div class="msg" id="smsg"></div></section>
+  </div>
+  <section><h2>Audit log</h2><div class="tbl" id="events"></div></section>`;
+  const form = (id, msg, path, body, done) => document.getElementById(id).onsubmit = async (e) => {
+    e.preventDefault();
+    try { await api(path, body()); say(document.getElementById(msg), "Saved.", true); done && done(); }
+    catch (err) { say(document.getElementById(msg), err.message); }
+  };
+  form("pol", "pmsg", "/api/admin/policy", () => ({ opd_start: p1.value, opd_end: p2.value, grace_minutes: p3.value, alert_minutes: p4.value }));
+  form("adep", "dmsg", "/api/admin/department", () => ({ name: dn.value }), adminView);
+  form("adoc", "amsg", "/api/admin/doctor", () => ({ name: an.value, department_id: +ad.value, avg_minutes: aa.value, username: au.value, password: ap.value }), adminView);
+  form("astf", "smsg", "/api/admin/staff", () => ({ name: sn.value, role: sr.value, username: su.value, password: sp.value }));
+  qdoc.onchange = () => loadQueue(qdoc.value);
+  startPolling(() => { loadOverview(); loadQueue(qdoc.value); loadEvents(); });
+}
+
+async function loadEvents() {
+  if (!document.getElementById("events")) return;
+  const { events } = await api("/api/admin/events");
+  document.getElementById("events").innerHTML = `<table><thead><tr><th>Time</th><th>Who</th><th>Action</th><th>Doctor</th><th>Token</th><th>Detail</th></tr></thead><tbody>
+    ${events.map((e) => `<tr><td class="num">${e.at.replace("T", " ")}</td><td>${esc(e.actor)}</td><td>${esc(e.action)}</td>
+    <td>${esc(e.doctor)}</td><td class="num">${e.token ?? ""}</td><td>${esc(e.detail)}</td></tr>`).join("")}</tbody></table>`;
+}
+
+api("/api/me").then(start).catch(showLogin);
+</script>
+</body>
+</html>
