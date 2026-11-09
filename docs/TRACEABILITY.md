@@ -1,8 +1,8 @@
-# Requirements traceability: Smart OPD 1.0.0
+# Requirements traceability: Smart OPD 1.1.0
 
 Each SRS requirement, where it is implemented and how it is verified. Status is **Met**, **Partly met** (with the gap stated) or **Deployment** (depends on choices the SRS leaves to the deploying hospital, Appendix E).
 
-Test names: `engine` = app/test_engine.py, `sim` = app/test_sim.py, `api` = app/test_api.py (sections are commented in the file).
+Test names: `engine` = app/test_engine.py, `sim` = app/test_sim.py, `api` = app/test_api.py, `features` = app/test_features.py, `ui` = app/test_ui.py (browser; sections are commented in each file).
 
 ## Functional requirements
 
@@ -70,7 +70,7 @@ Test names: `engine` = app/test_engine.py, `sim` = app/test_sim.py, `api` = app/
 | ID | Evidence | Status |
 |---|---|---|
 | PR-001 | api load check: 720 requests from 40 concurrent threads, p95 about 10 ms on a laptop. Not yet tested at 500 concurrent sessions. | Partly met: rerun at the target load on the production host |
-| PR-002 | ETAs computed on every read; screens refresh every 5 s | Met |
+| PR-002 | ETAs computed on every read; screens refresh on every committed change over server-sent events (`/api/stream`), with a 5 s polling fallback | Met (features F-23; ui: live update) |
 | PR-003 | Global lock plus queue version check; stale actions get 409 | Met (api: "stale version rejected") |
 | PR-004 | 100 seeds x 5 scenarios x 2 policies in about 4 s | Met |
 | PR-005 | Errors measured against simulated actual start times | Met (simulate.py `metrics`) |
@@ -111,7 +111,7 @@ Test names: `engine` = app/test_engine.py, `sim` = app/test_sim.py, `api` = app/
 | AC-005 | api: grace period, skip, reinsertion | Pass |
 | AC-006 | api: permissions | Pass |
 | AC-007 | api: workload | Pass |
-| AC-008 | Suggestion only pre-selects a doctor; no transfer code exists | Pass (review) |
+| AC-008 | The patient suggestion only pre-selects a doctor. Moving a patient to another doctor (1.1, F-13) is an explicit staff action, logged and alerted, never automatic | Pass (review; features F-13) |
 | AC-009 | sim: reproducibility | Pass |
 | AC-010 | sim: report; docs/simulation-report.md | Pass |
 | AC-011 | 100 seeds per scenario; shortfall disclosed when fewer | Pass |
@@ -128,3 +128,36 @@ Trade-off found: on disruption and stress days Smart OPD completes slightly fewe
 - **Missed turns.** When nobody waiting has checked in, only the patient at the head of the queue counts as having missed their turn. The grace period never starts before the time the patient was last told to come (`engine.turn_cutoff`). Simulation showed that without this, patients were skipped while running ahead of schedule.
 - **Duration estimate.** The doctor's usual time is blended with the last 10 observed consultations (`engine.expected_minutes`). Compared with a plain rolling mean, simulation showed lower ETA error in every scenario and about 45% fewer alerts.
 - **Data stores.** D1 to D9 are SQLite tables. D10 (simulation runs) is a folder of JSON and Markdown reports, so the harness never writes to the live database.
+
+## Additions in 1.1.0
+
+Beyond the SRS: gaps found in the audit (docs/AUDIT.md, part 2) and implemented on request. None changes an SRS rule above.
+
+| ID | Addition | Implementation | Verified by |
+|---|---|---|---|
+| F-01 | "Not here" for a called or checked-in patient: loses check-in, keeps their place, grace starts if called | `queue_action` `not_present` | features F-01; ui |
+| F-02 | Earlier days close automatically: waiting becomes skipped ("not seen"), open consultations completed | `close_past_days` in the ticker | features F-02 |
+| F-03 | Leave alerts patients already booked that day | `leave`, alert `doctor_leave` | features F-03 |
+| F-04 | Optional daily cap per doctor; patient bookings refused once a queue would run past closing (`block_after_close`) | `capacity_problem`, `create_booking` | features F-04 |
+| F-05 | "Unavailable" lasts only for the day it was set | `effective_status`, `doctors.status_day` | features F-05 |
+| F-06 | Self check-in opens a set time before the ETA; optional daily check-in code shown at reception | `checkin`, `checkin_code` | features F-06 |
+| F-07 | Booking window and a limit on upcoming bookings per patient | `create_booking` | features F-07 |
+| F-08 | Remove a priority, with a reason | `queue_action` `remove_priority` | features F-08 |
+| F-09 | Walk-in patients at the desk: record found or created, token issued, checked in | `/api/staff/walkin` | features F-09; ui |
+| F-10 | Cancel and reschedule (atomic); status `cancelled` | `/api/cancel`, `/api/reschedule`, schema migration | features F-10; ui |
+| F-11 | Family members under one account; alerts go to the guardian | `users.guardian_id`, `/api/dependants` | features F-11; ui |
+| F-12 | Waiting-room display: tokens only, opened with a display key | `/api/display`, `?display=` page | features F-12; ui |
+| F-13 | Move one patient, or everyone waiting, to a colleague in the same department | `transfer`, `transfer_all` | features F-13; ui |
+| F-14 | Doctors' own OPD hours | `doctors.opd_start/opd_end`, `hours()` | features F-14 |
+| F-15 | Priority categories set by the admin, ranked after emergency | `priority`, `priority_label`, policy `priority_categories` | features F-15; ui |
+| F-16 | Forgotten passwords: one-time code by SMS or email, or a reset at the desk | `/api/password/forgot`, `/api/password/reset`, `/api/staff/patient-password` | features F-16; ui |
+| F-17 | ETA accuracy measured on real visits | `analytics` (`eta_mae`, `eta_within_15`) | features F-17 |
+| F-18 | Each doctor's usual time learned from the last 28 days (median, once 10 visits exist) | `engine.prior_minutes`, `learned_minutes` | engine; features F-18 |
+| F-19 | Analytics page and CSV: volumes, no-shows, waits, consult times, throughput, busiest hours | `/api/admin/analytics`, export `analytics` | features F-19; ui |
+| F-20 | Alerts in the patient's language (English, Hindi) | `MESSAGES`, `users.lang` | features F-20 |
+| F-21 | Patient's own arrival-alert lead time | `users.alert_lead`, `alert_minutes()` | features F-21 |
+| F-22 | Audit log search, filters and paging | `events` | features F-22; ui |
+| F-23 | Live updates over server-sent events | `/api/stream`, `bump()` | features F-23; ui |
+| F-24 | Data retention policy and patient "delete my data" (anonymised) | `purge_once`, `/api/delete-account` | features F-24 |
+| F-25 | Nightly and manual backups; backup before any schema upgrade | `backup`, `daily_once`, `migrate` | features F-25 and upgrade check |
+| F-26 | Browser tests kept in the repo | app/test_ui.py, app/test_ui.js | ui |

@@ -43,6 +43,12 @@ def test_expected_minutes():
     assert engine.expected_minutes([0, 0.2], 12) == 12, "sub-minute clicks are ignored"
 
 
+def test_prior_minutes_learns_from_earlier_days():
+    assert engine.prior_minutes([12] * 9, 10) == 10, "too few consultations: keep the configured time"
+    assert engine.prior_minutes([12] * 9 + [30], 10) == 12, "median, so one long visit does not dominate"
+    assert engine.prior_minutes([0.2] * 20, 10) == 10, "accidental clicks are ignored"
+
+
 def test_next_to_call_passes_over_absent_patients():
     chosen, missed = engine.next_to_call([e(1), e(2), e(3, "checked_in"), e(4, "checked_in")])
     assert chosen["id"] == 3 and [m["id"] for m in missed] == [1, 2]

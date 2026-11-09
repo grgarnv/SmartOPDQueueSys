@@ -2,6 +2,7 @@
 
 Starts its own server processes on free ports; never touches app/opd.db.
 """
+import http.client
 import http.cookiejar
 import json
 import os
@@ -102,7 +103,8 @@ def run_checks(base, db):
     assert c()("/api/health")[1]["demo"] is True
 
     # policy: open all day so the checks work at any hour
-    s, pol = admin("/api/admin/policy", {"opd_start": "00:00", "opd_end": "23:59", "grace_minutes": 10, "alert_minutes": 30})
+    s, pol = admin("/api/admin/policy", {"opd_start": "00:00", "opd_end": "23:59", "grace_minutes": 10, "alert_minutes": 30,
+                                             "block_after_close": 0})
     assert s == 200 and pol["opd_end"] == "23:59"
     assert admin("/api/admin/policy", {"opd_start": "18:00", "opd_end": "09:00"})[0] == 400
     assert staff("/api/admin/policy", {"grace_minutes": 5})[0] == 403
@@ -261,6 +263,66 @@ def run_checks(base, db):
     p95 = statistics.quantiles(times, n=20)[18]
     print(f"  load: {len(times)} requests from 40 threads, p95 {p95 * 1000:.0f} ms, errors {len(errors)}")
     assert not errors and p95 < 2.0
+
+    audit_fixes(base, db, admin, p1, p3, khan)
+
+
+def audit_fixes(base, db, admin, p1, p3, khan):
+    """Regression checks for the issues in docs/AUDIT.md."""
+    c = lambda: Client(base)
+    # input validation: blank, malformed and overlong values are 400s, never 500s or silent defaults
+    assert admin("/api/admin/department", {"name": "   "})[0] == 400
+    assert c()("/api/register", {"username": "blank", "password": "longenough", "name": "  "})[0] == 400
+    assert c()("/api/register", {"username": "longname", "password": "longenough", "name": "A" * 201})[0] == 400
+    assert c()("/api/register", {"username": "numphone", "password": "longenough", "name": "N", "phone": 98765432})[0] == 200
+    assert admin("/api/admin/doctor", {"name": "X", "department_id": 1, "username": "dr.x", "password": "abcdefgh1", "avg_minutes": "abc"})[0] == 400
+    assert admin("/api/admin/doctor/update", {"doctor_id": 1, "department_id": "abc"})[0] == 400
+    assert khan("/api/queue/action", {"action": "call_next", "version": "abc"})[0] == 400
+    assert admin("/api/admin/doctor", {"name": "Y", "department_id": 1, "username": "<b> y", "password": "abcdefgh1"})[0] == 400
+    assert admin("/api/admin/staff", {"name": "Z", "username": "z z", "password": "abcdefgh1"})[0] == 400
+    assert admin("/api/admin/doctor/update", {"doctor_id": 2, "work_days": ""})[0] == 400, "no OPD days is an error, not 'keep'"
+    conn = http.client.HTTPConnection(base[7:].split(":")[0], int(base.rsplit(":", 1)[1]), timeout=3)
+    conn.putrequest("POST", "/api/login"); conn.putheader("Content-Length", "-1"); conn.endheaders()
+    assert conn.getresponse().status == 400, "negative Content-Length must not hang the handler"
+
+    # CSV exports keep patient-supplied text inert
+    evil = c()
+    evil("/api/register", {"username": "evil", "password": "longenough", "name": "=HYPERLINK(\"http://x\")"})
+    evil("/api/book", {"doctor_id": 2})
+    data = admin.raw(f"/api/admin/export?kind=events&day={date.today()}")[2].decode()
+    assert "'=HYPERLINK" in data and ",=HYPERLINK" not in data and ',"=HYPERLINK' not in data
+
+    # today's status only affects today; past days have no ETA
+    tomorrow = (date.today() + timedelta(days=1)).isoformat()
+    admin("/api/admin/doctor/update", {"doctor_id": 3, "work_days": "0123456"})
+    assert p3("/api/book", {"doctor_id": 3, "day": tomorrow})[0] == 200
+    khan("/api/doctor/status", {"status": "unavailable"})
+    future = next(a for a in p3("/api/my-appointments")[1]["appointments"] if a["day"] == tomorrow)
+    khan("/api/doctor/status", {"status": "available"})
+    assert future["eta"], "unavailable today must not wipe tomorrow's ETA"
+    con = sqlite3.connect(db)
+    yesterday = (date.today() - timedelta(days=1)).isoformat()
+    con.execute("INSERT INTO appointments(patient_id, doctor_id, day, token, position, booked_at) "
+                "VALUES((SELECT id FROM users WHERE username = 'ravi'), 3, ?, 1, 1, ?)", (yesterday, yesterday + "T09:00:00"))
+    con.commit()
+    past = next(a for a in p3("/api/my-appointments")[1]["appointments"] if a["day"] == yesterday)
+    assert past["eta"] is None, "no ETA for a day that has passed"
+
+    # sign-out ends only this session; everyone can change their own password
+    other = c().login("patient", "patient123")
+    p1("/api/logout", {})
+    assert other("/api/me")[0] == 200 and p1("/api/me")[0] == 401
+    assert other("/api/password", {"current": "wrong-one", "new": "brandnew123"})[0] == 403
+    assert other("/api/password", {"current": "patient123", "new": "short"})[0] == 400
+    third = c().login("patient", "patient123")
+    assert other("/api/password", {"current": "patient123", "new": "brandnew123"})[0] == 200
+    assert other("/api/me")[0] == 200 and third("/api/me")[0] == 401, "other sessions end, this one stays"
+    c().login("patient", "brandnew123")
+    rao_session = c().login("dr.rao", "doctor123")
+    assert admin("/api/admin/doctor/update", {"doctor_id": 1, "password": "reset-pass1"})[0] == 200
+    assert rao_session("/api/me")[0] == 401
+    c().login("dr.rao", "reset-pass1")
+    assert "reset-pass1" not in json.dumps(admin("/api/admin/events")[1]), "passwords never reach the audit log"
 
 
 def check_production_bootstrap():

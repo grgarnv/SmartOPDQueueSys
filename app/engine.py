@@ -7,9 +7,10 @@ An entry is a dict with: id, status, priority (1 = emergency), position,
 started_at (datetime or None) and due_at (datetime or None: when the patient's
 turn came while they were not checked in).
 """
+import statistics
 from datetime import timedelta
 
-VERSION = "1.0.0"  # recorded with every simulation run (NFR-016)
+VERSION = "1.1.0"  # recorded with every simulation run (NFR-016)
 
 WAITING = ("booked", "checked_in")
 ACTIVE = ("in_consultation", "called") + WAITING
@@ -35,6 +36,13 @@ def expected_minutes(durations, default):
     Chosen over a plain rolling mean after simulation (lower MAE, fewer alerts)."""
     recent = [d for d in durations if d >= 1][-WINDOW:]  # under a minute is an accidental start/complete
     return (default * PRIOR_WEIGHT + sum(recent)) / (PRIOR_WEIGHT + len(recent))
+
+
+def prior_minutes(durations, default, min_samples=10):
+    """The doctor's usual consultation length learned from earlier days: the median of
+    real consultations once there are enough of them, else the configured default."""
+    real = [d for d in durations if d >= 1]
+    return statistics.median(real) if len(real) >= min_samples else default
 
 
 def compute_etas(entries, now, avg_minutes, opd_start=None, available=True, break_until=None):
