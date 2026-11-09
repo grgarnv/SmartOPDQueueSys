@@ -8,6 +8,7 @@
 .name { font-size: var(--text-label); font-weight: 600; }
 .role { font-size: 11px; color: var(--muted); }
 .main { max-width: 1152px; margin: 0 auto; padding: var(--s6); display: grid; gap: var(--s5); }
+.inShell { display: grid; gap: var(--s5); }
 .title { font-size: var(--text-page); font-weight: 600; }
 .live { font-size: 11px; color: var(--muted); }
 

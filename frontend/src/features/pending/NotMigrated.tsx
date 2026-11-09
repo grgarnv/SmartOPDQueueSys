@@ -11,13 +11,30 @@ import s from "./NotMigrated.module.css";
 /**
  * Stand-in for a screen that has not moved to React yet. Shows only real data (the signed-in account and the
  * server's clock through the live stream) and sends the user to the legacy UI, which still does everything.
- * Removed screen by screen as each one is migrated; the identity bar is replaced by the app shell.
+ * Removed screen by screen as each one is migrated. `bare` adds its own identity bar for screens outside the app shell.
  */
-export function NotMigrated({ screen }: { screen: string }) {
+export function NotMigrated({ screen, bare }: { screen: string; bare?: boolean }) {
   const me = useMe();
   const { signOut } = useSession();
   const [pw, setPw] = useState(false);
   const health = useLive(() => api<Health>("/api/health"));
+
+  const content = (
+    <>
+      <h1 className={s.title}>{screen}</h1>
+      <Panel>
+        <EmptyState title="This screen is still in the current app."
+          foot={<a className={buttonClass("secondary")} href="/">Open the current app</a>}>
+          {screen} moves to the new interface in a later migration phase. Everything works as before in the current app,
+          using the same account and data.
+        </EmptyState>
+      </Panel>
+      <p className={s.live}>
+        {health.data ? `Live updates ${isLive() ? "on" : "reconnecting"} · Server time ${hhmm(health.data.time)} · Version ${health.data.version}` : health.error ?? "Connecting…"}
+      </p>
+    </>
+  );
+  if (!bare) return <div className={s.inShell}>{content}</div>;  // inside the app shell, which has the identity menu
 
   return (
     <div className={s.page}>
@@ -32,19 +49,7 @@ export function NotMigrated({ screen }: { screen: string }) {
           <Button kind="secondary" onClick={() => signOut()}>Sign out</Button>
         </div>
       </header>
-      <main className={s.main}>
-        <h1 className={s.title}>{screen}</h1>
-        <Panel>
-          <EmptyState title="This screen is still in the current app."
-            foot={<a className={buttonClass("secondary")} href="/">Open the current app</a>}>
-            {screen} moves to the new interface in a later migration phase. Everything works as before in the current app,
-            using the same account and data.
-          </EmptyState>
-        </Panel>
-        <p className={s.live}>
-          {health.data ? `Live updates ${isLive() ? "on" : "reconnecting"} · Server time ${hhmm(health.data.time)} · Version ${health.data.version}` : health.error ?? "Connecting…"}
-        </p>
-      </main>
+      <main className={s.main}>{content}</main>
       <ChangePasswordDialog open={pw} onClose={() => setPw(false)} />
     </div>
   );

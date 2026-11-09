@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 /*
  * Live data, same rules as the legacy UI (app/index.html, startPolling/connectStream):
@@ -8,12 +8,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 let source: EventSource | null = null;
 let live = false;
 const listeners = new Set<() => void>();
+const liveWatchers = new Set<() => void>();
+const setLive = (v: boolean) => { if (live !== v) { live = v; liveWatchers.forEach((w) => w()); } };
+let lastSync = 0;  // browser time of the last successful read on any screen
 
 function openStream() {
   if (source || typeof EventSource === "undefined") return;
   source = new EventSource("/api/stream");
-  source.onopen = () => { live = true; };
-  source.onerror = () => { live = false; };
+  source.onopen = () => setLive(true);
+  source.onerror = () => setLive(false);
   source.onmessage = () => listeners.forEach((l) => l());
 }
 
@@ -21,10 +24,22 @@ function openStream() {
 export function closeStream() {
   source?.close();
   source = null;
-  live = false;
+  setLive(false);
 }
 
 export const isLive = () => live;
+
+const watch = (cb: () => void) => { liveWatchers.add(cb); return () => { liveWatchers.delete(cb); }; };
+
+/** Re-renders when the live stream connects or drops. */
+export function useStreamLive() {
+  return useSyncExternalStore(watch, () => live);
+}
+
+/** Browser time (ms) of the last successful live read, 0 before the first. */
+export function useLastSync() {
+  return useSyncExternalStore(watch, () => lastSync);
+}
 
 export function useLive<T>(fetcher: () => Promise<T>, deps: unknown[] = []) {
   const [data, setData] = useState<T>();
@@ -40,6 +55,8 @@ export function useLive<T>(fetcher: () => Promise<T>, deps: unknown[] = []) {
     try {
       const d = await latest.current();
       if (mine === seq.current) { setData(d); setError(undefined); }
+      lastSync = Date.now();
+      liveWatchers.forEach((w) => w());
     } catch (e) {
       // keep the last good data; the next tick retries
       if (mine === seq.current) setError((e as Error).message);
@@ -58,5 +75,8 @@ export function useLive<T>(fetcher: () => Promise<T>, deps: unknown[] = []) {
     return () => { listeners.delete(onChange); clearTimeout(debounce); clearInterval(timer); };
   }, deps);
 
-  return { data, error, refresh };
+  /** Show a server reply right away (e.g. the queue_state an action returns); older in-flight reads are dropped. */
+  const set = useCallback((d: T) => { seq.current++; setData(d); setError(undefined); }, []);
+
+  return { data, error, refresh, set };
 }

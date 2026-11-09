@@ -9,7 +9,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-from test_api import TMP, start_server
+import sqlite3
+from datetime import date, datetime, timedelta
+
+from test_api import TMP, Client, start_server
 
 HERE = Path(__file__).parent
 
@@ -21,16 +24,37 @@ def main():
         return
     failed = run(cli, "test_ui.js", "legacy UI")
     if (HERE.parent / "frontend" / "dist" / "index.html").is_file():
-        failed += run(cli, "test_ui_react.js", "React UI")
+        failed += run(cli, "test_ui_react.js", "React UI", prepare_react)
     else:
         print("ui (React): skipped (frontend not built: cd frontend && npm run build)")
     if failed:
         sys.exit(f"ui: {failed} failed")
 
 
-def run(cli, name, label):
+def prepare_react(base, db):
+    """Dr. Rao's queue for the React consultation checks, made through the API like a real day; one patient's
+    missed turn is moved 11 minutes back in the database (as test_api.py does) so their grace period is over."""
+    admin = Client(base).login("admin", "admin123")
+    admin("/api/admin/policy", {"opd_start": "00:00", "opd_end": "23:59", "block_after_close": 0})
+    staff = Client(base).login("staff", "staff123")
+    for name in ("Asha Verma", "Bilal Khan", "Chitra Nair"):
+        assert staff("/api/staff/walkin", {"name": name, "doctor_id": 1})[0] == 200
+    s, booking = Client(base).login("patient", "patient123")("/api/book", {"doctor_id": 1, "day": date.today().isoformat()})
+    assert s == 200, booking
+    assert staff("/api/staff/walkin", {"name": "Esha Gill", "doctor_id": 1})[0] == 200
+    con = sqlite3.connect(db)
+    con.execute("UPDATE appointments SET due_at = ? WHERE id = ?",
+                ((datetime.now() - timedelta(minutes=11)).isoformat(timespec="seconds"), booking["id"]))
+    con.commit()
+    con.close()
+
+
+def run(cli, name, label, prepare=None):
     """One browser script against its own throwaway demo server. Returns the number of failed checks."""
-    proc, base = start_server(f"{TMP}/{name}.db")
+    db = f"{TMP}/{name}.db"
+    proc, base = start_server(db)
+    if prepare:
+        prepare(base, db)
     script = Path(TMP) / name
     script.write_text((HERE / name).read_text().replace("__BASE__", base))
     session = ["-s=opd-ui-test"]

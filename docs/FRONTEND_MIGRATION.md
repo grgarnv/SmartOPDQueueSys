@@ -285,3 +285,39 @@ Not yet done / known differences
 - The Queue row component (4:2404) and the sidebar and top bar come with the Consultation screen, where they are first used.
 - Icons: Figma's icons are Lucide icons drawn at 20 px with a 1.7 stroke. Whether `lucide-react` reproduces them exactly is checked when the sidebar is built; until then the downloaded SVGs are the reference.
 - The dialog backdrop colour is not specified in Figma (ink at 45% is used).
+
+### Phase 2: application shell and Doctor Consultation workspace
+
+Implemented
+- **App shell** (`layout/AppShell.tsx`) from Figma 2:22 and 2:23: a 224 px sidebar with role-aware navigation (doctor: Consultation; staff: Front desk, Emergency priority, Queue monitor; admin: those plus Administration). The active item uses `NavLink`. It also shows the doctor's department and OPD hours, the live connection status with the last sync time, and the server version. The 72 px application bar shows the section, the date, and the name and role (with department for doctors); its menu holds Change password and Sign out. Responsive behaviour follows frame 07: full sidebar at 1280 px and up, a 72 px icon rail at 768–1279 px, and a drawer below 768 px.
+- **Icons:** the Figma icons are not exact Lucide icons, so the downloaded Figma SVGs are used as CSS masks. Their geometry is exact and they take the text colour.
+- **Consultation workspace** (`features/consultation`): header with the availability menu; session pulse (seen, waiting and checked in, skipped and late, and the server's `clears_at`); the patient card in five states (ready 4:952, called 4:1131, active 4:1303, urgent 4:4343, paused 4:1466, plus unavailable and no-OPD-today); the Up next table (4:1330, emergency row 4:3476) with Waiting and Skipped / late tabs; session controls (4:1380 and 4:1530); and the footer line, which shows a live-update line or action feedback (frame 25).
+- **Dialogs:** Pause (4:2063), no-show (4:2080), Not here (same layout), Skipped & late (4:2152), delay fields (4:2184) inside the availability dialog, full queue, and "The queue could not be updated" (4:2200).
+- **State:** `features/queue/useQueue.ts`. Every action sends the `version` from the last read and the screen then shows the `queue_state` the server replies with. A 409 or any other refusal opens the failure dialog with the server's message and refetches. One action at a time from a screen. `features/queue/present.ts` only maps server fields to labels; queue order, who is next, ETAs, grace periods and `can_skip` all come from the server.
+- **Fix:** the shared Dialog no longer reports the native `close` event, which fired when one dialog handed over to another.
+
+Doctor actions mapped to the server
+| UI | Server |
+|---|---|
+| Call next patient | `call_next` (the server picks the next checked-in patient) |
+| Start consultation | `start` |
+| Complete (urgent) consultation | `complete` |
+| Not here (called or checked in, grace not over) | `not_present` with optional note |
+| Skip / no-show (only when `can_skip`) | `skip` with reason |
+| Pause queue / Resume queue | `/api/doctor/status` `break` with minutes / `available` |
+| Availability: running late, unavailable today | `/api/doctor/status` `delayed` with minutes / `unavailable` |
+
+Figma content not shown, because the backend does not provide it (no schema change, no invented data)
+- Age, sex, UHID, chief complaint, allergy, visit type, last visit, patient history (frames 01, 11, 24). The active card shows check-in time and priority instead, and the empty space stays.
+- Consultation timer, "Called at" time, and who verified an emergency (no `started_at`, call time or approver in `queue_state`).
+- "Call again" (no re-call API), "+ Emergency priority" and "End session" (staff and admin only / no API), "Help & shortcuts", the bell, the hospital name and the location block (not stored). The sidebar shows the doctor's department instead.
+- The pause and delay "Reason" fields (the server stores no reason). "P1" levels and "E01" tokens (one emergency level; tokens are numbers, shown with three digits as in Figma).
+- "Refresh queue & retry" is labelled "Refresh queue": retrying automatically could repeat an action.
+- Nurse role: not in the backend; not added.
+
+Figma frames not fetched (Figma MCP Starter plan rate limit reached during this phase)
+- Doctor availability dialog 4:2171, full queue dialog 4:3874, pause-while-consulting 4:2999. Built from the measured dialog pattern (4:2063, 4:2080, 4:2152, 4:2184, 4:2200); compare when the limit resets.
+
+Verified
+- Screenshots at 1440 × 1000 against the Figma context and renders: ready, called, active, urgent, paused, delayed, emergency-next, late tab, and the pause, no-show, Not here, Skipped & late, availability and full-queue dialogs. Card and dialog elements are within 2–5 px of Figma after the fixes from the comparison. Also 1920 × 1080, 1024 × 768 and 390 × 844 (no sideways scroll; drawer navigation).
+- React browser suite: 53 checks. The new ones cover every doctor action, the role-aware shell, live updates and an emergency coming from a second desk session, a stale version refused (409) and recovered, two simultaneous actions on one version (exactly one applies), and the responsive layouts.

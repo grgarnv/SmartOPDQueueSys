@@ -4,18 +4,18 @@ import { LoginPage } from "./auth/LoginPage";
 import { RequireRole } from "./auth/RequireRole";
 import { HOME, useSession } from "./auth/session";
 import { LoadingState } from "./design/ui";
+import { ConsultationPage } from "./features/consultation/ConsultationPage";
 import { Specimen } from "./features/design-system/Specimen";
 import { NotMigrated } from "./features/pending/NotMigrated";
+import { AppShell } from "./layout/AppShell";
 
-// Route table from docs/FRONTEND_MIGRATION.md §2.3. Screens still in the legacy UI render <NotMigrated>.
-const screens: { path: string; roles: Role[]; title: string }[] = [
-  { path: "/consultation", roles: ["doctor"], title: "Consultation" },
+// Route table from docs/FRONTEND_MIGRATION.md §2.3. Doctor, staff and admin screens sit in the app shell
+// (Figma sidebar + bar); patient and tester screens have their own layouts and come later.
+const deskScreens: { path: string; roles: Role[]; title: string }[] = [
   { path: "/front-desk", roles: ["staff", "admin"], title: "Front desk" },
   { path: "/emergency", roles: ["staff", "admin"], title: "Emergency priority" },
   { path: "/queue-monitor", roles: ["staff", "admin"], title: "Queue monitor" },
   { path: "/admin/*", roles: ["admin"], title: "Administration" },
-  { path: "/patient", roles: ["patient"], title: "Your appointments" },
-  { path: "/simulations", roles: ["tester"], title: "Simulations" },
 ];
 
 function Home() {
@@ -29,9 +29,14 @@ export function AppRoutes() {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/design-system" element={<Specimen />} />
-      {screens.map(({ path, roles, title }) => (
-        <Route key={path} path={path} element={<RequireRole roles={roles}><NotMigrated screen={title} /></RequireRole>} />
-      ))}
+      <Route element={<RequireRole roles={["doctor", "staff", "admin"]}><AppShell /></RequireRole>}>
+        <Route path="/consultation" element={<RequireRole roles={["doctor"]}><ConsultationPage /></RequireRole>} />
+        {deskScreens.map(({ path, roles, title }) => (
+          <Route key={path} path={path} element={<RequireRole roles={roles}><NotMigrated screen={title} /></RequireRole>} />
+        ))}
+      </Route>
+      <Route path="/patient" element={<RequireRole roles={["patient"]}><NotMigrated screen="Your appointments" bare /></RequireRole>} />
+      <Route path="/simulations" element={<RequireRole roles={["tester"]}><NotMigrated screen="Simulations" bare /></RequireRole>} />
       <Route path="*" element={<Home />} />
     </Routes>
   );

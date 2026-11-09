@@ -13,7 +13,7 @@ export function Dialog({ open, onClose, title, description, size = "sm", onSubmi
   onClose: () => void;
   title: ReactNode;
   description?: ReactNode;
-  size?: "sm" | "lg";
+  size?: "sm" | "md" | "lg";
   onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
   footer?: ReactNode;
   children?: ReactNode;
@@ -34,7 +34,9 @@ export function Dialog({ open, onClose, title, description, size = "sm", onSubmi
     </>
   );
   return (
-    <dialog ref={ref} className={`${s.dialog} ${s[size]}`} aria-labelledby={titleId} onClose={onClose}
+    // Escape (cancel) and the × button report a close; the native "close" event is not used, because it also
+    // fires when the app closes this dialog to open another one (e.g. Skipped & late → No-show).
+    <dialog ref={ref} className={`${s.dialog} ${s[size]}`} aria-labelledby={titleId}
       onCancel={(e) => { e.preventDefault(); onClose(); }}>
       <header className={s.head}>
         <h2 id={titleId} className={s.title}>{title}</h2>
