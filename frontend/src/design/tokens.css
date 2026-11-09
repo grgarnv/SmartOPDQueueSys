@@ -1,0 +1,53 @@
+/* SmartOPD foundations, from Figma frame "07 · SmartOPD design system" (2:41) and its variables.
+   Colour names match the Figma variables (SmartOPD/*). Values not published as variables are noted. */
+:root {
+  /* SmartOPD/* variables */
+  --ink: #182d31;
+  --muted: #637478;
+  --white: #ffffff;
+  --teal: #086b5d;
+  --tint: #e8f3ef;
+  --blue: #38638b;
+  --blue-tint: #edf3fa;
+  --amber: #8b5b15;
+  --amber-tint: #fff4dd;
+  --red: #af3541;
+  --red-tint: #fceef0;
+  --bg: #f5f7f6;
+  --line: #dfe6e5;
+  /* used in components but not published as variables */
+  --field-line: #d1dbd9;   /* Input surface border (4:2402) */
+  --focus-line: #c9dbd4;   /* Active consultation card border (2:368) */
+  --backdrop: rgb(24 45 49 / 0.45); /* not in Figma: dialog backdrop, ink at 45% */
+
+  /* Typography: Inter, 1.45 line height throughout */
+  --font: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --leading: 1.45;
+  --text-caption: 12px;
+  --text-field: 13px;
+  --text-label: 13px;
+  --text-body: 14px;
+  --text-section: 18px;
+  --text-dialog: 23px;
+  --text-page: 27px;
+
+  /* Space & scale: 4 px base · 8 / 12 / 16 / 24 / 32 */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --dialog-pad: 28px;
+
+  /* Radii: 6–9 px UI radii; 12 for dialogs */
+  --r-status: 5px;
+  --r-field: 6px;
+  --r-button: 7px;
+  --r-panel: 8px;
+  --r-card: 9px;
+  --r-dialog: 12px;
+
+  /* 44 px action targets */
+  --target: 44px;
+}

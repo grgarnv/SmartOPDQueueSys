@@ -1,0 +1,18 @@
+/* Spacing copied from frame 2:41 so a screenshot lines up with the Figma render. */
+.frame { background: var(--white); min-height: 100dvh; padding: 32px 40px 48px; max-width: 1440px; }
+.h1 { font-size: 28px; font-weight: 600; }
+.lede { margin-top: 7px; font-size: 15px; color: var(--muted); }
+.h2 { margin: 29px 0 18px; font-size: 15px; font-weight: 600; white-space: pre; }
+.swatches { display: grid; grid-template-columns: repeat(6, 210px); column-gap: 19px; }
+.swatch { height: 48px; border-radius: var(--r-button); }
+.swName { margin-top: 13px; font-size: 12px; font-weight: 500; }
+.swHex { margin-top: 6px; font-size: 11px; color: var(--muted); }
+.type { display: flex; align-items: baseline; gap: 0; }
+.display { width: 490px; font-size: 32px; font-weight: 600; }
+.section { width: 320px; font-size: 18px; font-weight: 600; }
+.small { font-size: 13px; color: var(--muted); }
+.row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; padding: 14px 0; }
+.caption { margin-top: 14px; font-size: 12px; color: var(--muted); }
+.input { width: 396px; }
+.states { display: grid; grid-template-columns: repeat(3, 420px); column-gap: 30px; }
+.states > * { height: 181px; }

@@ -4,3 +4,5 @@ app/opd.db-shm
 app/sim_results/
 __pycache__/
 app/backups/
+frontend/node_modules/
+frontend/dist/

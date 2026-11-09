@@ -1,0 +1,27 @@
+/* Page frame follows the workspace: 32 px inset, 27 semibold title, 13 muted subtitle (2:348, 2:349). */
+.page { min-height: 100dvh; }
+.top { padding: var(--s5); }
+.main { max-width: 1152px; margin: 0 auto; padding: var(--s2) var(--s6) var(--s6); display: grid; gap: var(--s5); }
+.intro { display: grid; gap: 6px; }
+.pageTitle { font-size: var(--text-page); font-weight: 600; }
+.pageSub { font-size: var(--text-field); color: var(--muted); }
+.grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s5); align-items: start; }
+.grid > section { display: grid; gap: var(--s4); }
+
+.form { display: grid; gap: 20px; }
+.cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s5); }
+.cols > :last-child, .span { grid-column: 1 / -1; }
+.note { font-size: var(--text-caption); color: var(--muted); }
+
+/* dialogs */
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s5); }
+.inline { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s3); align-items: end; }
+.wide { min-width: 240px; }
+
+/* <768: one task per view */
+@media (max-width: 767px) {
+  .top { padding: var(--s4); }
+  .main { padding: 0 var(--s4) var(--s5); }
+  .grid, .cols, .pair { grid-template-columns: minmax(0, 1fr); }
+  .wide { min-width: 0; flex: 1; }
+}
