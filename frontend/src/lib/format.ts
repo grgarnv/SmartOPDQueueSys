@@ -1,4 +1,4 @@
-import type { Role } from "../api/types";
+import type { ApptStatus, Role } from "../api/types";
 
 /** "2026-11-09T10:32:05" (server local time) → "10:32" */
 export const hhmm = (iso?: string | null) => (iso ? iso.slice(11, 16) : "–");
@@ -33,3 +33,22 @@ export const minutesBetween = (from: string, to: string) => Math.round((Date.par
 
 /** Three-digit token as on the display: 7 → "007" */
 export const tokenText = (n: number) => String(n).padStart(3, "0");
+
+/** Appointment status labels (legacy STATUS in app/index.html) */
+export const STATUS_LABEL: Record<ApptStatus, string> = {
+  booked: "Booked", checked_in: "Checked in", called: "Called", in_consultation: "In consultation",
+  completed: "Completed", skipped: "Skipped", cancelled: "Cancelled",
+};
+
+/** Patient alert purposes and delivery states (legacy ALERT / SENT in app/index.html) */
+export const ALERT_LABEL: Record<string, string> = {
+  arrival: "Your turn is near", eta_change: "Time changed", called: "Called in", skipped: "Missed turn",
+  doctor_unavailable: "Doctor unavailable", doctor_leave: "Doctor on leave", transferred: "Moved to another doctor",
+  cancelled: "Cancelled by the desk", reset_code: "Password reset code",
+};
+export const SENT_LABEL: Record<string, string> = {
+  pending: "sending", sent: "sent", delivered: "delivered", unconfirmed: "sent, delivery not confirmed", failed: "failed",
+};
+
+/** Audit action name as words: "reinsert_front" → "reinsert front" (legacy "Today's exceptions") */
+export const actionText = (a: string) => a.replace(/_/g, " ");

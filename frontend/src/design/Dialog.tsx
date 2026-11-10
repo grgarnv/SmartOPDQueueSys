@@ -13,7 +13,7 @@ export function Dialog({ open, onClose, title, description, size = "sm", onSubmi
   onClose: () => void;
   title: ReactNode;
   description?: ReactNode;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "wide" | "lg";
   onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
   footer?: ReactNode;
   children?: ReactNode;

@@ -26,24 +26,25 @@ export function Status({ tone = "neutral", children }: { tone?: Tone; children: 
   return <span className={cx(s.status, s[tone])}>{children}</span>;
 }
 
-type FieldProps = { label: ReactNode; hint?: ReactNode };
+/** hideLabel: the label is read by screen readers but not shown (a filter whose options name themselves). */
+type FieldProps = { label: ReactNode; hint?: ReactNode; hideLabel?: boolean };
 
-export function TextField({ label, hint, className, ...input }: FieldProps & InputHTMLAttributes<HTMLInputElement>) {
+export function TextField({ label, hint, hideLabel, className, ...input }: FieldProps & InputHTMLAttributes<HTMLInputElement>) {
   const id = useId();
   return (
     <div className={cx(s.field, className)}>
-      <label className={s.fieldLabel} htmlFor={id}>{label}</label>
+      <label className={hideLabel ? s.srOnly : s.fieldLabel} htmlFor={id}>{label}</label>
       <input id={id} className={s.control} aria-describedby={hint ? id + "h" : undefined} {...input} />
       {hint && <span id={id + "h"} className={s.fieldHint}>{hint}</span>}
     </div>
   );
 }
 
-export function SelectField({ label, hint, className, children, ...select }: FieldProps & SelectHTMLAttributes<HTMLSelectElement>) {
+export function SelectField({ label, hint, hideLabel, className, children, ...select }: FieldProps & SelectHTMLAttributes<HTMLSelectElement>) {
   const id = useId();
   return (
     <div className={cx(s.field, className)}>
-      <label className={s.fieldLabel} htmlFor={id}>{label}</label>
+      <label className={hideLabel ? s.srOnly : s.fieldLabel} htmlFor={id}>{label}</label>
       <select id={id} className={s.control} aria-describedby={hint ? id + "h" : undefined} {...select}>{children}</select>
       {hint && <span id={id + "h"} className={s.fieldHint}>{hint}</span>}
     </div>
@@ -116,4 +117,31 @@ export function Brand() {
 
 export function Overline({ children }: { children: ReactNode }) {
   return <p className={s.overline}>{children}</p>;
+}
+
+/** Page header (frames 01, 02, 04): title 27 semibold, subtitle 13 muted 5 below, actions on the right 3 down. */
+export function PageHeader({ title, sub, children }: { title: ReactNode; sub?: ReactNode; children?: ReactNode }) {
+  return (
+    <div className={s.pageHead}>
+      <div className={s.pageText}><h1 className={s.pageTitle}>{title}</h1>{sub && <div className={s.pageSub}>{sub}</div>}</div>
+      {children && <div className={s.pageActions}>{children}</div>}
+    </div>
+  );
+}
+
+/**
+ * Plain data table in the queue-table style (10/500 muted headers, 1 px rules). Under 768 px each row stacks
+ * and every cell shows its column name, so nothing scrolls sideways. An empty column name is an actions cell.
+ */
+export function Table({ label, columns, rows }: { label: string; columns: string[]; rows: { key: string | number; cells: ReactNode[] }[] }) {
+  return (
+    <table className={s.table} aria-label={label}>
+      <thead><tr>{columns.map((c, i) => <th key={i} scope="col">{c || <span className={s.srOnly}>Actions</span>}</th>)}</tr></thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr key={r.key}>{r.cells.map((c, i) => <td key={i} data-label={columns[i] || undefined}>{c}</td>)}</tr>
+        ))}
+      </tbody>
+    </table>
+  );
 }

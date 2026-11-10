@@ -1,13 +1,9 @@
 /* Consultation workspace, Figma frame 01 (Workspace 2:24 = 1152 × 884 at 1440 px) and its state frames.
    Distances are Figma px from the top of each block unless noted. */
 .page { display: grid; grid-template-columns: minmax(0, 1fr); }
-.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* header: title 27 semibold at 0, path 13 muted at 44, availability menu 215 × 44 at the right (2:348–2:350) */
-.head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s4); flex-wrap: wrap; }
-.title { font-size: var(--text-page); font-weight: 600; }
-.sub { margin-top: 5px; font-size: var(--text-field); color: var(--muted); white-space: pre-wrap; }
-.availability { min-width: 215px; margin-top: 3px; gap: 0; }
+/* header (PageHeader): availability menu 215 × 44 at the right (2:350) */
+.availability { min-width: 215px; gap: 0; }
 .dot { margin-right: 8px; font-size: 12px; }
 .dot.success { color: var(--teal); } .dot.info { color: var(--ink); } .dot.caution { color: var(--amber); }
 .dot.urgent { color: var(--red); font-size: 14px; } .dot.neutral { color: var(--muted); }
@@ -102,30 +98,6 @@
 .upFoot { display: grid; grid-template-columns: minmax(0, 1fr) 197px; align-items: center; margin-top: auto; padding: 16px 24px 23px; }
 .avg { font-size: 11px; color: var(--muted); }
 
-/* rows: token 67 · patient · status 148 · ETA 62 inside a 24 inset; 58 tall + 1 px rule; first row tinted */
-.table { display: block; width: 100%; border-collapse: collapse; }
-.table thead, .table tbody { display: block; }
-.table tr { position: relative; display: grid; grid-template-columns: 67px minmax(0, 1fr) 148px 62px; align-items: center; min-height: 58px; padding: 0 12px; border-radius: 5px; }
-.table.withActions tr { grid-template-columns: 67px minmax(0, 1fr) 148px 72px 120px; }
-.table thead tr { min-height: 0; padding-top: 21px; padding-bottom: 10px; }
-.table th { padding: 0; text-align: left; font-size: 10px; font-weight: 500; color: var(--muted); }
-.table th:nth-child(2) { padding-left: 8px; }
-.table th:nth-child(3) { padding-left: 10px; }
-.table thead th:first-child { grid-column: span 2; }
-.table td { padding: 0; min-width: 0; }
-.table tbody tr + tr { margin-top: 1px; }
-.table tbody tr + tr::before { content: ""; position: absolute; top: -1px; left: 12px; right: 12px; height: 1px; background: var(--line); }
-.first { background: var(--tint); }
-.firstUrgent { background: var(--red-tint); }
-.first + tr::before, .firstUrgent + tr::before { display: none; }
-.tok { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.tealText { color: var(--teal); }
-.redText { color: var(--red) !important; }
-.rowName { display: block; font-size: var(--text-field); font-weight: 500; }
-.rowSub { display: block; margin-top: 1px; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.eta { font-size: 11px; font-weight: 500; color: var(--muted); white-space: nowrap; }
-.rowActions { justify-self: end; }
-.rowActions button { min-height: 36px; padding: 0 12px; font-size: var(--text-caption); }
 
 /* Session controls (4:1380): white, 8 radius, 68 tall; buttons at 16, path text after them */
 .controls { display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap; margin-top: var(--s5); padding: 12px 16px; min-height: 68px; background: var(--white); border-radius: var(--r-panel); }
@@ -136,26 +108,6 @@
 .liveLine, .feedback { margin-top: 13px; font-size: 11px; color: var(--muted); white-space: pre-wrap; }
 .feedback { color: var(--teal); font-weight: 500; }
 
-/* ---------- dialogs ---------- */
-.cancelBtn { min-width: 112px; }
-.primaryBtn { min-width: 240px; }
-.calloutSub { display: inline-block; margin-top: 6px; font-size: var(--text-caption); font-weight: 400; }
-.dialogTick { margin-top: -3px; font-size: var(--text-caption); font-weight: 500; color: var(--teal); white-space: pre-wrap; }
-.choices { display: grid; gap: var(--s2); margin: 0; padding: 0; border: 0; }
-.choice { display: flex; align-items: flex-start; gap: var(--s3); padding: 12px 16px; border: 1px solid var(--field-line); border-radius: var(--r-button); cursor: pointer; }
-.choice input { margin-top: 3px; accent-color: var(--teal); }
-.chosen { border-color: var(--teal); background: var(--tint); }
-.choiceLabel { display: block; font-size: var(--text-body); font-weight: 600; }
-.choiceHint { display: block; font-size: var(--text-caption); color: var(--muted); }
-.lateList { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
-.lateRow { display: flex; align-items: center; gap: 0; min-height: 92px; padding: 0 16px; border-radius: var(--r-button); background: var(--bg); }
-.lateToken { width: 68px; flex: none; font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.lateText { flex: 1; min-width: 0; display: grid; gap: 7px; }
-.lateName { font-size: 15px; font-weight: 600; }
-.lateSub { font-size: var(--text-caption); color: var(--muted); }
-.dialogTable { max-height: min(60dvh, 560px); overflow: auto; margin: 0 -12px; }
-.failure { padding: 12px 14px 18px; border-radius: var(--r-button); background: var(--red-tint); color: var(--red); font-size: var(--text-field); }
-.failureTitle { margin-bottom: 12px; font-size: var(--text-body); font-weight: 600; }
 
 /* ---------- responsive (frame 07): <1280 stacked consultation; <768 one task per view ---------- */
 @media (max-width: 1279px) {
@@ -169,7 +121,6 @@
   .metric:nth-child(3)::before { display: none; }
 }
 @media (max-width: 767px) {
-  .title { font-size: 22px; }
   .availability { min-width: 0; width: 100%; }
   .pulse { grid-template-columns: minmax(0, 1fr); }
   .metric::before { display: none; }
@@ -179,11 +130,6 @@
   .patient { font-size: 21px; }
   .facts, .split { grid-template-columns: minmax(0, 1fr); gap: var(--s3); }
   .upHead { padding-right: 24px; }
-  .table tr { grid-template-columns: 48px minmax(0, 1fr) auto; row-gap: 4px; padding-block: 8px; }
-  .table thead { display: none; }
-  .table td.eta { grid-column: 2; }
-  .table.withActions tr { grid-template-columns: 48px minmax(0, 1fr) auto; }
-  .rowActions { grid-column: 2 / -1; justify-self: start; }
   .upFoot { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
   .controls > button { flex: 1; }
   .session { margin-left: 0; }

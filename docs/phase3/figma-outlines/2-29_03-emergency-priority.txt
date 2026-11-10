@@ -1,0 +1,104 @@
+frame 2:29 "03 · Emergency priority" 1440x1000  (abs = from frame top-left; rel = from parent)
+  frame 2:30 "Sidebar" abs(0,0) rel(0,0) 224x1000
+    frame 2:180 "Right border" abs(223,0) rel(223,0) 1x1000
+    frame 2:181 "SmartOPD mark" abs(24,24) rel(24,24) 28x28
+      frame 2:182 "plus icon" abs(28,28) rel(4,4) 20x20
+    text 2:184 "SmartOPD" abs(62,23) rel(62,23) 107x30
+    text 2:185 "WORKSPACE" abs(24,96) rel(24,96) 64x15
+    frame 2:186 "Navigate · Consultation" abs(12,124) rel(12,124) 200x42
+      frame 2:187 "grid icon" abs(24,135) rel(12,11) 20x20
+      text 2:192 "Consultation" abs(56,135) rel(44,11) 80x19
+    frame 2:193 "Navigate · Front desk" abs(12,172) rel(12,172) 200x42
+      frame 2:194 "users icon" abs(24,183) rel(12,11) 20x20
+      text 2:197 "Front desk" abs(56,183) rel(44,11) 67x19
+    frame 2:198 "Navigate · Emergency priority" abs(12,220) rel(12,220) 200x42
+      frame 2:199 "shield icon" abs(24,231) rel(12,11) 20x20
+      text 2:201 "Emergency priority" abs(56,231) rel(44,11) 120x19
+    frame 2:202 "Navigate · Queue monitor" abs(12,268) rel(12,268) 200x42
+      frame 2:203 "pulse icon" abs(24,279) rel(12,11) 20x20
+      text 2:205 "Queue monitor" abs(56,279) rel(44,11) 93x19
+    frame 2:206 "Navigate · Administration" abs(12,316) rel(12,316) 200x42
+      frame 2:207 "settings icon" abs(24,327) rel(12,11) 20x20
+      text 2:211 "Administration" abs(56,327) rel(44,11) 91x19
+    frame 2:212 "Divider" abs(24,392) rel(24,392) 176x1
+    text 2:213 "CURRENT LOCATION" abs(24,416) rel(24,416) 102x15
+    text 2:214 "Riverside Hospital" abs(24,444) rel(24,444) 114x19
+    text 2:215 "Main block · Floor 1" abs(24,466) rel(24,466) 110x17
+    frame 2:216 "Connection status" abs(16,829) rel(16,829) 192x51
+      text 2:217 "●  All systems operational" abs(28,839) rel(12,10) 139x16
+      text 2:218 "Last synced just now" abs(42,857) rel(26,28) 100x15
+    frame 2:219 "help icon" abs(24,906) rel(24,906) 20x20
+    text 2:222 "Help & shortcuts" abs(55,906) rel(55,906) 96x17
+    text 2:223 "SmartOPD · v1.0" abs(24,956) rel(24,956) 77x15
+  frame 2:31 "Application bar" abs(224,0) rel(224,0) 1216x72
+    text 2:224 "Riverside Hospital" abs(256,25) rel(32,25) 112x19
+    text 2:225 "/" abs(393,25) rel(169,25) 5x19
+    text 2:226 "Outpatient department" abs(414,25) rel(190,25) 141x19
+    text 2:227 "Mon, 09 Nov 2026" abs(935,25) rel(711,25) 106x17
+    frame 2:228 "bell icon" abs(1102,25) rel(878,25) 20x20
+    frame 2:230 "Identity divider" abs(1144,20) rel(920,20) 1x32
+    text 2:231 "Nurse Priya Nair" abs(1164,15) rel(940,15) 99x19
+    text 2:232 "Triage nurse · Station 1" abs(1164,36) rel(940,36) 190x16
+    frame 2:233 "down icon" abs(1394,27) rel(1170,27) 16x16
+    frame 2:235 "Divider" abs(224,71) rel(0,71) 1216x1
+  frame 2:32 "Workspace" abs(256,104) rel(256,104) 1152x884
+    text 2:536 "Clinical priority. Clearly handled." abs(256,104) rel(0,0) 423x39
+    text 2:537 "Register an urgent case and review the impact be" abs(256,148) rel(0,44) 459x19
+    instance 2:538 "View override log" abs(1214,107) rel(958,3) 194x44
+    frame 2:540 "Emergency routing guidance" abs(256,196) rel(0,92) 1152x64
+      text 2:541 "!   Critical or unstable patient?" abs(276,209) rel(20,13) 202x20
+      text 2:542 "Activate the hospital emergency response immedia" abs(276,232) rel(20,36) 608x17
+    frame 2:543 "Priority registration" abs(256,284) rel(0,180) 692x670
+      text 2:544 "Priority registration" abs(280,306) rel(24,22) 179x28
+      text 2:545 "Patient identification" abs(280,351) rel(24,67) 131x19
+      text 2:546 "Existing patient / UHID" abs(280,387) rel(24,103) 130x17
+      frame 2:547 "Existing patient / UHID input" abs(280,412) rel(24,128) 644x44
+        text 2:548 "RH-006519 · Suresh Iyer" abs(293,424) rel(13,12) 618x19
+      text 2:549 "67 years · Male · Identity verified by triage" abs(280,465) rel(24,181) 239x17
+      text 2:550 "Temporary ID can be issued if identity is unknow" abs(280,490) rel(24,206) 262x16
+      frame 2:551 "Divider" abs(280,527) rel(24,243) 644x1
+      text 2:552 "Priority classification *" abs(280,547) rel(24,263) 143x19
+      frame 2:553 "Urgent selected" abs(280,584) rel(24,300) 312x75
+        text 2:554 "◉  P1 · Urgent" abs(295,596) rel(15,12) 93x20
+        text 2:555 "Next after the active consultation" abs(295,624) rel(15,40) 174x16
+      frame 2:556 "Expedited option" abs(608,584) rel(352,300) 316x75
+        text 2:557 "○  P2 · Expedited" abs(623,596) rel(15,12) 117x20
+        text 2:558 "Before routine patients, after P1" abs(623,624) rel(15,40) 165x16
+      text 2:559 "Clinical reason *" abs(280,684) rel(24,400) 94x17
+      frame 2:560 "Clinical reason * input" abs(280,709) rel(24,425) 644x65
+        text 2:561 "Acute breathlessness · assessed by triage nurse" abs(293,721) rel(13,12) 618x19
+      text 2:562 "Receiving doctor / session *" abs(280,797) rel(24,513) 161x17
+      frame 2:563 "Receiving doctor / session * input" abs(280,822) rel(24,538) 644x44
+        text 2:564 "Dr. Aisha Mehta · General medicine  ⌄" abs(293,834) rel(13,12) 618x19
+      frame 2:565 "Divider" abs(256,896) rel(0,612) 692x1
+      instance 2:566 "Review priority override" abs(644,909) rel(388,625) 280x44
+      text 2:568 "Authorized staff only" abs(280,922) rel(24,638) 119x17
+    frame 2:569 "Queue impact preview" abs(972,284) rel(716,180) 436x362
+      text 2:570 "Queue impact" abs(996,306) rel(24,22) 122x26
+      frame 2:571 "Preview only" abs(1276,304) rel(304,20) 91x25
+        text 2:572 "Preview only" abs(1285,308) rel(9,4) 73x17
+      text 2:573 "Room 104 · General medicine" abs(996,339) rel(24,55) 166x17
+      frame 2:574 "Divider" abs(996,376) rel(24,92) 388x1
+      text 2:575 "NOW" abs(996,405) rel(24,121) 23x13
+      text 2:576 "024" abs(1055,403) rel(83,119) 33x25
+      text 2:577 "Rajesh Kumar" abs(1114,398) rel(142,114) 85x19
+      text 2:578 "Consultation continues" abs(1114,421) rel(142,137) 120x16
+      frame 2:579 "Priority insertion" abs(984,461) rel(12,177) 412x65
+      text 2:580 "NEXT" abs(996,475) rel(24,191) 25x13
+      text 2:581 "E01" abs(1055,473) rel(83,189) 30x25
+      text 2:582 "Suresh Iyer" abs(1114,468) rel(142,184) 70x19
+      text 2:583 "P1 · Urgent override" abs(1114,491) rel(142,207) 103x16
+      text 2:584 "THEN" abs(996,545) rel(24,261) 25x13
+      text 2:585 "025" abs(1055,543) rel(83,259) 33x25
+      text 2:586 "Sunita Patel" abs(1114,538) rel(142,254) 75x19
+      text 2:587 "Moves back 1 place" abs(1114,561) rel(142,277) 102x16
+      text 2:588 "Estimated routine wait increases by ~8 min." abs(996,611) rel(24,327) 251x17
+    frame 2:589 "Authorization & accountability" abs(972,670) rel(716,566) 436x284
+      text 2:590 "Authorization & accountability" abs(996,692) rel(24,22) 249x25
+      text 2:591 "Requested by" abs(996,736) rel(24,66) 73x16
+      text 2:592 "Nurse Priya Nair · Triage nurse" abs(996,758) rel(24,88) 189x19
+      text 2:593 "Requires doctor confirmation" abs(996,796) rel(24,126) 184x19
+      text 2:594 "Dr. Aisha Mehta must approve the override before" abs(996,823) rel(24,153) 380x34
+      frame 2:595 "Divider" abs(996,876) rel(24,206) 388x1
+      text 2:596 "Every override records who, when and why." abs(996,896) rel(24,226) 376x17
+    text 2:597 "Current consultations are never interrupted auto" abs(256,971) rel(0,867) 559x16

@@ -1,0 +1,8 @@
+frame 4:2363 "Dialog · Changes saved" 760x300  (abs = from frame top-left; rel = from parent)
+  text 4:2364 "Changes saved" abs(28,24) rel(28,24) 179x35
+  text 4:2365 "Your updates are active. A record has been added" abs(28,70) rel(28,70) 704x19
+  frame 4:2366 "Close dialog" abs(696,16) rel(696,16) 44x44
+    text 4:2367 "×" abs(711,26) rel(15,10) 15x24
+  frame 4:2368 "Success feedback" abs(28,130) rel(28,130) 704x66
+    text 4:2369 "✓  Saved by Meera Shah · Hospital administrator " abs(44,152) rel(16,22) 397x20
+  instance 4:2370 "Done" abs(472,234) rel(472,234) 260x44

@@ -1,0 +1,74 @@
+frame 2:41 "07 · SmartOPD design system" 1440x1570  (abs = from frame top-left; rel = from parent)
+  text 2:42 "SmartOPD / Foundations" abs(40,32) rel(40,32) 334x41
+  text 2:43 "A calm operational language. Built for decisions, " abs(40,80) rel(40,80) 452x22
+  frame 2:52 "Button" abs(40,430) rel(40,430) 494x86
+    symbol 2:44 "Kind=Primary" abs(60,450) rel(20,20) 98x44
+    symbol 2:46 "Kind=Secondary" abs(178,450) rel(138,20) 100x46
+    symbol 2:48 "Kind=Danger" abs(298,450) rel(258,20) 98x44
+    symbol 2:50 "Kind=Disabled" abs(416,450) rel(376,20) 98x44
+  frame 2:67 "Status" abs(40,620) rel(40,620) 685x57
+    symbol 2:53 "Status=Available" abs(56,636) rel(16,16) 70x25
+    symbol 2:55 "Status=In consultation" abs(142,636) rel(102,16) 103x25
+    symbol 2:57 "Status=On break" abs(261,636) rel(221,16) 71x25
+    symbol 2:59 "Status=Delayed" abs(348,636) rel(308,16) 65x25
+    symbol 2:61 "Status=Checked in" abs(429,636) rel(389,16) 83x25
+    symbol 2:63 "Status=Emergency" abs(528,636) rel(488,16) 83x25
+    symbol 2:65 "Status=Not arrived" abs(627,636) rel(587,16) 82x25
+  text 4:2372 "01  Semantic colour" abs(40,131) rel(40,131) 143x22
+  frame 4:2373 "Text / primary" abs(40,171) rel(40,171) 210x48
+  text 4:2374 "Text / primary" abs(40,232) rel(40,232) 80x17
+  text 4:2375 "#182D31" abs(40,255) rel(40,255) 46x16
+  frame 4:2376 "Text / secondary" abs(269,171) rel(269,171) 210x48
+  text 4:2377 "Text / secondary" abs(269,232) rel(269,232) 97x17
+  text 4:2378 "#637478" abs(269,255) rel(269,255) 47x16
+  frame 4:2379 "Action / success" abs(498,171) rel(498,171) 210x48
+  text 4:2380 "Action / success" abs(498,232) rel(498,232) 95x17
+  text 4:2381 "#086B5D" abs(498,255) rel(498,255) 50x16
+  frame 4:2382 "In consultation" abs(727,171) rel(727,171) 210x48
+  text 4:2383 "In consultation" abs(727,232) rel(727,232) 85x17
+  text 4:2384 "#38638B" abs(727,255) rel(727,255) 49x16
+  frame 4:2385 "Delay / caution" abs(956,171) rel(956,171) 210x48
+  text 4:2386 "Delay / caution" abs(956,232) rel(956,232) 86x17
+  text 4:2387 "#8B5B15" abs(956,255) rel(956,255) 47x16
+  frame 4:2388 "Urgency / danger" abs(1185,171) rel(1185,171) 210x48
+  text 4:2389 "Urgency / danger" abs(1185,232) rel(1185,232) 100x17
+  text 4:2390 "#AF3541" abs(1185,255) rel(1185,255) 47x16
+  text 4:2391 "02  Typography" abs(40,302) rel(40,302) 114x22
+  text 4:2392 "Inter · Clear decisions" abs(40,339) rel(40,339) 336x46
+  text 4:2393 "Section title / 18 semibold" abs(530,349) rel(530,349) 225x26
+  text 4:2394 "Body / 14 regular · Label / 13 medium · Caption " abs(850,354) rel(850,354) 313x19
+  text 4:2395 "03  Buttons · 44 px target · explicit action lab" abs(40,398) rel(40,398) 345x22
+  text 4:2396 "Primary: one per decision region. Destructive ac" abs(40,534) rel(40,534) 463x17
+  text 4:2397 "04  Status language · never colour alone" abs(40,580) rel(40,580) 292x22
+  text 4:2398 "States use text and semantic meaning; urgency is" abs(40,694) rel(40,694) 515x17
+  text 4:2399 "05  Form & queue components" abs(40,744) rel(40,744) 221x22
+  symbol 4:2400 "Input / Default" abs(40,786) rel(40,786) 396x84
+  symbol 4:2404 "Queue row / Checked in" abs(480,786) rel(480,786) 880x76
+  text 4:2410 "06  System feedback & edge states" abs(40,918) rel(40,918) 257x22
+  frame 4:2411 "Empty queue example" abs(40,960) rel(40,960) 420x181
+    text 4:2412 "All caught up." abs(60,982) rel(20,22) 133x29
+    text 4:2413 "No patients are waiting. New check-ins will appe" abs(60,1020) rel(20,60) 380x38
+    text 4:2414 "Queue remains open" abs(60,1097) rel(20,137) 119x17
+  frame 4:2415 "Loading queue example" abs(490,960) rel(490,960) 420x181
+    text 4:2416 "Refreshing live queue…" abs(510,982) rel(20,22) 180x23
+    frame 4:2417 "Loading token 0" abs(510,1025) rel(20,65) 45x13
+    frame 4:2418 "Loading patient 0" abs(573,1025) rel(83,65) 240x13
+    frame 4:2419 "Loading token 1" abs(510,1055) rel(20,95) 45x13
+    frame 4:2420 "Loading patient 1" abs(573,1055) rel(83,95) 240x13
+    frame 4:2421 "Loading token 2" abs(510,1085) rel(20,125) 45x13
+    frame 4:2422 "Loading patient 2" abs(573,1085) rel(83,125) 240x13
+  frame 4:2423 "Inline failure example" abs(940,960) rel(940,960) 420x181
+    text 4:2424 "Couldn’t call the patient" abs(960,982) rel(20,22) 196x25
+    text 4:2425 "No queue change was saved. Refresh before retryi" abs(960,1021) rel(20,61) 380x38
+    instance 4:2426 "Refresh & retry" abs(960,1080) rel(20,120) 380x44
+  text 4:2428 "07  Interaction & layout rules" abs(40,1190) rel(40,1190) 207x22
+  text 4:2429 "Space & scale" abs(40,1234) rel(40,1234) 108x23
+  text 4:2430 "4 px base · 8 / 12 / 16 / 24 / 32 spacing 6–9 px" abs(40,1272) rel(40,1272) 420x57
+  text 4:2431 "Responsive behaviour" abs(490,1234) rel(490,1234) 171x23
+  text 4:2432 "≥1280: consultation and queue side by side 768–1" abs(490,1272) rel(490,1272) 420x57
+  text 4:2433 "Safety & access" abs(940,1234) rel(940,1234) 124x23
+  text 4:2434 "Doctor: clinical priority approval and session c" abs(940,1272) rel(940,1272) 420x57
+  frame 4:2435 "Divider" abs(40,1388) rel(40,1388) 1360x1
+  text 4:2436 "Operational contract" abs(40,1413) rel(40,1413) 160x23
+  text 4:2437 "Call → identity check → start → complete. Skip p" abs(40,1452) rel(40,1452) 1320x40
+  text 4:2438 "Illustrative patient and hospital data · Design " abs(40,1533) rel(40,1533) 447x16

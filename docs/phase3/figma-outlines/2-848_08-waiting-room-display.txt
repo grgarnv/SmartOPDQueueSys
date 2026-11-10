@@ -1,0 +1,25 @@
+frame 2:848 "08 · Waiting room display" 1440x1000  (abs = from frame top-left; rel = from parent)
+  frame 2:849 "Display header" abs(0,0) rel(0,0) 1440x104
+    text 2:850 "SmartOPD" abs(48,27) rel(48,27) 148x42
+    text 2:851 "Riverside Hospital  /  General medicine" abs(289,37) rel(289,37) 368x29
+    text 2:852 "10:32 AM" abs(1205,29) rel(1205,29) 129x41
+  text 2:853 "Please follow your token, not your place in line" abs(48,147) rel(48,147) 648x42
+  text 2:854 "Priority patients may be seen first. Thank you f" abs(48,199) rel(48,199) 600x29
+  frame 2:855 "Now consulting" abs(48,274) rel(48,274) 666x522
+    text 2:856 "NOW CONSULTING" abs(88,310) rel(40,36) 186x29
+    text 2:857 "024" abs(84,372) rel(36,98) 280x209
+    text 2:858 "Room 104" abs(88,603) rel(40,329) 193x58
+    text 2:859 "Dr. Aisha Mehta · General medicine" abs(88,679) rel(40,405) 364x32
+  frame 2:860 "Next tokens" abs(746,274) rel(746,274) 646x522
+    text 2:861 "UP NEXT" abs(782,310) rel(36,36) 87x29
+    text 2:862 "025" abs(782,389) rel(36,115) 106x80
+    text 2:863 "Please be ready" abs(1001,418) rel(255,144) 176x33
+    frame 2:864 "Divider" abs(782,489) rel(36,215) 574x1
+    text 2:865 "026" abs(782,512) rel(36,238) 107x80
+    text 2:866 "Waiting" abs(1001,541) rel(255,267) 83x33
+    frame 2:867 "Divider" abs(782,612) rel(36,338) 574x1
+    text 2:868 "027" abs(782,635) rel(36,361) 104x80
+    text 2:869 "Waiting" abs(1001,664) rel(255,390) 83x33
+  text 2:870 "Need assistance? Please visit the reception desk" abs(48,850) rel(48,850) 568x35
+  text 2:871 "●  Live queue updates" abs(48,930) rel(48,930) 184x25
+  text 2:872 "Patient privacy first · Tokens only" abs(1079,933) rel(1079,933) 235x22

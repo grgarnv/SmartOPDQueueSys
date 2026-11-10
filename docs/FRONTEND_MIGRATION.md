@@ -321,3 +321,17 @@ Figma frames not fetched (Figma MCP Starter plan rate limit reached during this 
 Verified
 - Screenshots at 1440 × 1000 against the Figma context and renders: ready, called, active, urgent, paused, delayed, emergency-next, late tab, and the pause, no-show, Not here, Skipped & late, availability and full-queue dialogs. Card and dialog elements are within 2–5 px of Figma after the fixes from the comparison. Also 1920 × 1080, 1024 × 768 and 390 × 844 (no sideways scroll; drawer navigation).
 - React browser suite: 53 checks. The new ones cover every doctor action, the role-aware shell, live updates and an emergency coming from a second desk session, a stale version refused (409) and recovered, two simultaneous actions on one version (exactly one applies), and the responsive layouts.
+
+### Phase 3A: Front desk and Queue monitor
+
+Implemented (`/app/front-desk`, `/app/queue-monitor`; staff and admin)
+- **Front desk** (Figma 02, 21, 22): patient and appointment lookup (`/api/lookup`) with the Appointment found dialog; walk-in registration (`/api/staff/walkin`) with the token-issued dialog and a print preview of a token slip that contains only what the server returned; check-in with the Patient checked in dialog; session card for the chosen doctor (status, waiting, the server's `clears_at`, current token); recent check-ins; waiting-room display link and today's check-in code (from policy); patient alert log (`/api/admin/notifications`). Loading, empty and error states for each panel.
+- **Late patients at the desk:** a late patient within the grace period checks in and keeps their place; a skipped patient who checks in rejoins at the end of the queue (the server does this) and the UI says so before and after; "Reinsert next" needs a written reason, is labelled as a policy exception, and is refused in the browser and by the server without one. Nothing is rescheduled.
+- **Queue monitor** (Figma 04, Full queue 4:3874, Skipped & late 4:2152): a card for every doctor from `/api/admin/overview`; the selected doctor's live queue with every legacy staff action (call next, check in, not here, skip when `can_skip`, emergency, priority, remove priority, move, move all waiting, cancel, reinsert next, doctor status); a "Needs attention" panel from the server's exceptions and the selected queue's late patients. All actions go through `useQueue`, send the queue `version` and show the server's reply.
+- **Shared code:** `queue/QueueTable.tsx`, `queue/dialogs.tsx` (moved from consultation), `queue/StaffQueueDialogs.tsx` (emergency, priority, reasons, moves: reused by the Emergency page later), `queue/SessionFacts.tsx`, `queue/useDesk.ts`, `front-desk/DisplayLink`. The doctor screen uses the same table and dialogs.
+
+Left out of the Figma design, because the backend has no such data: age, gender, patient identifier / UHID, "Reason for visit", the 3-step form header, room numbers, "Morning session" filter, the "⌘K" shortcut, wait ranges such as "96–112 min" (replaced by the server's own clears-at estimate), a "counter", and Patient history. Added from legacy where Figma shows nothing: phone, alert language and app username on the walk-in form, and the alert log.
+
+Process note: this milestone was built with a 90-agent audit, build, review and fix run (about 5.4M tokens). 27 findings were reported, 22 confirmed and fixed. The user asked that the remaining milestones not use that approach.
+
+Verification: see the Phase 3A report (test counts and screenshots).

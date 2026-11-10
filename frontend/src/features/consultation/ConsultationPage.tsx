@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { api } from "../../api/client";
 import type { Departments, DoctorStatus, QueueEntry, QueueState } from "../../api/types";
 import { useMe } from "../../auth/session";
-import { Button, EmptyState, ErrorState, LoadingState, Status, TextButton } from "../../design/ui";
+import { Button, EmptyState, ErrorState, LoadingState, PageHeader, Status, TextButton } from "../../design/ui";
 import { clock, tokenText } from "../../lib/format";
 import { useLive, useStreamLive } from "../../lib/useLive";
 import { doctorStatus, isLate, isWaiting } from "../queue/present";
 import { useQueue } from "../queue/useQueue";
 import { PatientCard } from "./PatientCard";
-import { QueueTable } from "./QueueTable";
-import { AvailabilityDialog, FailureDialog, FullQueueDialog, NoShowDialog, NotHereDialog, PauseDialog, SkippedLateDialog } from "./dialogs";
+import { QueueTable } from "../queue/QueueTable";
+import { AvailabilityDialog, FailureDialog, FullQueueDialog, NoShowDialog, NotHereDialog, PauseDialog, SkippedLateDialog } from "../queue/dialogs";
 import s from "./consultation.module.css";
 
 // Doctor Consultation workspace: Figma frame 01 (2:21) and its state frames 09–20, 24–26.
@@ -57,15 +57,12 @@ export function ConsultationPage() {
 
   return (
     <div className={s.page}>
-      <div className={s.head}>
-        <div>
-          <h1 className={s.title}>Your OPD, at a glance.</h1>
-          <p className={s.sub}>{q.doctor.department}&nbsp;&nbsp;/&nbsp;&nbsp;{q.doctor.name}&nbsp;&nbsp;/&nbsp;&nbsp;OPD {clock(q.doctor.opd_start)} – {clock(q.doctor.opd_end)}</p>
-        </div>
+      <PageHeader title="Your OPD, at a glance."
+        sub={<>{q.doctor.department}&nbsp;&nbsp;/&nbsp;&nbsp;{q.doctor.name}&nbsp;&nbsp;/&nbsp;&nbsp;OPD {clock(q.doctor.opd_start)} – {clock(q.doctor.opd_end)}</>}>
         <Button kind="secondary" className={s.availability} onClick={() => setOpen({ kind: "availability" })} aria-label={`Availability: ${ds.label}. Change`}>
           <span className={`${s.dot} ${s[ds.tone]}`} aria-hidden="true">{ds.tone === "urgent" ? "!" : "●"}</span>{ds.label}<span className={s.chev} aria-hidden="true">⌄</span>
         </Button>
-      </div>
+      </PageHeader>
 
       <section className={s.pulse} aria-label="Session pulse">
         <Metric label="Seen today" value={seen} note={`of ${entries.length} registered`} />

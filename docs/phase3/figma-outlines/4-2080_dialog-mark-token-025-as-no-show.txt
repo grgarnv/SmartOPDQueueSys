@@ -1,0 +1,14 @@
+frame 4:2080 "Dialog · Mark token 025 as no-show?" 560x412  (abs = from frame top-left; rel = from parent)
+  text 4:2081 "Mark token 025 as no-show?" abs(28,26) rel(28,26) 323x33
+  text 4:2082 "Sunita Patel has not arrived after the call." abs(28,70) rel(28,70) 504x19
+  frame 4:2083 "Close dialog" abs(496,16) rel(496,16) 44x44
+    text 4:2084 "×" abs(511,26) rel(15,10) 15x24
+  text 4:2085 "Reason *" abs(28,133) rel(28,133) 52x17
+  frame 4:2086 "Reason * input" abs(28,158) rel(28,158) 504x44
+    text 4:2087 "Patient not present  ⌄" abs(41,170) rel(13,12) 132x19
+  frame 4:2088 "Preserve visit notice" abs(28,231) rel(28,231) 504x65
+    text 4:2089 "The visit stays in Skipped / late." abs(42,241) rel(14,10) 199x19
+    text 4:2090 "Reinsert only after confirming the patient has a" abs(42,266) rel(14,35) 303x17
+  frame 4:2091 "Divider" abs(0,332) rel(0,332) 560x1
+  instance 4:2092 "Cancel" abs(28,350) rel(28,350) 112x44
+  instance 4:2094 "Mark as no-show" abs(292,350) rel(292,350) 240x44

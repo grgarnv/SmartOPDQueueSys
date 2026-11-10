@@ -1,0 +1,16 @@
+frame 4:2096 "Dialog · End the morning session?" 600x510  (abs = from frame top-left; rel = from parent)
+  text 4:2097 "End the morning session?" abs(28,26) rel(28,26) 287x33
+  text 4:2098 "This closes registration and patient calls for R" abs(28,70) rel(28,70) 544x19
+  frame 4:2099 "Close dialog" abs(536,16) rel(536,16) 44x44
+    text 4:2100 "×" abs(551,26) rel(15,10) 15x24
+  frame 4:2101 "Waiting patient handover" abs(28,124) rel(28,124) 544x78
+    text 4:2102 "12 patients are still waiting." abs(44,136) rel(16,12) 211x23
+    text 4:2103 "2 skipped visits also need reception follow-up." abs(44,168) rel(16,44) 264x17
+  text 4:2104 "Handover plan *" abs(28,228) rel(28,228) 93x17
+  frame 4:2105 "Handover plan * input" abs(28,253) rel(28,253) 544x44
+    text 4:2106 "Send to reception for reassignment  ⌄" abs(41,265) rel(13,12) 231x19
+  text 4:2107 "✓  Notify reception and all affected patients" abs(28,328) rel(28,328) 273x19
+  text 4:2108 "An administrator can reopen the session if neede" abs(28,369) rel(28,369) 289x17
+  frame 4:2109 "Divider" abs(0,430) rel(0,430) 600x1
+  instance 4:2110 "Cancel" abs(28,448) rel(28,448) 112x44
+  instance 4:2112 "End session & hand over" abs(332,448) rel(332,448) 240x44

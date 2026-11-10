@@ -1,0 +1,29 @@
+frame 4:2246 "Dialog · Manage OPD session" 760x610  (abs = from frame top-left; rel = from parent)
+  text 4:2247 "Manage OPD session" abs(28,24) rel(28,24) 246x35
+  text 4:2248 "Changes apply to General medicine · Morning sess" abs(28,70) rel(28,70) 704x19
+  frame 4:2249 "Close dialog" abs(696,16) rel(696,16) 44x44
+    text 4:2250 "×" abs(711,26) rel(15,10) 15x24
+  text 4:2251 "Department" abs(28,126) rel(28,126) 69x17
+  frame 4:2252 "Department input" abs(28,151) rel(28,151) 340x44
+    text 4:2253 "General medicine  ⌄" abs(41,163) rel(13,12) 121x19
+  text 4:2254 "Room" abs(392,126) rel(392,126) 33x17
+  frame 4:2255 "Room input" abs(392,151) rel(392,151) 340x44
+    text 4:2256 "104 · Main block  ⌄" abs(405,163) rel(13,12) 114x19
+  text 4:2257 "Consulting doctor" abs(28,221) rel(28,221) 103x17
+  frame 4:2258 "Consulting doctor input" abs(28,246) rel(28,246) 340x44
+    text 4:2259 "Dr. Aisha Mehta  ⌄" abs(41,258) rel(13,12) 111x19
+  text 4:2260 "Assigned nurse" abs(392,221) rel(392,221) 89x17
+  frame 4:2261 "Assigned nurse input" abs(392,246) rel(392,246) 340x44
+    text 4:2262 "Priya Nair  ⌄" abs(405,258) rel(13,12) 74x19
+  text 4:2263 "Session hours" abs(28,316) rel(28,316) 81x17
+  frame 4:2264 "Session hours input" abs(28,341) rel(28,341) 340x44
+    text 4:2265 "9:00 AM – 1:00 PM" abs(41,353) rel(13,12) 116x19
+  text 4:2266 "Patient capacity" abs(392,316) rel(392,316) 93x17
+  frame 4:2267 "Patient capacity input" abs(392,341) rel(392,341) 340x44
+    text 4:2268 "40 patients" abs(405,353) rel(13,12) 70x19
+  text 4:2269 "Queue settings" abs(28,414) rel(28,414) 111x22
+  text 4:2270 "✓  Allow walk-ins      ✓  Send queue notificatio" abs(28,452) rel(28,452) 302x19
+  text 4:2271 "Priority overrides require doctor approval. All " abs(28,490) rel(28,490) 376x17
+  frame 4:2272 "Divider" abs(0,530) rel(0,530) 760x1
+  instance 4:2273 "Cancel" abs(28,548) rel(28,548) 140x44
+  instance 4:2275 "Save changes" abs(472,548) rel(472,548) 260x44

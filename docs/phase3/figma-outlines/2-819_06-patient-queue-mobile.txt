@@ -1,0 +1,28 @@
+frame 2:819 "06 · Patient queue · Mobile" 390x844  (abs = from frame top-left; rel = from parent)
+  text 2:820 "9:41" abs(24,12) rel(24,12) 27x19
+  text 2:821 "●●●  ▰" abs(301,12) rel(301,12) 51x17
+  frame 2:822 "Mobile app bar" abs(0,44) rel(0,44) 390x72
+    text 2:823 "SmartOPD" abs(24,66) rel(24,22) 107x30
+    text 2:824 "Help" abs(330,70) rel(330,26) 29x19
+  frame 2:825 "Divider" abs(0,115) rel(0,115) 390x1
+  text 2:826 "Your visit, without the guesswork." abs(24,140) rel(24,140) 335x70
+  text 2:827 "Riverside Hospital · General medicine" abs(24,219) rel(24,219) 211x17
+  frame 2:828 "Personal queue status" abs(24,255) rel(24,255) 342x288
+    text 2:829 "YOUR TOKEN" abs(48,277) rel(24,22) 72x16
+    text 2:830 "027" abs(48,299) rel(24,44) 109x84
+    frame 2:831 "Checked in" abs(241,281) rel(217,26) 83x25
+      text 2:832 "Checked in" abs(250,285) rel(9,4) 65x17
+    frame 2:833 "Divider" abs(48,383) rel(24,128) 294x1
+    text 2:834 "3rd" abs(48,405) rel(24,150) 52x45
+    text 2:835 "in the waiting queue" abs(48,451) rel(24,196) 115x17
+    text 2:836 "20–30" abs(205,405) rel(181,150) 97x45
+    text 2:837 "minutes estimated" abs(205,451) rel(181,196) 105x17
+    text 2:838 "2 patients waiting ahead of you" abs(48,499) rel(24,244) 195x19
+  frame 2:839 "Visit location" abs(24,559) rel(24,559) 342x118
+    text 2:840 "Dr. Aisha Mehta" abs(44,577) rel(20,18) 122x23
+    text 2:841 "Room 104 · Main block, Floor 1" abs(44,607) rel(20,48) 173x17
+    frame 2:842 "In consultation" abs(44,636) rel(20,77) 103x25
+      text 2:843 "In consultation" abs(53,640) rel(9,4) 85x17
+  text 2:844 "Please stay near the waiting area. Emergency cas" abs(24,695) rel(24,695) 342x34
+  instance 2:845 "Enable turn notifications" abs(24,755) rel(24,755) 342x44
+  text 2:847 "Updated just now · No patient names shown" abs(47,813) rel(47,813) 209x15

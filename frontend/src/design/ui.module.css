@@ -86,3 +86,27 @@ select.control {
 
 /* Overline labels ("WORKSPACE", "CHIEF COMPLAINT"): 10 semibold, muted, uppercase as written */
 .overline { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+
+/* Page header (2:348 in frame 01, 2:25 / 2:33 headers): title at 0, subtitle at 44, actions 3 down on the right */
+.pageHead { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s4); flex-wrap: wrap; }
+.pageText { min-width: 0; }
+.pageTitle { font-size: var(--text-page); font-weight: 600; }
+.pageSub { margin-top: 5px; font-size: var(--text-field); color: var(--muted); white-space: pre-wrap; }
+.pageActions { display: flex; gap: var(--s4); flex-wrap: wrap; margin-top: 3px; }
+
+/* Data table: queue-table metrics (headers 10/500 muted; rows with a 1 px rule) */
+.table { width: 100%; border-collapse: collapse; font-size: var(--text-caption); }
+.table th { padding: 0 12px 10px 0; text-align: left; font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
+.table td { padding: 12px 12px 12px 0; border-top: 1px solid var(--line); vertical-align: middle; }
+.table td:last-child, .table th:last-child { padding-right: 0; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 767px) {
+  .pageTitle { font-size: 22px; }
+  .pageActions, .pageActions > * { width: 100%; }
+  .table thead { display: none; }
+  .table, .table tbody, .table tr, .table td { display: block; }
+  .table tr { padding: 10px 0; border-top: 1px solid var(--line); }
+  .table td { padding: 2px 0; border: 0; }
+  .table td[data-label]::before { content: attr(data-label) "  "; font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; white-space: pre; }
+}

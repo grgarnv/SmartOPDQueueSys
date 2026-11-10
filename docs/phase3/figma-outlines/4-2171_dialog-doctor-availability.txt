@@ -1,0 +1,9 @@
+frame 4:2171 "Dialog · Doctor availability" 340x390  (abs = from frame top-left; rel = from parent)
+  text 4:2172 "Doctor availability" abs(28,26) rel(28,26) 200x33
+  text 4:2173 "Status is visible to staff and patients." abs(28,70) rel(28,70) 284x19
+  frame 4:2174 "Close dialog" abs(276,16) rel(276,16) 44x44
+    text 4:2175 "×" abs(291,26) rel(15,10) 15x24
+  instance 4:2176 "Set status · blocked" abs(28,127) rel(28,127) 284x44
+  instance 4:2178 "Set status · consult" abs(28,181) rel(28,181) 284x44
+  instance 4:2180 "Set status · break" abs(28,235) rel(28,235) 284x44
+  instance 4:2182 "Set status · delay" abs(28,289) rel(28,289) 284x44

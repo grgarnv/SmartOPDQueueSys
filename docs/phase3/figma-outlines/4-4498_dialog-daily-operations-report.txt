@@ -1,0 +1,8 @@
+frame 4:4498 "Dialog · Daily operations report" 560x530  (abs = from frame top-left; rel = from parent)
+  text 4:4499 "Daily operations report" abs(28,28) rel(28,28) 504x33
+  text 4:4500 "Monday, 09 November 2026 · Riverside Hospital" abs(28,103) rel(28,103) 504x20
+  instance 4:4501 "Done" abs(28,460) rel(28,460) 504x44
+  text 4:4503 "184 registered     112 consultations" abs(28,168) rel(28,168) 333x29
+  text 4:4504 "Median wait: 24 min · 4 active sessions" abs(28,222) rel(28,222) 299x23
+  text 4:4505 "General medicine     24 min median wait Cardiolo" abs(28,283) rel(28,283) 504x80
+  text 4:4506 "Generated at 10:32 AM · Staff-only operational r" abs(28,423) rel(28,423) 278x16

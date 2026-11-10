@@ -1,0 +1,21 @@
+frame 4:3851 "Dialog · Invite a team member" 760x500  (abs = from frame top-left; rel = from parent)
+  text 4:3852 "Invite a team member" abs(28,24) rel(28,24) 251x35
+  text 4:3853 "Hospital staff receive an invitation to their wo" abs(28,70) rel(28,70) 704x19
+  frame 4:3854 "Close dialog" abs(696,16) rel(696,16) 44x44
+    text 4:3855 "×" abs(711,26) rel(15,10) 15x24
+  text 4:3856 "Full name" abs(28,127) rel(28,127) 55x17
+  frame 4:3857 "Full name input" abs(28,152) rel(28,152) 340x44
+    text 4:3858 "Riya Kapoor" abs(41,164) rel(13,12) 74x19
+  text 4:3859 "Work email" abs(392,127) rel(392,127) 64x17
+  frame 4:3860 "Work email input" abs(392,152) rel(392,152) 340x44
+    text 4:3861 "riya.kapoor@riverside.org" abs(405,164) rel(13,12) 158x19
+  text 4:3862 "Role" abs(28,224) rel(28,224) 25x17
+  frame 4:3863 "Role input" abs(28,249) rel(28,249) 340x44
+    text 4:3864 "Reception staff  ⌄" abs(41,261) rel(13,12) 108x19
+  text 4:3865 "Department" abs(392,224) rel(392,224) 69x17
+  frame 4:3866 "Department input" abs(392,249) rel(392,249) 340x44
+    text 4:3867 "Front desk  ⌄" abs(405,261) rel(13,12) 80x19
+  text 4:3868 "Invitations expire after 7 days. Access is limit" abs(28,359) rel(28,359) 381x17
+  frame 4:3869 "Divider" abs(0,420) rel(0,420) 760x1
+  instance 4:3870 "Cancel" abs(28,438) rel(28,438) 140x44
+  instance 4:3872 "Send invitation" abs(472,438) rel(472,438) 260x44

@@ -1,0 +1,16 @@
+frame 4:2134 "Dialog · Patient checked in" 480x585  (abs = from frame top-left; rel = from parent)
+  text 4:2135 "Patient checked in" abs(28,26) rel(28,26) 206x33
+  text 4:2136 "The visit is saved and the live queue is updated" abs(28,70) rel(28,70) 424x19
+  frame 4:2137 "Close dialog" abs(416,16) rel(416,16) 44x44
+    text 4:2138 "×" abs(431,26) rel(15,10) 15x24
+  frame 4:2139 "Issued token" abs(28,126) rel(28,126) 424x192
+    text 4:2140 "YOUR TOKEN" abs(52,144) rel(24,18) 72x16
+    text 4:2141 "034" abs(52,174) rel(24,48) 120x87
+    text 4:2142 "Kavita Joshi · 34 years · Female" abs(52,269) rel(24,143) 211x20
+  text 4:2143 "General medicine · Dr. Aisha Mehta" abs(28,343) rel(28,343) 253x22
+  text 4:2144 "Room 104 · Morning session" abs(28,375) rel(28,375) 173x19
+  text 4:2145 "Estimated wait: 104–120 min" abs(28,410) rel(28,410) 205x22
+  text 4:2146 "An SMS with the token and tracking link has been" abs(28,448) rel(28,448) 410x17
+  frame 4:2147 "Divider" abs(0,505) rel(0,505) 480x1
+  instance 4:2148 "Done" abs(28,523) rel(28,523) 130x44
+  instance 4:2150 "Print token" abs(174,523) rel(174,523) 278x44

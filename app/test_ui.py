@@ -46,7 +46,38 @@ def prepare_react(base, db):
     con.execute("UPDATE appointments SET due_at = ? WHERE id = ?",
                 ((datetime.now() - timedelta(minutes=11)).isoformat(timespec="seconds"), booking["id"]))
     con.commit()
+    # Front desk / queue monitor checks use Dr. Iyer (doctor 2), so they do not depend on the doctor checks above:
+    # 001 Gita Rao, 002 Hari Das checked in; 003 Ira Skipped and 005 Rhea Again skipped; 004 Lal Late booked, turn
+    # missed a minute ago (late within grace); 006 Tara Twice booked.
+    for name in ("Gita Rao", "Hari Das"):
+        assert staff("/api/staff/walkin", {"name": name, "doctor_id": 2})[0] == 200
+    ids = {}
+    for user, name, phone in (("ira.skipped", "Ira Skipped", "+91 90000 11111"), ("lal.late", "Lal Late", "+91 90000 22222"),
+                              ("rhea.again", "Rhea Again", "+91 90000 33333"), ("tara.twice", "Tara Twice", "+91 90000 44444")):
+        c = Client(base)
+        assert c("/api/register", {"name": name, "username": user, "password": "longenough", "phone": phone})[0] == 200
+        s, b = c("/api/book", {"doctor_id": 2, "day": date.today().isoformat()})
+        assert s == 200, b
+        ids[user] = b["id"]
+    for user, minutes in (("ira.skipped", 11), ("rhea.again", 11), ("lal.late", 1)):
+        con.execute("UPDATE appointments SET due_at = ? WHERE id = ?",
+                    ((datetime.now() - timedelta(minutes=minutes)).isoformat(timespec="seconds"), ids[user]))
+    con.commit()
     con.close()
+    for user in ("ira.skipped", "rhea.again"):
+        s, r = staff("/api/queue/action", {"action": "skip", "appointment_id": ids[user]})
+        assert s == 200, r
+    # Dr. Khan (doctor 3): Kiran Khan booked, turn passed 11 minutes ago, so the monitor can skip them (grace over)
+    c = Client(base)
+    assert c("/api/register", {"name": "Kiran Khan", "username": "kiran.khan", "password": "longenough", "phone": "+91 90000 55555"})[0] == 200
+    s, b = c("/api/book", {"doctor_id": 3, "day": date.today().isoformat()})
+    assert s == 200, b
+    con = sqlite3.connect(db)
+    con.execute("UPDATE appointments SET due_at = ? WHERE id = ?", ((datetime.now() - timedelta(minutes=11)).isoformat(timespec="seconds"), b["id"]))
+    con.commit()
+    con.close()
+    # a family member (alerts go to the guardian; the desk cannot reset their password)
+    assert Client(base).login("lal.late", "longenough")("/api/dependants", {"name": "Lila Late"})[0] == 200
 
 
 def run(cli, name, label, prepare=None):

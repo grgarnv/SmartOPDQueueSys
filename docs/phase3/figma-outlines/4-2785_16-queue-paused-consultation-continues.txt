@@ -1,0 +1,146 @@
+frame 4:2785 "16 · Queue paused · Consultation continues" 1440x1000  (abs = from frame top-left; rel = from parent)
+  frame 4:2786 "Sidebar" abs(0,0) rel(0,0) 224x1000
+    frame 4:2787 "Right border" abs(223,0) rel(223,0) 1x1000
+    frame 4:2788 "SmartOPD mark" abs(24,24) rel(24,24) 28x28
+      frame 4:2789 "plus icon" abs(28,28) rel(4,4) 20x20
+    text 4:2791 "SmartOPD" abs(62,23) rel(62,23) 107x30
+    text 4:2792 "WORKSPACE" abs(24,96) rel(24,96) 64x15
+    frame 4:2793 "Navigate · Consultation" abs(12,124) rel(12,124) 200x42
+      frame 4:2794 "grid icon" abs(24,135) rel(12,11) 20x20
+      text 4:2799 "Consultation" abs(56,135) rel(44,11) 81x19
+    frame 4:2800 "Navigate · Front desk" abs(12,172) rel(12,172) 200x42
+      frame 4:2801 "users icon" abs(24,183) rel(12,11) 20x20
+      text 4:2804 "Front desk" abs(56,183) rel(44,11) 67x19
+    frame 4:2805 "Navigate · Emergency priority" abs(12,220) rel(12,220) 200x42
+      frame 4:2806 "shield icon" abs(24,231) rel(12,11) 20x20
+      text 4:2808 "Emergency priority" abs(56,231) rel(44,11) 118x19
+    frame 4:2809 "Navigate · Queue monitor" abs(12,268) rel(12,268) 200x42
+      frame 4:2810 "pulse icon" abs(24,279) rel(12,11) 20x20
+      text 4:2812 "Queue monitor" abs(56,279) rel(44,11) 93x19
+    frame 4:2813 "Navigate · Administration" abs(12,316) rel(12,316) 200x42
+      frame 4:2814 "settings icon" abs(24,327) rel(12,11) 20x20
+      text 4:2818 "Administration" abs(56,327) rel(44,11) 91x19
+    frame 4:2819 "Divider" abs(24,392) rel(24,392) 176x1
+    text 4:2820 "CURRENT LOCATION" abs(24,416) rel(24,416) 102x15
+    text 4:2821 "Riverside Hospital" abs(24,444) rel(24,444) 114x19
+    text 4:2822 "Main block · Floor 1" abs(24,466) rel(24,466) 110x17
+    frame 4:2823 "Connection status" abs(16,829) rel(16,829) 192x51
+      text 4:2824 "●  All systems operational" abs(28,839) rel(12,10) 139x16
+      text 4:2825 "Last synced just now" abs(42,857) rel(26,28) 100x15
+    frame 4:2826 "help icon" abs(24,906) rel(24,906) 20x20
+    text 4:2829 "Help & shortcuts" abs(55,906) rel(55,906) 96x17
+    text 4:2830 "SmartOPD · v1.0" abs(24,956) rel(24,956) 77x15
+  frame 4:2831 "Application bar" abs(224,0) rel(224,0) 1216x72
+    text 4:2832 "Riverside Hospital" abs(256,25) rel(32,25) 112x19
+    text 4:2833 "/" abs(393,25) rel(169,25) 5x19
+    text 4:2834 "Outpatient department" abs(414,25) rel(190,25) 141x19
+    text 4:2835 "Mon, 09 Nov 2026" abs(935,25) rel(711,25) 106x17
+    frame 4:2836 "bell icon" abs(1102,25) rel(878,25) 20x20
+    frame 4:2838 "Identity divider" abs(1144,20) rel(920,20) 1x32
+    text 4:2839 "Dr. Aisha Mehta" abs(1164,15) rel(940,15) 99x19
+    text 4:2840 "General medicine · Doctor" abs(1164,36) rel(940,36) 135x16
+    frame 4:2841 "down icon" abs(1394,27) rel(1170,27) 16x16
+    frame 4:2843 "Divider" abs(224,71) rel(0,71) 1216x1
+  frame 4:2844 "Workspace" abs(256,104) rel(256,104) 1152x884
+    text 4:2845 "Your OPD, at a glance." abs(256,104) rel(0,0) 288x39
+    text 4:2846 "General medicine  /  Room 104  /  Morning ses" abs(256,148) rel(0,44) 307x19
+    instance 4:2847 "Availability menu" abs(1193,107) rel(937,3) 215x44
+    frame 4:2848 "Session pulse" abs(256,196) rel(0,92) 1152x94
+      text 4:2849 "Seen today" abs(280,208) rel(24,12) 60x16
+      text 4:2850 "18" abs(280,226) rel(24,30) 32x41
+      text 4:2851 "of 33 registered" abs(345,241) rel(89,45) 175x16
+      frame 4:2852 "Metric separator" abs(543,215) rel(287,19) 1x54
+      text 4:2853 "Waiting" abs(568,208) rel(312,12) 40x16
+      text 4:2854 "12" abs(568,226) rel(312,30) 31x41
+      text 4:2855 "9 checked in" abs(633,241) rel(377,45) 175x16
+      frame 4:2856 "Metric separator" abs(831,215) rel(575,19) 1x54
+      text 4:2857 "Skipped / late" abs(856,208) rel(600,12) 73x16
+      text 4:2858 "2" abs(856,226) rel(600,30) 18x41
+      text 4:2859 "Review patients →" abs(921,241) rel(665,45) 175x16
+      frame 4:2860 "Metric separator" abs(1119,215) rel(863,19) 1x54
+      text 4:2861 "Queue clears around" abs(1144,208) rel(888,12) 109x16
+      text 4:2862 "12:45 PM" abs(1144,226) rel(888,30) 90x36
+      text 4:2863 "Estimates update live" abs(1316,241) rel(1060,45) 85x16
+    frame 4:2864 "Active consultation" abs(256,314) rel(0,210) 588x542
+      frame 4:2865 "Clinical focus accent" abs(256,314) rel(0,0) 588x4
+      text 4:2866 "ACTIVE CONSULTATION" abs(280,339) rel(24,25) 129x16
+      frame 4:2867 "In progress · 08:24" abs(670,334) rel(414,20) 126x25
+        text 4:2868 "In progress · 08:24" abs(679,338) rel(9,4) 108x17
+      frame 4:2869 "Patient token" abs(280,384) rel(24,70) 76x72
+        text 4:2870 "TOKEN" abs(293,392) rel(13,8) 31x13
+        text 4:2871 "024" abs(292,408) rel(12,24) 57x42
+      text 4:2872 "Rajesh Kumar" abs(376,386) rel(120,72) 172x38
+      text 4:2873 "42 years · Male     UHID RH-008142" abs(376,427) rel(120,113) 219x19
+      frame 4:2874 "Divider" abs(280,480) rel(24,166) 540x1
+      text 4:2875 "CHIEF COMPLAINT" abs(280,502) rel(24,188) 93x15
+      text 4:2876 "Persistent cough and fever" abs(280,525) rel(24,211) 245x28
+      text 4:2877 "3 days · Referred by front desk" abs(280,558) rel(24,244) 190x19
+      frame 4:2878 "Allergy alert" abs(280,597) rel(24,283) 540x42
+        text 4:2879 "Allergy: Penicillin" abs(292,608) rel(12,11) 108x19
+        text 4:2880 "Verified at check-in" abs(607,609) rel(327,12) 101x16
+      text 4:2881 "CHECKED IN" abs(280,662) rel(24,348) 61x15
+      text 4:2882 "10:08 AM" abs(280,683) rel(24,369) 64x20
+      text 4:2883 "VISIT TYPE" abs(465,662) rel(209,348) 54x15
+      text 4:2884 "Follow-up" abs(465,683) rel(209,369) 67x20
+      text 4:2885 "LAST VISIT" abs(654,662) rel(398,348) 54x15
+      text 4:2886 "21 Oct 2026" abs(654,683) rel(398,369) 82x20
+      frame 4:2887 "Divider" abs(280,728) rel(24,414) 540x1
+      text 4:2888 "View patient history →" abs(280,746) rel(24,432) 141x19
+      instance 4:2889 "Complete consultation" abs(280,790) rel(24,476) 350x44
+      instance 4:2890 "More  ···" abs(642,790) rel(386,476) 178x44
+    frame 4:2891 "Upcoming queue" abs(868,314) rel(612,210) 540x542
+      text 4:2948 "Up next" abs(892,336) rel(24,22) 68x26
+      frame 4:2949 "12 waiting" abs(1288,334) rel(420,20) 76x25
+        text 4:2950 "12 waiting" abs(1297,338) rel(9,4) 58x17
+      text 4:2951 "Ordered by clinical priority, then check-in" abs(892,367) rel(24,53) 234x17
+      frame 4:2952 "Divider" abs(868,402) rel(0,88) 540x1
+      frame 4:2953 "Queue tabs" abs(892,414) rel(24,100) 492x34
+        frame 4:2954 "Waiting selected" abs(895,417) rel(3,3) 180x28
+        text 4:2955 "Waiting  12" abs(940,422) rel(48,8) 64x17
+        text 4:2956 "Review skipped patients" abs(1169,422) rel(277,8) 93x17
+      text 4:2957 "TOKEN / PATIENT" abs(892,469) rel(24,155) 84x15
+      text 4:2958 "STATUS" abs(1182,469) rel(314,155) 39x15
+      text 4:2959 "ETA" abs(1332,469) rel(464,155) 19x15
+      frame 4:2960 "Next patient highlight" abs(880,494) rel(12,180) 516x58
+      text 4:2961 "025" abs(892,506) rel(24,192) 31x23
+      text 4:2962 "Sunita Patel" abs(959,501) rel(91,187) 75x19
+      text 4:2963 "36 · Female" abs(959,521) rel(91,207) 61x16
+      frame 4:2964 "Checked in" abs(1174,507) rel(306,193) 83x25
+        text 4:2965 "Checked in" abs(1183,511) rel(9,4) 65x17
+      text 4:2966 "On hold" abs(1322,511) rel(454,197) 41x16
+      frame 4:2967 "Divider" abs(892,553) rel(24,239) 492x1
+      text 4:2968 "026" abs(892,565) rel(24,251) 31x23
+      text 4:2969 "Mohammed Ali" abs(959,560) rel(91,246) 93x19
+      text 4:2970 "58 · Male" abs(959,580) rel(91,266) 48x16
+      frame 4:2971 "Checked in" abs(1174,566) rel(306,252) 83x25
+        text 4:2972 "Checked in" abs(1183,570) rel(9,4) 65x17
+      text 4:2973 "On hold" abs(1322,570) rel(454,256) 41x16
+      frame 4:2974 "Divider" abs(892,612) rel(24,298) 492x1
+      text 4:2975 "027" abs(892,624) rel(24,310) 30x23
+      text 4:2976 "Ananya Rao" abs(959,619) rel(91,305) 74x19
+      text 4:2977 "29 · Female" abs(959,639) rel(91,325) 60x16
+      frame 4:2978 "Checked in" abs(1174,625) rel(306,311) 83x25
+        text 4:2979 "Checked in" abs(1183,629) rel(9,4) 65x17
+      text 4:2980 "On hold" abs(1322,629) rel(454,315) 41x16
+      frame 4:2981 "Divider" abs(892,671) rel(24,357) 492x1
+      text 4:2982 "028" abs(892,683) rel(24,369) 31x23
+      text 4:2983 "Vikram Singh" abs(959,678) rel(91,364) 83x19
+      text 4:2984 "64 · Male" abs(959,698) rel(91,384) 49x16
+      frame 4:2985 "Not arrived" abs(1174,684) rel(306,370) 82x25
+        text 4:2986 "Not arrived" abs(1183,688) rel(9,4) 64x17
+      text 4:2987 "Pending" abs(1322,688) rel(454,374) 43x16
+      frame 4:2988 "Divider" abs(892,730) rel(24,416) 492x1
+      text 4:2989 "029" abs(892,742) rel(24,428) 31x23
+      text 4:2990 "Neha Sharma" abs(959,737) rel(91,423) 84x19
+      text 4:2991 "45 · Female" abs(959,757) rel(91,443) 61x16
+      frame 4:2992 "Checked in" abs(1174,743) rel(306,429) 83x25
+        text 4:2993 "Checked in" abs(1183,747) rel(9,4) 65x17
+      text 4:2994 "On hold" abs(1322,747) rel(454,433) 41x16
+      text 4:2995 "View complete queue" abs(892,815) rel(24,501) 126x17
+      text 4:2996 "8 min average consultation" abs(1187,815) rel(319,501) 141x16
+    frame 4:2941 "Session controls" abs(256,880) rel(0,776) 1152x68
+      instance 4:2942 "+  Emergency priority" abs(272,892) rel(16,12) 216x44
+      instance 4:2943 "Resume queue" abs(504,892) rel(248,12) 172x44
+      text 4:2944 "Session started 9:00 AM · Scheduled until 1:0" abs(706,905) rel(450,25) 287x17
+      text 4:2945 "End session" abs(1286,905) rel(1030,25) 69x17
+    text 4:2946 "Live updates on · Last updated 10:32 AM" abs(256,961) rel(0,857) 430x16

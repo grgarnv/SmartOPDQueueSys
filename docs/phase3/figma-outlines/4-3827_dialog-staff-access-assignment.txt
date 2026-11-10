@@ -1,0 +1,22 @@
+frame 4:3827 "Dialog · Staff access & assignment" 760x568  (abs = from frame top-left; rel = from parent)
+  text 4:3828 "Staff access & assignment" abs(28,24) rel(28,24) 308x35
+  text 4:3829 "Priya Nair · Employee RH-ST-021" abs(28,70) rel(28,70) 704x19
+  frame 4:3830 "Close dialog" abs(696,16) rel(696,16) 44x44
+    text 4:3831 "×" abs(711,26) rel(15,10) 15x24
+  text 4:3832 "Staff member" abs(28,127) rel(28,127) 79x17
+  frame 4:3833 "Staff member input" abs(28,152) rel(28,152) 340x44
+    text 4:3834 "Priya Nair" abs(41,164) rel(13,12) 60x19
+  text 4:3835 "Role" abs(392,127) rel(392,127) 25x17
+  frame 4:3836 "Role input" abs(392,152) rel(392,152) 340x44
+    text 4:3837 "Triage nurse  ⌄" abs(405,164) rel(13,12) 91x19
+  text 4:3838 "Department" abs(28,224) rel(28,224) 69x17
+  frame 4:3839 "Department input" abs(28,249) rel(28,249) 340x44
+    text 4:3840 "General medicine  ⌄" abs(41,261) rel(13,12) 121x19
+  text 4:3841 "Station" abs(392,224) rel(392,224) 41x17
+  frame 4:3842 "Station input" abs(392,249) rel(392,249) 340x44
+    text 4:3843 "Triage station 1  ⌄" abs(405,261) rel(13,12) 108x19
+  text 4:3844 "Permissions" abs(28,328) rel(28,328) 95x23
+  text 4:3845 "✓  Confirm arrivals and reinsert returned patien" abs(28,366) rel(28,366) 704x57
+  frame 4:3846 "Divider" abs(0,488) rel(0,488) 760x1
+  instance 4:3847 "Cancel" abs(28,506) rel(28,506) 140x44
+  instance 4:3849 "Save assignment" abs(472,506) rel(472,506) 260x44

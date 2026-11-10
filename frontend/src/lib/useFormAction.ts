@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Msg = { text: string; ok: boolean } | null;
 
@@ -29,4 +29,11 @@ export function useFormAction<T>(
     }
   };
   return { onSubmit, msg, busy, setMsg };
+}
+
+/** A result line that clears itself after 12 s (action feedback in page footers). */
+export function useFlash() {
+  const [msg, say] = useState<Msg>(null);
+  useEffect(() => { if (!msg) return; const t = setTimeout(() => say(null), 12000); return () => clearTimeout(t); }, [msg]);
+  return [msg, say] as const;
 }

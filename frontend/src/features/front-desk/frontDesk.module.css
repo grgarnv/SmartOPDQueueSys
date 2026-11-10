@@ -1,0 +1,138 @@
+/* Front desk, Figma frame 02 (2:25). Workspace 1152 × 884 at 1440 px; positions are Figma px. */
+.page { display: grid; grid-template-columns: minmax(0, 1fr); }
+.code { display: block; margin-top: 4px; }
+.code strong { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.newPatient { min-width: 170px; }
+
+/* Appointment lookup (2:459): y 92, 1152 wide, 16 top / 24 sides; search 750 + 32 + button 322 */
+.lookup { margin-top: 29px; padding-top: 16px; }
+.search { display: grid; grid-template-columns: minmax(0, 750fr) minmax(0, 322fr); column-gap: 32px; align-items: end; }
+.search label { font-size: var(--text-body); font-weight: 600; margin-bottom: 3px; }
+.search input { background: var(--bg); border-color: var(--bg); }
+.find { width: 100%; }
+.results { display: grid; gap: var(--s3); margin-top: var(--s5); }
+.listHead { margin-top: var(--s3); font-size: 10px; font-weight: 600; color: var(--muted); }
+.tok { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.name { font-size: var(--text-field); font-weight: 500; }
+.rowActions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--s2); }
+.rowActions > * { min-height: 36px; padding: 0 12px; font-size: var(--text-caption); }
+.none { font-size: var(--text-label); color: var(--muted); }
+
+/* two columns at y 210: Walk-in 716 | 24 | right column 412 (session 260 tall, 20 gap, recent 344) */
+.grid { display: grid; grid-template-columns: minmax(0, 716fr) minmax(0, 412fr); gap: var(--s5); margin-top: var(--s5); align-items: start; }
+.side { display: grid; gap: 20px; }
+
+/* Walk-in registration (2:466): head rule at 101, fields 320 | 24 | 324, rows 96 apart */
+.walkin { padding-bottom: 0; }
+.walkin > div:first-child { margin-bottom: 0; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.form { display: grid; }
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s5); row-gap: 27px; }
+.form > .pair:first-child { margin-top: 22px; }
+.rule { width: 100%; margin: 20px 0 0; border: 0; border-top: 1px solid var(--line); }
+.subhead { margin: 18px 0 18px; font-size: var(--text-body); font-weight: 600; }
+.queueLine { margin-top: 20px; font-size: var(--text-caption); font-weight: 500; }
+.form > p[role="status"]:not(:empty) { margin-top: 12px; }
+.skipNote { margin-top: 12px; font-size: 11px; color: var(--muted); }
+.formFoot {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s4); flex-wrap: wrap;
+  margin: 14px -24px 0; padding: 8px 24px; border-top: 1px solid var(--line);
+}
+.required { font-size: 11px; color: var(--muted); }
+.save { min-width: 244px; }
+.success { color: var(--teal); } .info { color: var(--blue); } .caution { color: var(--amber); } .urgent { color: var(--red); } .neutral { color: var(--muted); }
+
+/* Session visibility (2:505): 412 × 260; title 17/600 */
+.session h2, .recent h2 { font-size: 17px; }
+.session > div:first-child { margin-bottom: var(--s4); }
+.estNote { margin-top: 22px; font-size: 11px; color: var(--muted); }
+
+/* Recent check-ins (2:516): rows 68 apart, token 16/600 teal at 24, name 13/500 at 86, sub 11 muted, ✓ at the right */
+.recent > div:first-child { margin-bottom: 12px; }
+.checkins { display: grid; margin: 0; padding: 0; list-style: none; }
+.checkins li { display: grid; grid-template-columns: 62px minmax(0, 1fr) auto; align-items: center; min-height: 68px; border-bottom: 1px solid var(--line); }
+.ciToken { font-size: 16px; font-weight: 600; color: var(--teal); font-variant-numeric: tabular-nums; }
+.ciText { display: grid; gap: 5px; min-width: 0; }
+.ciName { font-size: var(--text-field); font-weight: 500; }
+.ciSub { font-size: 11px; color: var(--muted); }
+.tick { padding-right: 16px; font-size: 17px; color: var(--teal); }
+.textLink { margin-top: 20px; padding: 0; border: 0; background: none; color: var(--teal); font-size: var(--text-label); font-weight: 500; cursor: pointer; }
+
+/* Patient alerts (legacy log; no Figma frame): full width under the grid */
+.alerts { margin-top: var(--s5); scroll-margin-top: 16px; }
+.scroll { max-height: 420px; overflow: auto; }
+.detail { font-size: 11px; color: var(--muted); }
+
+/* footer line (2:535) 11 muted; result states 21 / 22 (4:3942, 4:4081): 11/500 teal */
+.foot, .result, .resultErr { margin-top: 13px; font-size: 11px; color: var(--muted); white-space: pre-wrap; }
+.result { color: var(--teal); font-weight: 500; }
+.resultErr { color: var(--red); font-weight: 500; }
+
+/* ---------- dialogs ---------- */
+.cancelBtn { min-width: 112px; }
+.primaryBtn { min-width: 240px; }
+.footRight { display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap; margin-left: auto; }
+
+/* Appointment found (4:2227): name 19/600, sub 13 muted, verification box 624 × 87 tint, 7 radius */
+.found { display: grid; gap: 24px; }
+.foundName { font-size: 19px; font-weight: 600; }
+.foundSub { margin-top: 9px; font-size: var(--text-field); color: var(--muted); }
+.box { padding: 12px 14px 18px; border-radius: var(--r-button); }
+.boxTeal { background: var(--tint); color: var(--teal); }
+.boxAmber { background: var(--amber-tint); color: var(--amber); }
+.boxNeutral { background: var(--bg); color: var(--muted); }
+.boxTitle { font-size: var(--text-body); font-weight: 600; white-space: pre; }
+.boxLine { margin-top: 13px; font-size: var(--text-field); }
+.instruction { font-size: var(--text-caption); color: var(--muted); }
+
+/* Patient checked in (4:2134): token box 424 × 192 at y126 (label +18, token +48, name +143) tint, 9 radius; 60/600 teal token */
+.issued { display: grid; gap: 18px; margin-top: -3px; }
+.tokenBox { padding: 18px 24px 29px; border-radius: var(--r-card); background: var(--tint); color: var(--teal); }
+.tokenLabel { font-size: 11px; font-weight: 600; }
+.tokenBig { margin-top: 14px; font-size: 60px; font-weight: 600; line-height: 1.45; font-variant-numeric: tabular-nums; }
+.tokenName { margin-top: 8px; font-size: var(--text-body); font-weight: 500; }
+.issuedDoc { font-size: 15px; font-weight: 600; }
+.issuedWhere { margin-top: 10px; font-size: var(--text-field); color: var(--muted); }
+.issuedEta { font-size: 15px; font-weight: 600; }
+.issuedSmall { display: grid; gap: 6px; font-size: var(--text-caption); color: var(--muted); }
+.issuedSmall strong { color: var(--ink); font-weight: 600; }
+.issuedFoot { display: flex; gap: var(--s4); width: 100%; }
+.issuedFoot > :first-child { min-width: 130px; }
+.issuedFoot > :last-child { flex: 1; }
+
+/* Token print preview (4:4490): name at y265, lines 315, note 437; department 14/500, token 68/600 teal, name 17/600, lines 15, note 13 muted */
+.slip { display: grid; }
+.slipDept { font-size: var(--text-body); font-weight: 500; color: var(--muted); }
+.slipToken { margin-top: 22px; font-size: 68px; font-weight: 600; line-height: 1.45; color: var(--teal); font-variant-numeric: tabular-nums; }
+.slipName { margin-top: 13px; font-size: 17px; font-weight: 600; }
+.slipLines { margin-top: 25px; font-size: 15px; color: var(--muted); }
+.slipNote { margin-top: 40px; font-size: var(--text-field); color: var(--muted); }
+
+/* Print: only the open token slip */
+@media print {
+  :global(body *) { visibility: hidden; }
+  .slip, .slip * { visibility: visible; }
+  .slip { position: fixed; inset: 0 auto auto 0; width: 80mm; margin: 0; color: #000; }
+  .slipToken { color: #000; }
+  :global(dialog::backdrop) { background: none; }
+}
+
+/* ---------- responsive (frame 07): 768–1279 one column; < 768 one task per view ---------- */
+@media (max-width: 1279px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .side { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+}
+@media (max-width: 1023px) {
+  .side { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 899px) {
+  .search { grid-template-columns: minmax(0, 1fr); row-gap: var(--s3); }
+}
+@media (max-width: 767px) {
+  .newPatient { min-width: 0; }
+  .pair { grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
+  .save { min-width: 0; width: 100%; }
+  .rowActions { justify-content: flex-start; margin-top: 6px; }
+  .tokenBig { font-size: 48px; }
+  .issuedFoot { flex-wrap: wrap; }
+  .primaryBtn { min-width: 0; }
+}

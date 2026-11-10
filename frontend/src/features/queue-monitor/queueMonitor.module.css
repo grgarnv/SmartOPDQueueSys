@@ -1,0 +1,65 @@
+/* Queue monitor, Figma frame 04 (2:33). Workspace 1152 × 884 at 1440 px; positions are Figma px. */
+.page { display: grid; grid-template-columns: minmax(0, 1fr); }
+.display { min-width: 267px; }
+
+/* Monitoring filters (2:602): y 92, 64 tall, white, 8 radius, 10 / 16 padding */
+.filters {
+  display: flex; align-items: center; gap: var(--s4); margin-top: 29px; padding: 10px 16px; min-height: 64px;
+  background: var(--white); border-radius: var(--r-panel);
+}
+.deptFilter { width: 223px; }
+.deptFilter select { font-size: var(--text-body); font-weight: 600; }
+.count { margin-left: auto; font-size: var(--text-caption); color: var(--muted); }
+.filters > :last-child { margin-right: 37px; }
+
+/* Session cards (2:610…): y 180, 270 × 238, 24 gap, white, 9 radius, 20 inset */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--s5); margin-top: var(--s5); }
+.card {
+  display: flex; flex-direction: column; align-items: stretch; min-height: 238px; padding: 20px; min-width: 0;
+  background: var(--white); border: 1px solid var(--white); border-radius: var(--r-card);
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+.card:hover { border-color: var(--line); }
+.selected, .selected:hover { border-color: var(--teal); }
+.cardDept { font-size: 17px; font-weight: 600; }
+.cardFoot { display: block; margin-top: auto; padding-top: 12px; font-size: 11px; font-weight: 500; }
+.cardMore { display: block; margin-top: 2px; font-size: 11px; color: var(--muted); }
+.success { color: var(--teal); } .caution { color: var(--amber); } .urgent { color: var(--red); } .neutral { color: var(--muted); } .info { color: var(--blue); }
+
+/* Live queue 760 × 398 + Needs attention 368 × 398, y 442 */
+.row { display: grid; grid-template-columns: minmax(0, 760fr) minmax(0, 368fr); gap: var(--s5); margin-top: var(--s5); align-items: start; }
+.live, .attention { min-height: 398px; display: flex; flex-direction: column; }
+.controls { display: flex; flex-wrap: wrap; gap: var(--s3); margin: -4px 0 16px; }
+.more { display: inline-block; margin-top: 18px; font-size: var(--text-label); font-weight: 500; color: var(--teal); text-decoration: none; }
+.live > .more { margin-top: auto; padding-top: 18px; align-self: flex-start; }
+
+/* Needs attention items: title 13/600 (tone), sub 12 muted, rules between, notes at the foot */
+.items { display: grid; margin: 4px 0 0; padding: 0; list-style: none; }
+.items li { padding: 18px 0; border-top: 1px solid var(--line); }
+.items li:first-child { padding-top: 6px; border-top: 0; }
+.itemTitle { font-size: var(--text-label); font-weight: 600; }
+.itemSub { margin-top: 8px; font-size: var(--text-caption); color: var(--muted); }
+.items .more { margin-top: 12px; }
+.notes { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--line); }
+.noteMain { font-size: var(--text-caption); font-weight: 500; }
+.noteSub { margin-top: 5px; font-size: 11px; color: var(--muted); }
+
+/* footer line 11 muted; an action's result replaces it */
+.foot, .feedback, .feedbackErr { margin-top: 24px; font-size: 11px; color: var(--muted); }
+.feedback { color: var(--teal); font-weight: 500; }
+.feedbackErr { color: var(--red); font-weight: 500; }
+
+@media (max-width: 1279px) {
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .live, .attention { min-height: 0; }
+}
+@media (max-width: 767px) {
+  .display { min-width: 0; }
+  .filters { flex-wrap: wrap; }
+  .deptFilter { width: 100%; }
+  .count { margin-left: 0; flex: 1; }
+  .filters > :last-child { margin-right: 0; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .card { min-height: 0; }
+  .controls > button { flex: 1; }
+}
