@@ -1,0 +1,24 @@
+frame 4:2337 "Dialog · Queue configuration" 760x580  (abs = from frame top-left; rel = from parent)
+  text 4:2338 "Queue configuration" abs(28,24) rel(28,24) 238x35
+  text 4:2339 "Hospital defaults · Applied to new OPD sessions" abs(28,70) rel(28,70) 704x19
+  frame 4:2340 "Close dialog" abs(696,16) rel(696,16) 44x44
+    text 4:2341 "×" abs(711,26) rel(15,10) 15x24
+  text 4:2342 "Default consultation duration" abs(28,127) rel(28,127) 167x17
+  frame 4:2343 "Default consultation duration input" abs(28,152) rel(28,152) 340x44
+    text 4:2344 "8 minutes" abs(41,164) rel(13,12) 61x19
+  text 4:2345 "No-show grace period" abs(392,127) rel(392,127) 129x17
+  frame 4:2346 "No-show grace period input" abs(392,152) rel(392,152) 340x44
+    text 4:2347 "2 minutes after call" abs(405,164) rel(13,12) 118x19
+  text 4:2348 "ETA display" abs(28,222) rel(28,222) 67x17
+  frame 4:2349 "ETA display input" abs(28,247) rel(28,247) 340x44
+    text 4:2350 "Estimated time range  ⌄" abs(41,259) rel(13,12) 145x19
+  text 4:2351 "Priority authorization" abs(392,222) rel(392,222) 121x17
+  frame 4:2352 "Priority authorization input" abs(392,247) rel(392,247) 340x44
+    text 4:2353 "Doctor approval required  ⌄" abs(405,259) rel(13,12) 167x19
+  text 4:2354 "Patient communication" abs(28,328) rel(28,328) 179x23
+  text 4:2355 "✓  Notify when called       ✓  Notify on delay /" abs(28,369) rel(28,369) 317x19
+  text 4:2356 "Privacy" abs(28,417) rel(28,417) 58x23
+  text 4:2357 "✓  Tokens only on public displays · Patient name" abs(28,455) rel(28,455) 390x19
+  frame 4:2358 "Divider" abs(0,500) rel(0,500) 760x1
+  instance 4:2359 "Cancel" abs(28,518) rel(28,518) 140x44
+  instance 4:2361 "Save changes" abs(472,518) rel(472,518) 260x44

@@ -102,6 +102,17 @@ def run_checks(base, db):
     assert s == 200 and h["X-Frame-Options"] == "DENY" and "frame-ancestors 'none'" in h["Content-Security-Policy"]
     assert c()("/api/health")[1]["demo"] is True
 
+    # React frontend under /app/ (built or not), and no way out of its folder
+    s, h, _ = c().raw("/app/consultation")
+    assert s in (200, 503) and h["X-Frame-Options"] == "DENY", s
+    host, port = base.split("//")[1].split(":")
+    for evil in ("/app/assets/../../app/server.py", "/app/assets/%2e%2e/%2e%2e/app/server.py", "/app/assets/../../package.json"):
+        conn = http.client.HTTPConnection(host, int(port), timeout=5)
+        conn.request("GET", evil)  # sent as-is: http.client does not normalise "..", unlike browsers
+        r = conn.getresponse()
+        assert r.status == 404 and b"import" not in r.read(), evil
+        conn.close()
+
     # policy: open all day so the checks work at any hour
     s, pol = admin("/api/admin/policy", {"opd_start": "00:00", "opd_end": "23:59", "grace_minutes": 10, "alert_minutes": 30,
                                              "block_after_close": 0})

@@ -1,0 +1,136 @@
+/* Consultation workspace, Figma frame 01 (Workspace 2:24 = 1152 × 884 at 1440 px) and its state frames.
+   Distances are Figma px from the top of each block unless noted. */
+.page { display: grid; grid-template-columns: minmax(0, 1fr); }
+
+/* header (PageHeader): availability menu 215 × 44 at the right (2:350) */
+.availability { min-width: 215px; gap: 0; }
+.dot { margin-right: 8px; font-size: 12px; }
+.dot.success { color: var(--teal); } .dot.info { color: var(--ink); } .dot.caution { color: var(--amber); }
+.dot.urgent { color: var(--red); font-size: 14px; } .dot.neutral { color: var(--muted); }
+.chev { margin-left: 8px; font-size: 12px; position: relative; top: -3px; }
+
+/* Session pulse (2:352): white, 8 radius, 94 tall at 92; four 288-wide metrics split by 54-tall rules */
+.pulse { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 29px; padding: 12px 0; min-height: 94px; background: var(--white); border-radius: var(--r-panel); }
+.metric { position: relative; padding: 0 var(--s5); min-width: 0; }
+.metric + .metric::before { content: ""; position: absolute; left: 0; top: 7px; height: 54px; width: 1px; background: var(--line); }
+.metricLabel { font-size: 11px; font-weight: 500; color: var(--muted); }
+.metricRow { display: flex; align-items: center; gap: 0; margin-top: 1px; }
+.metricValue { min-width: 65px; font-size: 28px; font-weight: 600; line-height: 1.45; font-variant-numeric: tabular-nums; }
+.metricValueSm { margin-right: 54px; font-size: 25px; font-weight: 600; line-height: 1.45; white-space: nowrap; }
+.metricNote { padding-top: 3px; font-size: 11px; color: var(--muted); min-width: 72px; }
+.metricLink, .smallLink { font-size: 11px; font-weight: 400; }
+.smallLink { font-size: 12px; font-weight: 500; }
+
+/* cards row at 210: Active consultation 588 + 24 + Upcoming queue 540, both 542 tall */
+.cards { display: grid; grid-template-columns: minmax(0, 588fr) minmax(0, 540fr); gap: var(--s5); margin-top: var(--s5); }
+.cards > * { min-height: 542px; }
+
+/* ---------- left card (4:1303 and states): 1 px #C9DBD4 border, 9 radius, 4 px accent, 23 inset ---------- */
+.card {
+  position: relative; display: flex; flex-direction: column; min-width: 0;
+  padding: 23px 23px 22px; background: var(--white); border: 1px solid var(--focus-line); border-radius: var(--r-card); overflow: hidden;
+}
+.card::before { content: ""; position: absolute; inset: -1px -1px auto; height: 4px; background: var(--accent); }
+.teal { --accent: var(--teal); --tone: var(--teal); --tone-tint: var(--tint); }
+.blue { --accent: var(--teal); --tone: var(--blue); --tone-tint: var(--blue-tint); }
+.amber { --accent: var(--teal); --tone: var(--amber); --tone-tint: var(--amber-tint); }
+.red { --accent: var(--red); --tone: var(--red); --tone-tint: var(--red-tint); }
+.neutral { --accent: var(--line); --tone: var(--muted); --tone-tint: var(--bg); }
+.cardHead { display: flex; justify-content: space-between; align-items: center; min-height: 25px; margin-top: -4px; }
+.cardOverline { font-size: 11px; font-weight: 600; color: var(--tone); }
+
+.who { display: flex; align-items: flex-start; gap: 20px; margin-top: 24px; }
+.tokenBox { display: grid; place-items: center; align-content: center; flex: none; width: 76px; height: 72px; border-radius: var(--r-button); background: var(--tone-tint); color: var(--tone); font-weight: 600; }
+.tokenLabel { justify-self: start; margin: -3px 0 -2px 13px; font-size: 9px; }
+.tokenNum { font-size: 29px; line-height: 1.45; font-variant-numeric: tabular-nums; }
+.whoText { min-width: 0; padding-top: 2px; }
+.patient { font-size: 26px; font-weight: 600; line-height: 1.45; }
+.patientSub { margin-top: 3px; font-size: var(--text-field); color: var(--muted); }
+.nextName { font-size: 24px; font-weight: 600; }
+.nextDetail { margin-top: 23px; font-size: var(--text-field); color: var(--muted); }
+.rule { margin: 24px 0; border: 0; border-top: 1px solid var(--line); }
+
+.facts { display: grid; grid-template-columns: 185px 189px 1fr; margin: 0; }
+.facts dt { font-size: 10px; font-weight: 500; color: var(--muted); }
+.facts dd { margin: 6px 0 0; font-size: var(--text-body); font-weight: 500; }
+
+.cardTitle { margin-top: 30px; font-size: var(--text-page); font-weight: 600; }
+.body { margin-top: 8px; max-width: 526px; font-size: var(--text-body); color: var(--muted); }
+.calledTitle { margin-top: 6px; font-size: 21px; font-weight: 500; }
+.calledTitle + .body { margin-top: 16px; }
+.cardActions { margin-top: auto; padding-top: var(--s5); display: grid; gap: 19px; }
+.split { display: grid; grid-template-columns: minmax(0, 350fr) minmax(0, 174fr); gap: 16px; }
+.caption { margin-bottom: -3px; font-size: var(--text-caption); color: var(--muted); }
+.blue .caption { font-size: 11px; }
+
+/* ready (4:952): rule 33 below the text; NEXT IN QUEUE 20 below; token box 17 below that */
+.cardTitle + .body + .rule { margin-top: 33px; }
+.nextBlock { margin-top: -14px; }
+.nextBlock .who { margin-top: 25px; }
+
+/* paused (4:1466): 64 px amber square, title at 176, return box 72 tall at 317 */
+.pauseMark { display: grid; place-items: center; width: 64px; height: 64px; margin-top: 32px; border-radius: 10px; background: var(--amber-tint); color: var(--amber); font-size: 30px; font-weight: 500; }
+.pauseTitle { margin-top: 32px; }
+.pauseTitle + .body { margin-top: 13px; }
+.returnBox { margin-top: 48px; padding: 13px 16px 14px; border-radius: var(--r-button); background: var(--amber-tint); color: var(--amber); }
+.returnTitle { font-size: 15px; font-weight: 600; }
+.returnSub { margin-top: 6px; font-size: var(--text-caption); }
+
+/* urgent (4:4343): red accent, token 42 semibold red without a box, name 27 at x 149 */
+.urgentWho { display: flex; align-items: flex-start; margin-top: 30px; }
+.urgentToken { width: 126px; flex: none; font-size: 42px; font-weight: 600; line-height: 1.45; color: var(--red); font-variant-numeric: tabular-nums; }
+.urgentName { margin-top: 4px; font-size: var(--text-page); font-weight: 600; }
+.urgentWho + .rule { margin-top: 40px; }
+.urgentTitle { margin-top: 9px; font-size: var(--text-dialog); font-weight: 600; }
+.urgentNote { margin-top: 12px; font-size: var(--text-field); font-weight: 500; color: var(--red); }
+
+/* ---------- Upcoming queue (4:1330): white, 9 radius ---------- */
+.upnext { display: flex; flex-direction: column; min-width: 0; background: var(--white); border-radius: var(--r-card); }
+.upHead { display: flex; justify-content: space-between; align-items: flex-start; padding: 22px 46px 0 24px; min-height: 88px; border-bottom: 1px solid var(--line); }
+.upHead > :last-child { margin-top: -2px; }
+.upTitle { font-size: var(--text-section); font-weight: 600; }
+.upSub { margin-top: 5px; font-size: var(--text-caption); color: var(--muted); }
+.tabs { display: grid; grid-template-columns: 180px 1fr; height: 34px; margin: 12px 24px 0; padding: 3px; border-radius: var(--r-field); background: var(--bg); }
+.tabs button { border: 0; border-radius: 4px; background: none; font-size: var(--text-caption); font-weight: 500; color: var(--muted); cursor: pointer; white-space: pre; }
+.tabs button[aria-selected="true"] { background: var(--white); color: var(--teal); font-weight: 600; }
+.upBody { padding: 0 12px; }
+.upBody > div { margin: 16px 12px 0; }
+.upFoot { display: grid; grid-template-columns: minmax(0, 1fr) 197px; align-items: center; margin-top: auto; padding: 16px 24px 23px; }
+.avg { font-size: 11px; color: var(--muted); }
+
+
+/* Session controls (4:1380): white, 8 radius, 68 tall; buttons at 16, path text after them */
+.controls { display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap; margin-top: var(--s5); padding: 12px 16px; min-height: 68px; background: var(--white); border-radius: var(--r-panel); }
+.controls > button { min-width: 172px; }
+.session { margin-left: 14px; font-size: var(--text-caption); color: var(--muted); }
+
+/* footer line (2:454 / 4:1882): 11 muted, 13 below the controls */
+.liveLine, .feedback { margin-top: 13px; font-size: 11px; color: var(--muted); white-space: pre-wrap; }
+.feedback { color: var(--teal); font-weight: 500; }
+
+
+/* ---------- responsive (frame 07): <1280 stacked consultation; <768 one task per view ---------- */
+@media (max-width: 1279px) {
+  .metricValueSm { margin-right: 16px; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .cards > * { min-height: 0; }
+  .card { min-height: 420px; }
+}
+@media (max-width: 1023px) {
+  .pulse { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--s4); }
+  .metric:nth-child(3)::before { display: none; }
+}
+@media (max-width: 767px) {
+  .availability { min-width: 0; width: 100%; }
+  .pulse { grid-template-columns: minmax(0, 1fr); }
+  .metric::before { display: none; }
+  .metric + .metric { padding-top: var(--s3); border-top: 1px solid var(--line); }
+  .card { padding: 20px 16px; min-height: 0; }
+  .who { gap: 14px; }
+  .patient { font-size: 21px; }
+  .facts, .split { grid-template-columns: minmax(0, 1fr); gap: var(--s3); }
+  .upHead { padding-right: 24px; }
+  .upFoot { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
+  .controls > button { flex: 1; }
+  .session { margin-left: 0; }
+}

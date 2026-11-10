@@ -1,0 +1,14 @@
+frame 4:2184 "Dialog · Let patients know about a delay" 560x410  (abs = from frame top-left; rel = from parent)
+  text 4:2185 "Let patients know about a delay" abs(28,26) rel(28,26) 353x33
+  text 4:2186 "Queue order is preserved. Waiting estimates will" abs(28,70) rel(28,70) 504x19
+  frame 4:2187 "Close dialog" abs(496,16) rel(496,16) 44x44
+    text 4:2188 "×" abs(511,26) rel(15,10) 15x24
+  text 4:2189 "Delay duration" abs(28,128) rel(28,128) 84x17
+  frame 4:2190 "Delay duration input" abs(28,153) rel(28,153) 504x44
+    text 4:2191 "15 minutes  ⌄" abs(41,165) rel(13,12) 81x19
+  text 4:2192 "Reason shown to staff" abs(28,220) rel(28,220) 128x17
+  frame 4:2193 "Reason shown to staff input" abs(28,245) rel(28,245) 504x44
+    text 4:2194 "Clinical overrun" abs(41,257) rel(13,12) 95x19
+  frame 4:2195 "Divider" abs(0,330) rel(0,330) 560x1
+  instance 4:2196 "Cancel" abs(28,348) rel(28,348) 112x44
+  instance 4:2198 "Update & notify" abs(292,348) rel(292,348) 240x44

@@ -1,0 +1,112 @@
+/* Components from Figma frame 07 (2:41). Node ids in comments point at the source layer. */
+
+/* Button (2:44 Primary, 2:46 Secondary, 2:48 Danger, 2:50 Disabled): 12/18 padding, 7 radius, 14 semibold, 44 target */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  min-height: var(--target); padding: 0 17px;
+  border: 1px solid transparent; border-radius: var(--r-button);
+  font-size: var(--text-body); font-weight: 600; line-height: var(--leading);
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.primary { background: var(--teal); border-color: var(--teal); color: var(--white); }
+.secondary { background: var(--white); border-color: var(--line); color: var(--ink); }
+.danger { background: var(--red); border-color: var(--red); color: var(--white); }
+.btn:disabled, .btn[aria-disabled="true"] { background: var(--bg); border-color: var(--bg); color: var(--muted); cursor: default; }
+.block { display: flex; width: 100%; }
+
+/* Text action ("View patient history →", 2:392): teal 13 medium, no chrome */
+.link {
+  justify-self: start; padding: 0; border: 0; background: none; cursor: pointer;
+  color: var(--teal); font-size: var(--text-label); font-weight: 500; text-decoration: none;
+}
+.link.dangerText { color: var(--red); }
+
+/* Status (2:53–2:65): 4/9 padding, 5 radius, 12 medium; text always carries the meaning */
+.status {
+  display: inline-flex; align-items: center; padding: 4px 9px; border-radius: var(--r-status);
+  font-size: var(--text-caption); font-weight: 500; line-height: var(--leading); white-space: nowrap;
+}
+.success { background: var(--tint); color: var(--teal); }
+.info { background: var(--blue-tint); color: var(--blue); }
+.caution { background: var(--amber-tint); color: var(--amber); }
+.urgent { background: var(--red-tint); color: var(--red); }
+.neutral { background: var(--bg); color: var(--muted); }
+
+/* Input / Default (4:2400): label 12 medium ink, 44 surface, 6 radius, #D1DBD9 border, 13 regular */
+.field { display: grid; gap: var(--s2); min-width: 0; align-content: start; }
+.fieldLabel { font-size: var(--text-caption); font-weight: 500; color: var(--ink); }
+.control {
+  width: 100%; min-width: 0; height: var(--target); padding: 0 var(--s3);
+  background: var(--white); border: 1px solid var(--field-line); border-radius: var(--r-field);
+  font-size: var(--text-field); color: var(--ink);
+}
+.control:disabled { background: var(--bg); color: var(--muted); }
+/* Select: text at the same 12 px inset as inputs, Figma "down icon" (2:121) instead of the browser arrow */
+select.control {
+  appearance: none; padding-right: 40px;
+  background: var(--white) url("./icons/down.svg") no-repeat right 12px center / 16px 16px;
+}
+.fieldHint { font-size: var(--text-caption); color: var(--muted); }
+
+/* White surfaces: Session pulse (2:352) 8 radius; Up next (2:397) 9 radius, 24 inset */
+.panel { background: var(--white); border-radius: var(--r-card); padding: 22px var(--s5) var(--s5); min-width: 0; }
+.panelHead { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s4); }
+.panelTitle { font-size: var(--text-section); font-weight: 600; }
+.panelSub { margin-top: 6px; font-size: var(--text-caption); color: var(--muted); }
+
+/* System feedback & edge states (4:2411 empty, 4:2415 loading, 4:2423 inline failure) */
+.state { border-radius: var(--r-panel); padding: 22px 20px 20px; display: grid; gap: var(--s2); align-content: start; }
+.stateEmpty { background: var(--bg); }
+.stateEmpty .stateTitle { font-size: 20px; }
+.stateLoading { background: var(--bg); }
+.stateLoading .stateTitle { font-size: 16px; }
+.stateError { background: var(--red-tint); color: var(--red); }
+.stateError .stateTitle { font-size: 17px; color: var(--red); }
+.stateTitle { font-weight: 600; color: var(--ink); }
+.stateBody { font-size: var(--text-label); color: var(--muted); max-width: 380px; }
+.stateError .stateBody { color: var(--red); }
+.stateFoot { margin-top: var(--s5); font-size: var(--text-caption); font-weight: 500; color: var(--teal); }
+.skeleton { display: grid; grid-template-columns: 45px 240px; column-gap: 18px; row-gap: 17px; margin-top: 10px; max-width: 100%; }
+.skeleton span { height: 13px; border-radius: 3px; background: var(--line); }
+
+/* Callout (Allergy alert 2:382): tinted strip, 6 radius, 13 semibold */
+.callout { border-radius: var(--r-field); padding: 11px var(--s3); font-size: var(--text-label); }
+.callout strong { font-weight: 600; }
+
+/* Form feedback line */
+.msg { font-size: var(--text-label); }
+.msg:empty { display: none; }
+.msgOk { color: var(--teal); }
+.msgErr { color: var(--red); }
+
+/* SmartOPD mark (2:69) and wordmark (2:72) */
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+.mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--r-button); background: var(--teal); }
+.wordmark { font-size: 21px; font-weight: 600; }
+
+/* Overline labels ("WORKSPACE", "CHIEF COMPLAINT"): 10 semibold, muted, uppercase as written */
+.overline { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+
+/* Page header (2:348 in frame 01, 2:25 / 2:33 headers): title at 0, subtitle at 44, actions 3 down on the right */
+.pageHead { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s4); flex-wrap: wrap; }
+.pageText { min-width: 0; }
+.pageTitle { font-size: var(--text-page); font-weight: 600; }
+.pageSub { margin-top: 5px; font-size: var(--text-field); color: var(--muted); white-space: pre-wrap; }
+.pageActions { display: flex; gap: var(--s4); flex-wrap: wrap; margin-top: 3px; }
+
+/* Data table: queue-table metrics (headers 10/500 muted; rows with a 1 px rule) */
+.table { width: 100%; border-collapse: collapse; font-size: var(--text-caption); }
+.table th { padding: 0 12px 10px 0; text-align: left; font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
+.table td { padding: 12px 12px 12px 0; border-top: 1px solid var(--line); vertical-align: middle; }
+.table td:last-child, .table th:last-child { padding-right: 0; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 767px) {
+  .pageTitle { font-size: 22px; }
+  .pageActions, .pageActions > * { width: 100%; }
+  .table thead { display: none; }
+  .table, .table tbody, .table tr, .table td { display: block; }
+  .table tr { padding: 10px 0; border-top: 1px solid var(--line); }
+  .table td { padding: 2px 0; border: 0; }
+  .table td[data-label]::before { content: attr(data-label) "  "; font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; white-space: pre; }
+}

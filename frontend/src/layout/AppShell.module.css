@@ -1,0 +1,115 @@
+/* Sidebar (2:22) and Application bar (2:23) from Figma frame 01. Positions in comments are Figma px. */
+.shell {
+  display: grid; min-height: 100dvh;
+  grid-template-columns: 224px minmax(0, 1fr);
+  grid-template-rows: 72px 1fr;
+}
+
+/* ---------- sidebar: 224 wide, white, 1 px right border ---------- */
+.sidebar {
+  grid-row: 1 / span 2;
+  position: sticky; top: 0; height: 100dvh; overflow-y: auto;
+  display: flex; flex-direction: column;
+  padding: 24px 12px 30px;
+  background: var(--white); border-right: 1px solid var(--line);
+}
+.brand { padding: 0 12px; margin-bottom: 41px; }               /* mark 24,24; WORKSPACE at 96 */
+.sidebar > p { padding: 0 12px; }                               /* overlines at x 24 */
+.nav { display: grid; gap: 6px; margin-top: 13px; }             /* items at 124, 172, 220… (42 + 6) */
+.navItem {
+  display: flex; align-items: center; gap: 12px; height: 42px; padding: 0 12px;
+  border-radius: var(--r-field); color: var(--muted);
+  font-size: var(--text-label); font-weight: 500; text-decoration: none; white-space: nowrap;
+}
+.navItem:hover { background: var(--bg); }
+.active, .active:hover { background: var(--tint); color: var(--teal); font-weight: 600; }
+.icon { display: inline-block; flex: none; background: currentColor; mask: no-repeat center / contain; -webkit-mask: no-repeat center / contain; }
+
+/* department block: divider 34 below the nav, overline 24 below it (392 → 416), name 444, sub 466 */
+.place { margin: 34px 12px 0; padding-top: 23px; border-top: 1px solid var(--line); display: grid; gap: 0; }
+.place > p:first-child { padding: 0; margin-bottom: 13px; }
+.placeName { font-size: var(--text-label); font-weight: 600; }
+.placeSub { margin-top: 3px; font-size: var(--text-caption); color: var(--muted); }
+
+.foot { margin-top: auto; display: grid; gap: 24px; padding-top: 24px; }
+.connection { margin: 0 4px; padding: 10px 12px 9px; border-radius: var(--r-field); background: var(--bg); }  /* 192 × 51 at x 16 */
+.connOk, .connWarn { font-size: 11px; font-weight: 500; white-space: pre; }
+.connOk { color: var(--teal); }
+.connWarn { color: var(--amber); }
+.connSub { margin-top: 2px; padding-left: 14px; font-size: 10px; color: var(--muted); }
+.version { padding: 0 12px; font-size: 10px; color: var(--muted); }
+
+/* ---------- application bar: 72 tall, white, bottom divider ---------- */
+.bar {
+  display: flex; align-items: center; gap: 0; min-width: 0;
+  padding: 0 30px 0 32px; background: var(--white); border-bottom: 1px solid var(--line);
+}
+.menuButton { display: none; }
+.crumbs { display: flex; gap: 14px; min-width: 0; font-size: var(--text-label); color: var(--muted); white-space: nowrap; }
+.crumbStrong { color: var(--ink); font-weight: 500; }
+.date { margin-left: auto; font-size: var(--text-caption); color: var(--muted); white-space: nowrap; }
+.idDivider { width: 1px; height: 32px; margin: 0 20px 0 40px; background: var(--line); flex: none; }
+.account { position: relative; }
+.identity {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; min-width: 246px; min-height: var(--target);
+  padding: 0; border: 0; background: none; color: var(--ink); text-align: left; cursor: pointer;
+}
+.idText { display: grid; }
+.idName { font-size: var(--text-label); font-weight: 600; }
+.idRole { margin-top: 2px; font-size: 11px; color: var(--muted); }
+.identity .icon { color: var(--muted); }
+.menu {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; min-width: 200px; padding: 6px;
+  display: grid; background: var(--white); border: 1px solid var(--line); border-radius: var(--r-panel);
+  box-shadow: 0 8px 24px rgb(24 45 49 / 0.12);
+}
+.menu button {
+  min-height: var(--target); padding: 0 12px; border: 0; border-radius: var(--r-field); background: none;
+  text-align: left; font-size: var(--text-label); font-weight: 500; color: var(--ink); cursor: pointer;
+}
+.menu button:hover { background: var(--bg); }
+
+/* workspace: 32 inset from the sidebar and the bar (256, 104) */
+.workspace { min-width: 0; padding: 32px 32px 12px; background: var(--bg); }
+
+/* ---------- 768–1279: compact navigation (icon rail) ---------- */
+@media (max-width: 1279px) {
+  .shell { grid-template-columns: 72px minmax(0, 1fr); }
+  .sidebar { padding-inline: 12px; align-items: stretch; }
+  .brand { width: 28px; overflow: hidden; margin: 0 auto 44px; padding: 0; }
+  .sidebar > p, .navLabel, .place, .connSub, .version { display: none; }
+  .navItem { justify-content: center; padding: 0; }
+  .connection { margin: 0; padding: 8px 0; text-align: center; }
+  .connOk, .connWarn { font-size: 0; }
+  .connOk::first-letter, .connWarn::first-letter { font-size: 14px; }
+  .workspace { padding: 24px 24px 12px; }
+  .bar { padding-left: 24px; }
+}
+
+/* ---------- < 768: one task per view; navigation in a drawer ---------- */
+@media (max-width: 767px) {
+  .shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: 64px 1fr; }
+  .sidebar {
+    position: fixed; inset: 0 auto 0 0; z-index: 30; width: 260px; padding-inline: 12px;
+    transform: translateX(-100%); transition: transform 0.2s ease; visibility: hidden;
+  }
+  .sidebar.open { transform: none; visibility: visible; }
+  .open .brand { width: auto; margin: 0 0 44px; padding: 0 12px; }
+  .open > p, .open .navLabel, .open .place, .open .connSub, .open .version { display: revert; }
+  .open .navItem { justify-content: flex-start; padding: 0 12px; }
+  .open .connection { padding: 10px 12px 9px; text-align: left; }
+  .open .connOk, .open .connWarn { font-size: 11px; }
+  .scrim { position: fixed; inset: 0; z-index: 25; background: var(--backdrop); }
+  .bar { grid-column: 1; padding: 0 16px; gap: 8px; }
+  .menuButton {
+    display: grid; align-content: center; gap: 4px; width: var(--target); height: var(--target); margin-left: -12px; padding: 0 12px;
+    border: 0; background: none; cursor: pointer;
+  }
+  .menuButton span { height: 2px; border-radius: 1px; background: var(--ink); }
+  .date, .idDivider, .idRole { display: none; }
+  .crumbs > :not(:last-child) { display: none; }
+  .identity { min-width: 0; gap: 8px; }
+  .account { margin-left: auto; }
+  .workspace { grid-column: 1; padding: 16px 16px 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .sidebar { transition: none; } }

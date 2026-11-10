@@ -24,6 +24,15 @@ Data is stored in `app/opd.db`. Delete it to start again.
 
 **Upgrading from 1.0:** just start the new version. It saves a backup to `app/backups/` first, then upgrades the database in place (new columns, and a rebuilt appointments table that allows cancellations). 1.0 emergencies keep their priority.
 
+## New interface (in progress)
+
+A React frontend is being built from the Figma designs on the `react-migration` branch ([docs/FRONTEND_MIGRATION.md](docs/FRONTEND_MIGRATION.md)). While it is migrated it is served at http://localhost:8000/app/ and the current interface stays at `/`. Building it needs Node 20 or newer; running the server still needs only Python.
+
+```
+cd frontend && npm install && npm run build   # then start the server as above and open /app/
+npm run dev                                    # development: http://localhost:5173/app/, API proxied to :8000
+```
+
 ## Tests
 
 ```
@@ -31,7 +40,7 @@ python3 app/test_engine.py   # queue, ETA and alert rules
 python3 app/test_sim.py      # simulation harness: reproducibility, isolation, reports
 python3 app/test_api.py      # every role end to end on a throwaway server, plus a load check
 python3 app/test_features.py # the 1.1 features, and an upgrade of a real 1.0 database
-python3 app/test_ui.py       # browser checks for every role (optional: needs playwright-cli, skipped without it)
+python3 app/test_ui.py       # browser checks for every role, legacy and React (optional: needs playwright-cli, skipped without it)
 ```
 
 ## Simulation
@@ -82,5 +91,6 @@ Before real use, the SRS (Appendix E) requires decisions on hosting, the alert p
 | `app/server.py` | HTTP API, SQLite storage, roles, notification worker | Processes 1.0 to 6.0; data stores D1 to D9 |
 | `app/simulate.py` | Discrete-event simulation harness and reports | Process 7.0; data store D10 |
 | `app/index.html` | Web interface for all roles | External entities' views |
-| `app/test_*.py`, `app/test_ui.js` | Automated checks | |
+| `frontend/` | React interface (in progress), built from the Figma designs | External entities' views |
+| `app/test_*.py`, `app/test_ui.js`, `app/test_ui_react.js` | Automated checks | |
 | `docs/TRACEABILITY.md` | Every SRS requirement mapped to code and tests | |

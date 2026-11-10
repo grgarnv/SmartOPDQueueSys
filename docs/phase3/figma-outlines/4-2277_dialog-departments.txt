@@ -1,0 +1,28 @@
+frame 4:2277 "Dialog · Departments" 760x548  (abs = from frame top-left; rel = from parent)
+  text 4:2278 "Departments" abs(28,24) rel(28,24) 153x35
+  text 4:2279 "Manage OPD locations, availability and session c" abs(28,70) rel(28,70) 704x19
+  frame 4:2280 "Close dialog" abs(696,16) rel(696,16) 44x44
+    text 4:2281 "×" abs(711,26) rel(15,10) 15x24
+  text 4:2282 "General medicine" abs(28,134) rel(28,134) 127x22
+  text 4:2283 "Room 104 · 2 doctors" abs(28,160) rel(28,160) 121x17
+  text 4:2284 "Active" abs(488,144) rel(488,144) 40x19
+  text 4:2285 "Configure →" abs(617,144) rel(617,144) 72x17
+  frame 4:2286 "Divider" abs(28,192) rel(28,192) 704x1
+  text 4:2287 "Cardiology" abs(28,203) rel(28,203) 79x22
+  text 4:2288 "Room 108 · 2 doctors" abs(28,229) rel(28,229) 121x17
+  text 4:2289 "Active" abs(488,213) rel(488,213) 40x19
+  text 4:2290 "Configure →" abs(617,213) rel(617,213) 72x17
+  frame 4:2291 "Divider" abs(28,261) rel(28,261) 704x1
+  text 4:2292 "Orthopedics" abs(28,272) rel(28,272) 91x22
+  text 4:2293 "Room 112 · 1 doctor" abs(28,298) rel(28,298) 111x17
+  text 4:2294 "Active" abs(488,282) rel(488,282) 40x19
+  text 4:2295 "Configure →" abs(617,282) rel(617,282) 72x17
+  frame 4:2296 "Divider" abs(28,330) rel(28,330) 704x1
+  text 4:2297 "ENT" abs(28,341) rel(28,341) 31x22
+  text 4:2298 "Room 115 · 1 doctor" abs(28,367) rel(28,367) 111x17
+  text 4:2299 "Active" abs(488,351) rel(488,351) 40x19
+  text 4:2300 "Configure →" abs(617,351) rel(617,351) 72x17
+  frame 4:2301 "Divider" abs(28,399) rel(28,399) 704x1
+  frame 4:2302 "Divider" abs(0,468) rel(0,468) 760x1
+  instance 4:2303 "Cancel" abs(28,486) rel(28,486) 140x44
+  instance 4:2305 "+  Add department" abs(472,486) rel(472,486) 260x44

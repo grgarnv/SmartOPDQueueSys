@@ -10,6 +10,7 @@ import hashlib
 import hmac
 import io
 import json
+import mimetypes
 import os
 import re
 import secrets
@@ -29,6 +30,7 @@ import engine
 import notify
 
 HERE = Path(__file__).parent
+FRONTEND = (HERE.parent / "frontend" / "dist").resolve()  # React build, served under /app/ during the migration
 DB_PATH = os.environ.get("OPD_DB", str(HERE / "opd.db"))
 SIM_DIR = Path(os.environ.get("OPD_SIM_DIR", str(HERE / "sim_results")))
 BACKUP_DIR = Path(os.environ.get("OPD_BACKUP_DIR", str(Path(DB_PATH).parent / "backups")))
@@ -1682,6 +1684,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(200, (HERE / "index.html").read_bytes(), "text/html; charset=utf-8")
         if url.path == "/favicon.ico":  # no icon; answer quietly instead of logging a 404 in every browser console
             return self.send(204, b"", "image/x-icon")
+        if method == "GET" and (url.path == "/app" or url.path.startswith("/app/")):
+            return self.serve_frontend(url.path)
         if method == "GET" and url.path == "/api/stream":
             return self.stream()
         found = ROUTES.get((method, url.path))
@@ -1728,6 +1732,21 @@ class Handler(BaseHTTPRequestHandler):
         except Exception:
             traceback.print_exc()
             self.send_json(500, {"error": "Something went wrong on the server. Nothing was saved."})
+
+    def serve_frontend(self, path):
+        """The React frontend (frontend/dist) under /app/ while it is migrated; the legacy UI keeps "/".
+        Hashed build files are cached for good; every other /app/ path is a client-side route, so it gets index.html."""
+        if path.startswith("/app/assets/"):
+            f = (FRONTEND / path[len("/app/"):]).resolve()
+            if not (f.is_file() and f.is_relative_to(FRONTEND)):  # resolve() + this check stop "../" escapes
+                return self.send_json(404, {"error": "Not found."})
+            return self.send(200, f.read_bytes(), mimetypes.guess_type(f.name)[0] or "application/octet-stream",
+                             {"Cache-Control": "public, max-age=31536000, immutable"})
+        index = FRONTEND / "index.html"
+        if not index.is_file():
+            return self.send(503, b"The new interface is not built. Run: cd frontend && npm install && npm run build\n"
+                                  b"The current interface is at /.", "text/plain; charset=utf-8")
+        return self.send(200, index.read_bytes(), "text/html; charset=utf-8")
 
     def stream(self):
         """Server-sent events: one message per committed change, so screens refresh at once instead of

@@ -1,0 +1,17 @@
+frame 4:2227 "Dialog · Appointment found" 680x534  (abs = from frame top-left; rel = from parent)
+  text 4:2228 "Appointment found" abs(28,26) rel(28,26) 216x33
+  text 4:2229 "Confirm patient identity and appointment before " abs(28,70) rel(28,70) 624x19
+  frame 4:2230 "Close dialog" abs(616,16) rel(616,16) 44x44
+    text 4:2231 "×" abs(631,26) rel(15,10) 15x24
+  text 4:2232 "Patient search" abs(28,127) rel(28,127) 83x17
+  frame 4:2233 "Patient search input" abs(28,152) rel(28,152) 624x44
+    text 4:2234 "Priyanka Das · Mobile ending 6721" abs(41,164) rel(13,12) 211x19
+  text 4:2235 "Priyanka Das · 31 years · Female" abs(28,223) rel(28,223) 293x28
+  text 4:2236 "UHID RH-003872 · Appointment AP-1048" abs(28,260) rel(28,260) 254x19
+  frame 4:2237 "Appointment verification" abs(28,303) rel(28,303) 624x87
+    text 4:2238 "✓  Appointment verified" abs(42,315) rel(14,12) 163x20
+    text 4:2239 "Today, 10:45 AM · Dr. Aisha Mehta · Room 104" abs(42,348) rel(14,45) 283x19
+  text 4:2240 "✓  Patient identity confirmed using name and mob" abs(28,416) rel(28,416) 302x17
+  frame 4:2241 "Divider" abs(0,454) rel(0,454) 680x1
+  instance 4:2242 "Cancel" abs(28,472) rel(28,472) 112x44
+  instance 4:2244 "Check in & issue token" abs(412,472) rel(412,472) 240x44

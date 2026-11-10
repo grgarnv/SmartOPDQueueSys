@@ -1,0 +1,13 @@
+frame 4:2213 "Dialog · Patient history" 680x550  (abs = from frame top-left; rel = from parent)
+  text 4:2214 "Patient history" abs(28,26) rel(28,26) 163x33
+  text 4:2215 "Rajesh Kumar · UHID RH-008142 · Verified patient" abs(28,70) rel(28,70) 624x19
+  frame 4:2216 "Close dialog" abs(616,16) rel(616,16) 44x44
+    text 4:2217 "×" abs(631,26) rel(15,10) 15x24
+  frame 4:2218 "Known allergy" abs(28,127) rel(28,127) 624x45
+    text 4:2219 "Allergy: Penicillin · Verified at check-in" abs(42,139) rel(14,12) 241x19
+  text 4:2220 "21 Oct 2026 · General medicine" abs(28,202) rel(28,202) 242x23
+  text 4:2221 "Follow-up for seasonal cough. Review advised if " abs(28,240) rel(28,240) 615x38
+  frame 4:2222 "Divider" abs(28,315) rel(28,315) 624x1
+  text 4:2223 "Relevant information" abs(28,341) rel(28,341) 161x23
+  text 4:2224 "No chronic conditions recorded. Medication recon" abs(28,381) rel(28,381) 615x38
+  instance 4:2225 "Close history" abs(440,482) rel(440,482) 212x44

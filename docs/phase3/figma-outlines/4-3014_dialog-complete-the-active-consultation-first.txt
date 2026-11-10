@@ -1,0 +1,4 @@
+frame 4:3014 "Dialog · Complete the active consultation first" 560x320  (abs = from frame top-left; rel = from parent)
+  text 4:3015 "Complete the active consultation first" abs(28,28) rel(28,28) 490x32
+  text 4:3016 "Token 024 is still in consultation. Complete the" abs(28,111) rel(28,111) 500x40
+  instance 4:3017 "Return to consultation" abs(28,242) rel(28,242) 504x44

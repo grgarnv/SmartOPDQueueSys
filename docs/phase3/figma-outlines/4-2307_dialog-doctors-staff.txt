@@ -1,0 +1,28 @@
+frame 4:2307 "Dialog · Doctors & staff" 760x548  (abs = from frame top-left; rel = from parent)
+  text 4:2308 "Doctors & staff" abs(28,24) rel(28,24) 175x35
+  text 4:2309 "Role-based access · 6 doctors and 12 staff membe" abs(28,70) rel(28,70) 704x19
+  frame 4:2310 "Close dialog" abs(696,16) rel(696,16) 44x44
+    text 4:2311 "×" abs(711,26) rel(15,10) 15x24
+  text 4:2312 "Dr. Aisha Mehta" abs(28,134) rel(28,134) 115x22
+  text 4:2313 "Doctor · General medicine" abs(28,160) rel(28,160) 148x17
+  text 4:2314 "Morning session" abs(424,144) rel(424,144) 93x17
+  text 4:2315 "Manage →" abs(638,144) rel(638,144) 61x17
+  frame 4:2316 "Divider" abs(28,192) rel(28,192) 704x1
+  text 4:2317 "Nurse Priya Nair" abs(28,203) rel(28,203) 117x22
+  text 4:2318 "Triage nurse · General medicine" abs(28,229) rel(28,229) 180x17
+  text 4:2319 "Station 1" abs(424,213) rel(424,213) 50x17
+  text 4:2320 "Manage →" abs(638,213) rel(638,213) 61x17
+  frame 4:2321 "Divider" abs(28,261) rel(28,261) 704x1
+  text 4:2322 "Anita Desai" abs(28,272) rel(28,272) 83x22
+  text 4:2323 "Reception · Front desk" abs(28,298) rel(28,298) 128x17
+  text 4:2324 "Counter 02" abs(424,282) rel(424,282) 64x17
+  text 4:2325 "Manage →" abs(638,282) rel(638,282) 61x17
+  frame 4:2326 "Divider" abs(28,330) rel(28,330) 704x1
+  text 4:2327 "Dr. Rohan Sen" abs(28,341) rel(28,341) 101x22
+  text 4:2328 "Doctor · Cardiology" abs(28,367) rel(28,367) 110x17
+  text 4:2329 "Morning session" abs(424,351) rel(424,351) 93x17
+  text 4:2330 "Manage →" abs(638,351) rel(638,351) 61x17
+  frame 4:2331 "Divider" abs(28,399) rel(28,399) 704x1
+  frame 4:2332 "Divider" abs(0,468) rel(0,468) 760x1
+  instance 4:2333 "Cancel" abs(28,486) rel(28,486) 140x44
+  instance 4:2335 "+  Invite staff" abs(472,486) rel(472,486) 260x44

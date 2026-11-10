@@ -1,0 +1,15 @@
+frame 4:2999 "Dialog · Pause while consulting" 560x450  (abs = from frame top-left; rel = from parent)
+  text 4:3000 "Pause the queue?" abs(28,26) rel(28,26) 199x33
+  text 4:3001 "New patient calls will stop. Queue order is pres" abs(28,70) rel(28,70) 504x19
+  frame 4:3002 "Close dialog" abs(496,16) rel(496,16) 44x44
+    text 4:3003 "×" abs(511,26) rel(15,10) 15x24
+  text 4:3004 "Reason" abs(28,131) rel(28,131) 43x17
+  frame 4:3005 "Reason input" abs(28,156) rel(28,156) 504x44
+    text 4:3006 "Scheduled break  ⌄" abs(41,168) rel(13,12) 118x19
+  text 4:3007 "Expected return" abs(28,229) rel(28,229) 93x17
+  frame 4:3008 "Expected return input" abs(28,254) rel(28,254) 504x44
+    text 4:3009 "Today, 10:45 AM" abs(41,266) rel(13,12) 103x19
+  text 4:3010 "✓  Notify waiting patients and update the displa" abs(28,326) rel(28,326) 281x17
+  frame 4:3011 "Divider" abs(0,370) rel(0,370) 560x1
+  instance 4:3012 "Cancel" abs(28,388) rel(28,388) 112x44
+  instance 4:3013 "Pause queue" abs(292,388) rel(292,388) 240x44

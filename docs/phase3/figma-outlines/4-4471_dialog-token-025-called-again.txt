@@ -1,0 +1,4 @@
+frame 4:4471 "Dialog · Token 025 called again" 560x360  (abs = from frame top-left; rel = from parent)
+  text 4:4472 "Token 025 called again" abs(28,28) rel(28,28) 504x33
+  text 4:4473 "The waiting room display and patient notificatio" abs(28,103) rel(28,103) 504x40
+  instance 4:4474 "Done" abs(28,290) rel(28,290) 504x44

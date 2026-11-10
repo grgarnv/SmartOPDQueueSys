@@ -1,0 +1,11 @@
+frame 4:2200 "Dialog · The queue could not be updated" 560x358  (abs = from frame top-left; rel = from parent)
+  text 4:2201 "The queue could not be updated" abs(28,26) rel(28,26) 361x33
+  text 4:2202 "Your last action was not saved. No patient has m" abs(28,70) rel(28,70) 504x19
+  frame 4:2203 "Close dialog" abs(496,16) rel(496,16) 44x44
+    text 4:2204 "×" abs(511,26) rel(15,10) 15x24
+  frame 4:2205 "Recovery guidance" abs(28,129) rel(28,129) 504x109
+    text 4:2206 "Connection interrupted" abs(42,141) rel(14,12) 159x20
+    text 4:2207 "Check the live queue before trying again. The sa" abs(42,171) rel(14,42) 474x38
+  frame 4:2208 "Divider" abs(0,278) rel(0,278) 560x1
+  instance 4:2209 "Cancel" abs(28,296) rel(28,296) 112x44
+  instance 4:2211 "Refresh queue & retry" abs(292,296) rel(292,296) 240x44

@@ -1,0 +1,122 @@
+frame 4:3942 "21 · Registration saved · Reception" 1440x1000  (abs = from frame top-left; rel = from parent)
+  frame 4:3943 "Sidebar" abs(0,0) rel(0,0) 224x1000
+    frame 4:3944 "Right border" abs(223,0) rel(223,0) 1x1000
+    frame 4:3945 "SmartOPD mark" abs(24,24) rel(24,24) 28x28
+      frame 4:3946 "plus icon" abs(28,28) rel(4,4) 20x20
+    text 4:3948 "SmartOPD" abs(62,23) rel(62,23) 107x30
+    text 4:3949 "WORKSPACE" abs(24,96) rel(24,96) 64x15
+    frame 4:3950 "Navigate · Consultation" abs(12,124) rel(12,124) 200x42
+      frame 4:3951 "grid icon" abs(24,135) rel(12,11) 20x20
+      text 4:3956 "Consultation" abs(56,135) rel(44,11) 80x19
+    frame 4:3957 "Navigate · Front desk" abs(12,172) rel(12,172) 200x42
+      frame 4:3958 "users icon" abs(24,183) rel(12,11) 20x20
+      text 4:3961 "Front desk" abs(56,183) rel(44,11) 67x19
+    frame 4:3962 "Navigate · Emergency priority" abs(12,220) rel(12,220) 200x42
+      frame 4:3963 "shield icon" abs(24,231) rel(12,11) 20x20
+      text 4:3965 "Emergency priority" abs(56,231) rel(44,11) 118x19
+    frame 4:3966 "Navigate · Queue monitor" abs(12,268) rel(12,268) 200x42
+      frame 4:3967 "pulse icon" abs(24,279) rel(12,11) 20x20
+      text 4:3969 "Queue monitor" abs(56,279) rel(44,11) 93x19
+    frame 4:3970 "Navigate · Administration" abs(12,316) rel(12,316) 200x42
+      frame 4:3971 "settings icon" abs(24,327) rel(12,11) 20x20
+      text 4:3975 "Administration" abs(56,327) rel(44,11) 91x19
+    frame 4:3976 "Divider" abs(24,392) rel(24,392) 176x1
+    text 4:3977 "CURRENT LOCATION" abs(24,416) rel(24,416) 102x15
+    text 4:3978 "Riverside Hospital" abs(24,444) rel(24,444) 114x19
+    text 4:3979 "Main block · Floor 1" abs(24,466) rel(24,466) 110x17
+    frame 4:3980 "Connection status" abs(16,829) rel(16,829) 192x51
+      text 4:3981 "●  All systems operational" abs(28,839) rel(12,10) 139x16
+      text 4:3982 "Last synced just now" abs(42,857) rel(26,28) 100x15
+    frame 4:3983 "help icon" abs(24,906) rel(24,906) 20x20
+    text 4:3986 "Help & shortcuts" abs(55,906) rel(55,906) 96x17
+    text 4:3987 "SmartOPD · v1.0" abs(24,956) rel(24,956) 77x15
+  frame 4:3988 "Application bar" abs(224,0) rel(224,0) 1216x72
+    text 4:3989 "Riverside Hospital" abs(256,25) rel(32,25) 112x19
+    text 4:3990 "/" abs(393,25) rel(169,25) 5x19
+    text 4:3991 "Outpatient department" abs(414,25) rel(190,25) 141x19
+    text 4:3992 "Mon, 09 Nov 2026" abs(935,25) rel(711,25) 106x17
+    frame 4:3993 "bell icon" abs(1102,25) rel(878,25) 20x20
+    frame 4:3995 "Identity divider" abs(1144,20) rel(920,20) 1x32
+    text 4:3996 "Anita Desai" abs(1164,15) rel(940,15) 72x19
+    text 4:3997 "Reception · Counter 02" abs(1164,36) rel(940,36) 120x16
+    frame 4:3998 "down icon" abs(1394,27) rel(1170,27) 16x16
+    frame 4:4000 "Divider" abs(224,71) rel(0,71) 1216x1
+  frame 4:4001 "Workspace" abs(256,104) rel(256,104) 1152x884
+    text 4:4002 "A smooth start to every visit." abs(256,104) rel(0,0) 377x39
+    text 4:4003 "Register, verify and check patients in without l" abs(256,148) rel(0,44) 436x19
+    instance 4:4004 "+  New patient" abs(1238,107) rel(982,3) 170x44
+    frame 4:4005 "Appointment lookup" abs(256,196) rel(0,92) 1152x94
+      text 4:4006 "Find a patient or appointment" abs(280,212) rel(24,16) 200x20
+      frame 4:4007 "Search patients" abs(280,240) rel(24,44) 750x36
+        text 4:4008 "Search by name, UHID, mobile number or appointme" abs(294,249) rel(14,9) 324x17
+        text 4:4009 "⌘ K" abs(969,249) rel(689,9) 22x16
+      instance 4:4010 "Find appointment" abs(1062,232) rel(806,36) 322x44
+    frame 4:4011 "Walk-in registration" abs(256,314) rel(0,210) 716x638
+      text 4:4012 "Walk-in registration" abs(280,336) rel(24,22) 181x28
+      frame 4:4013 "New visit" abs(855,334) rel(599,20) 71x25
+        text 4:4014 "New visit" abs(864,338) rel(9,4) 53x17
+      text 4:4015 "01  Patient details" abs(280,380) rel(24,66) 112x19
+      text 4:4016 "02  Visit details" abs(499,380) rel(243,66) 96x19
+      text 4:4017 "03  Check-in" abs(708,380) rel(452,66) 80x19
+      frame 4:4018 "Divider" abs(280,415) rel(24,101) 668x1
+      text 4:4019 "Full name *" abs(280,438) rel(24,124) 64x17
+      frame 4:4020 "Full name * input" abs(280,463) rel(24,149) 320x44
+        text 4:4021 "Kavita Joshi" abs(293,475) rel(13,12) 74x19
+      text 4:4022 "Mobile number *" abs(624,438) rel(368,124) 96x17
+      frame 4:4023 "Mobile number * input" abs(624,463) rel(368,149) 324x44
+        text 4:4024 "+91  98765 43210" abs(637,475) rel(13,12) 112x19
+      text 4:4025 "Age *" abs(280,534) rel(24,220) 33x17
+      frame 4:4026 "Age * input" abs(280,559) rel(24,245) 145x44
+        text 4:4027 "34" abs(293,571) rel(13,12) 17x19
+      text 4:4028 "Gender *" abs(449,534) rel(193,220) 52x17
+      frame 4:4029 "Gender * input" abs(449,559) rel(193,245) 151x44
+        text 4:4030 "Female  ⌄" abs(462,571) rel(13,12) 58x19
+      text 4:4031 "Patient identifier" abs(624,534) rel(368,220) 95x17
+      frame 4:4032 "Patient identifier input" abs(624,559) rel(368,245) 324x44
+        text 4:4033 "Auto-generated on registration" abs(637,571) rel(13,12) 191x19
+      frame 4:4034 "Divider" abs(280,624) rel(24,310) 668x1
+      text 4:4035 "Visit details" abs(280,643) rel(24,329) 80x20
+      text 4:4036 "Department *" abs(280,681) rel(24,367) 79x17
+      frame 4:4037 "Department * input" abs(280,706) rel(24,392) 320x44
+        text 4:4038 "General medicine  ⌄" abs(293,718) rel(13,12) 121x19
+      text 4:4039 "Doctor / session *" abs(624,681) rel(368,367) 103x17
+      frame 4:4040 "Doctor / session * input" abs(624,706) rel(368,392) 324x44
+        text 4:4041 "Dr. Aisha Mehta · Morning  ⌄" abs(637,718) rel(13,12) 173x19
+      text 4:4042 "Reason for visit" abs(280,777) rel(24,463) 89x17
+      frame 4:4043 "Reason for visit input" abs(280,802) rel(24,488) 668x44
+        text 4:4044 "Headache and dizziness" abs(293,814) rel(13,12) 150x19
+      text 4:4045 "●  Queue open · 12 waiting · Approx. 96–112 min " abs(280,865) rel(24,551) 312x17
+      frame 4:4046 "Divider" abs(256,895) rel(0,581) 716x1
+      instance 4:4047 "Save & check in" abs(704,904) rel(448,590) 244x44
+      text 4:4048 "Required fields are marked *" abs(280,918) rel(24,604) 148x16
+    frame 4:4049 "Session visibility" abs(996,314) rel(740,210) 412x260
+      text 4:4050 "General medicine" abs(1020,336) rel(24,22) 144x25
+      text 4:4051 "Dr. Aisha Mehta · Room 104" abs(1020,366) rel(24,52) 156x17
+      frame 4:4052 "In consultation" abs(1020,397) rel(24,83) 103x25
+        text 4:4053 "In consultation" abs(1029,401) rel(9,4) 85x17
+      frame 4:4054 "Divider" abs(1020,444) rel(24,130) 364x1
+      text 4:4055 "12" abs(1020,459) rel(24,145) 33x42
+      text 4:4056 "waiting" abs(1020,501) rel(24,187) 41x17
+      text 4:4057 "96–112 min" abs(1169,463) rel(173,149) 141x33
+      text 4:4058 "estimated wait for a new walk-in" abs(1169,501) rel(173,187) 205x16
+      text 4:4059 "Estimates may change for priority cases." abs(1020,540) rel(24,226) 211x16
+    frame 4:4060 "Recent check-ins" abs(996,594) rel(740,490) 412x344
+      text 4:4061 "Recent check-ins" abs(1020,616) rel(24,22) 144x25
+      text 4:4062 "Today · Counter 02" abs(1020,646) rel(24,52) 109x17
+      text 4:4063 "033" abs(1020,695) rel(24,101) 32x23
+      text 4:4064 "Arjun Verma" abs(1082,692) rel(86,98) 76x19
+      text 4:4065 "10:29 AM · Walk-in" abs(1082,716) rel(86,122) 97x16
+      text 4:4066 "✓" abs(1353,701) rel(357,107) 15x25
+      frame 4:4067 "Divider" abs(1020,747) rel(24,153) 364x1
+      text 4:4068 "032" abs(1020,763) rel(24,169) 32x23
+      text 4:4069 "Pooja Shah" abs(1082,760) rel(86,166) 70x19
+      text 4:4070 "10:25 AM · Appointment" abs(1082,784) rel(86,190) 125x16
+      text 4:4071 "✓" abs(1353,769) rel(357,175) 15x25
+      frame 4:4072 "Divider" abs(1020,815) rel(24,221) 364x1
+      text 4:4073 "031" abs(1020,831) rel(24,237) 29x23
+      text 4:4074 "Deepak Jain" abs(1082,828) rel(86,234) 77x19
+      text 4:4075 "10:21 AM · Follow-up" abs(1082,852) rel(86,258) 108x16
+      text 4:4076 "✓" abs(1353,837) rel(357,243) 15x25
+      frame 4:4077 "Divider" abs(1020,883) rel(24,289) 364x1
+      text 4:4078 "View registration log →" abs(1020,904) rel(24,310) 133x17
+    text 4:4080 "✓  Kavita Joshi registered and checked in · Toke" abs(256,971) rel(0,867) 343x16

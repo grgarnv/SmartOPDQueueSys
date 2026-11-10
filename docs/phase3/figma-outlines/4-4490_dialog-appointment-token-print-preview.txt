@@ -1,0 +1,8 @@
+frame 4:4490 "Dialog · Appointment token print preview" 560x590  (abs = from frame top-left; rel = from parent)
+  text 4:4491 "Token print preview" abs(28,28) rel(28,28) 504x33
+  text 4:4492 "Riverside Hospital · General medicine" abs(28,103) rel(28,103) 504x20
+  instance 4:4493 "Done" abs(28,520) rel(28,520) 504x44
+  text 4:4494 "034" abs(28,153) rel(28,153) 135x99
+  text 4:4495 "Kavita Joshi · UHID RH-009873" abs(28,265) rel(28,265) 264x25
+  text 4:4496 "Dr. Aisha Mehta · Room 104 Morning session · 09 " abs(28,315) rel(28,315) 490x66
+  text 4:4497 "Keep this token. Track your turn using the SMS l" abs(28,437) rel(28,437) 490x38

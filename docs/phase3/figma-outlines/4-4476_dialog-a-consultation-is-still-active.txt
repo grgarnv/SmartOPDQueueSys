@@ -1,0 +1,4 @@
+frame 4:4476 "Dialog · A consultation is still active" 560x360  (abs = from frame top-left; rel = from parent)
+  text 4:4477 "A consultation is still active" abs(28,28) rel(28,28) 504x33
+  text 4:4478 "Doctor availability is tied to the active visit." abs(28,103) rel(28,103) 504x60
+  instance 4:4479 "Done" abs(28,290) rel(28,290) 504x44

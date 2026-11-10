@@ -1,0 +1,152 @@
+frame 2:37 "05 · Operations overview" 1440x1000  (abs = from frame top-left; rel = from parent)
+  frame 2:38 "Sidebar" abs(0,0) rel(0,0) 224x1000
+    frame 2:292 "Right border" abs(223,0) rel(223,0) 1x1000
+    frame 2:293 "SmartOPD mark" abs(24,24) rel(24,24) 28x28
+      frame 2:294 "plus icon" abs(28,28) rel(4,4) 20x20
+    text 2:296 "SmartOPD" abs(62,23) rel(62,23) 107x30
+    text 2:297 "WORKSPACE" abs(24,96) rel(24,96) 64x15
+    frame 2:298 "Navigate · Consultation" abs(12,124) rel(12,124) 200x42
+      frame 2:299 "grid icon" abs(24,135) rel(12,11) 20x20
+      text 2:304 "Consultation" abs(56,135) rel(44,11) 80x19
+    frame 2:305 "Navigate · Front desk" abs(12,172) rel(12,172) 200x42
+      frame 2:306 "users icon" abs(24,183) rel(12,11) 20x20
+      text 2:309 "Front desk" abs(56,183) rel(44,11) 67x19
+    frame 2:310 "Navigate · Emergency priority" abs(12,220) rel(12,220) 200x42
+      frame 2:311 "shield icon" abs(24,231) rel(12,11) 20x20
+      text 2:313 "Emergency priority" abs(56,231) rel(44,11) 118x19
+    frame 2:314 "Navigate · Queue monitor" abs(12,268) rel(12,268) 200x42
+      frame 2:315 "pulse icon" abs(24,279) rel(12,11) 20x20
+      text 2:317 "Queue monitor" abs(56,279) rel(44,11) 93x19
+    frame 2:318 "Navigate · Administration" abs(12,316) rel(12,316) 200x42
+      frame 2:319 "settings icon" abs(24,327) rel(12,11) 20x20
+      text 2:323 "Administration" abs(56,327) rel(44,11) 93x19
+    frame 2:324 "Divider" abs(24,392) rel(24,392) 176x1
+    text 2:325 "CURRENT LOCATION" abs(24,416) rel(24,416) 102x15
+    text 2:326 "Riverside Hospital" abs(24,444) rel(24,444) 114x19
+    text 2:327 "Main block · Floor 1" abs(24,466) rel(24,466) 110x17
+    frame 2:328 "Connection status" abs(16,829) rel(16,829) 192x51
+      text 2:329 "●  All systems operational" abs(28,839) rel(12,10) 139x16
+      text 2:330 "Last synced just now" abs(42,857) rel(26,28) 100x15
+    frame 2:331 "help icon" abs(24,906) rel(24,906) 20x20
+    text 2:334 "Help & shortcuts" abs(55,906) rel(55,906) 96x17
+    text 2:335 "SmartOPD · v1.0" abs(24,956) rel(24,956) 77x15
+  frame 2:39 "Application bar" abs(224,0) rel(224,0) 1216x72
+    text 2:336 "Riverside Hospital" abs(256,25) rel(32,25) 112x19
+    text 2:337 "/" abs(393,25) rel(169,25) 5x19
+    text 2:338 "Hospital operations" abs(414,25) rel(190,25) 120x19
+    text 2:339 "Mon, 09 Nov 2026" abs(935,25) rel(711,25) 106x17
+    frame 2:340 "bell icon" abs(1102,25) rel(878,25) 20x20
+    frame 2:342 "Identity divider" abs(1144,20) rel(920,20) 1x32
+    text 2:343 "Meera Shah" abs(1164,15) rel(940,15) 75x19
+    text 2:344 "Hospital administrator" abs(1164,36) rel(940,36) 115x16
+    frame 2:345 "down icon" abs(1394,27) rel(1170,27) 16x16
+    frame 2:347 "Divider" abs(224,71) rel(0,71) 1216x1
+  frame 2:40 "Workspace" abs(256,104) rel(256,104) 1152x884
+    text 2:708 "Better flow starts with visibility." abs(256,104) rel(0,0) 413x39
+    text 2:709 "Hospital operations · Monday, 09 November 2026" abs(256,148) rel(0,44) 306x19
+    instance 2:710 "Today  ⌄" abs(1124,107) rel(868,3) 121x44
+    instance 2:712 "Export report" abs(1261,107) rel(1005,3) 147x44
+    frame 2:714 "Administration tabs" abs(256,196) rel(0,92) 1152x48
+      text 2:715 "Admin tab · Overview" abs(280,210) rel(24,14) 60x19
+      text 2:716 "Admin tab · Departments" abs(498,210) rel(242,14) 82x19
+      text 2:717 "Admin tab · Doctors & staff" abs(716,210) rel(460,14) 94x19
+      text 2:718 "Admin tab · OPD sessions" abs(934,210) rel(678,14) 86x19
+      text 2:719 "Admin tab · Configuration" abs(1152,210) rel(896,14) 85x19
+      frame 2:720 "Selected tab indicator" abs(280,241) rel(24,45) 70x3
+    frame 2:721 "Operational statistics" abs(256,268) rel(0,164) 1152x110
+      text 2:722 "Patients registered" abs(280,282) rel(24,14) 100x16
+      text 2:723 "184" abs(280,305) rel(24,37) 52x42
+      text 2:724 "Across 4 departments" abs(280,348) rel(24,80) 116x16
+      frame 2:725 "Metric divider" abs(543,292) rel(287,24) 1x64
+      text 2:726 "Consultations completed" abs(568,282) rel(312,14) 132x16
+      text 2:727 "112" abs(568,305) rel(312,37) 46x42
+      text 2:728 "61% of registered" abs(568,348) rel(312,80) 91x16
+      frame 2:729 "Metric divider" abs(831,292) rel(575,24) 1x64
+      text 2:730 "Median waiting time" abs(856,282) rel(600,14) 106x16
+      text 2:731 "24 min" abs(856,305) rel(600,37) 96x42
+      text 2:732 "↓ 6 min vs. last Monday" abs(856,348) rel(600,80) 127x16
+      frame 2:733 "Metric divider" abs(1119,292) rel(863,24) 1x64
+      text 2:734 "Active sessions" abs(1144,282) rel(888,14) 83x16
+      text 2:735 "4 / 6" abs(1144,305) rel(888,37) 64x42
+      text 2:736 "2 scheduled this afternoon" abs(1144,348) rel(888,80) 140x16
+    frame 2:737 "Patient flow by hour" abs(256,402) rel(0,298) 738x259
+      text 2:738 "Patient flow" abs(280,422) rel(24,20) 104x26
+      text 2:739 "Arrivals and completed consultations" abs(280,453) rel(24,51) 210x17
+      frame 2:740 "Arrivals legend" abs(715,428) rel(459,26) 10x10
+      text 2:741 "Arrivals" abs(732,424) rel(476,22) 39x16
+      frame 2:742 "Completed legend" abs(815,428) rel(559,26) 10x10
+      text 2:743 "Completed" abs(832,424) rel(576,22) 58x16
+      text 2:744 "0" abs(280,596) rel(24,194) 7x15
+      frame 2:745 "Divider" abs(309,605) rel(53,203) 659x1
+      text 2:746 "20" abs(280,557) rel(24,155) 13x15
+      frame 2:747 "Divider" abs(309,566) rel(53,164) 659x1
+      text 2:748 "40" abs(280,518) rel(24,116) 13x15
+      frame 2:749 "Divider" abs(309,527) rel(53,125) 659x1
+      text 2:750 "60" abs(280,479) rel(24,77) 13x15
+      frame 2:751 "Divider" abs(309,488) rel(53,86) 659x1
+      frame 2:752 "Arrivals 9" abs(339,544.55) rel(83,142.55) 24x60.45000076293945
+      frame 2:753 "Completed 9" abs(368,569.9) rel(112,167.9) 24x35.099998474121094
+      text 2:754 "9:00" abs(341,621) rel(85,219) 24x16
+      frame 2:755 "Arrivals 10" abs(443,503.6) rel(187,101.6) 24x101.4000015258789
+      frame 2:756 "Completed 10" abs(472,536.75) rel(216,134.75) 24x68.25
+      text 2:757 "10:00" abs(445,621) rel(189,219) 23x16
+      frame 2:758 "Arrivals 11" abs(547,515.3) rel(291,113.3) 24x89.69999694824219
+      frame 2:759 "Completed 11" abs(576,530.9) rel(320,128.9) 24x74.0999984741211
+      text 2:760 "11:00" abs(549,621) rel(293,219) 24x16
+      frame 2:761 "Arrivals 12" abs(651,536.75) rel(395,134.75) 24x68.25
+      frame 2:762 "Completed 12" abs(680,564.05) rel(424,162.05) 24x40.95000076293945
+      text 2:763 "12:00" abs(653,621) rel(397,219) 24x16
+      frame 2:764 "Arrivals 13" abs(755,566) rel(499,164) 24x39
+      frame 2:765 "Completed 13" abs(784,605) rel(528,203) 24x1
+      text 2:766 "13:00" abs(757,621) rel(501,219) 29x16
+      frame 2:767 "Arrivals 14" abs(859,605) rel(603,203) 24x1
+      frame 2:768 "Completed 14" abs(888,605) rel(632,203) 24x1
+      text 2:769 "14:00" abs(861,621) rel(605,219) 28x16
+    frame 2:770 "Queue performance" abs(1018,402) rel(762,298) 390x259
+      text 2:771 "Queue performance" abs(1042,422) rel(24,20) 175x26
+      text 2:772 "Median wait · by department" abs(1042,453) rel(24,51) 163x17
+      text 2:773 "General medicine" abs(1042,496) rel(24,94) 100x17
+      frame 2:774 "Track General medicine" abs(1189,501) rel(171,99) 132x8
+      frame 2:775 "Wait General medicine" abs(1189,501) rel(171,99) 79.19999694824219x8
+      text 2:776 "24 min" abs(1336,496) rel(318,94) 36x16
+      text 2:777 "Cardiology" abs(1042,533) rel(24,131) 63x17
+      frame 2:778 "Track Cardiology" abs(1189,538) rel(171,136) 132x8
+      frame 2:779 "Wait Cardiology" abs(1189,538) rel(171,136) 125.4000015258789x8
+      text 2:780 "38 min" abs(1336,533) rel(318,131) 36x16
+      text 2:781 "Orthopedics" abs(1042,570) rel(24,168) 72x17
+      frame 2:782 "Track Orthopedics" abs(1189,575) rel(171,173) 132x8
+      frame 2:783 "Wait Orthopedics" abs(1189,575) rel(171,173) 59.400001525878906x8
+      text 2:784 "18 min" abs(1336,570) rel(318,168) 35x16
+      text 2:785 "ENT" abs(1042,607) rel(24,205) 25x17
+      frame 2:786 "Track ENT" abs(1189,612) rel(171,210) 132x8
+      frame 2:787 "Wait ENT" abs(1189,612) rel(171,210) 52.79999923706055x8
+      text 2:788 "16 min" abs(1336,607) rel(318,205) 35x16
+    frame 2:789 "OPD session management" abs(256,685) rel(0,581) 1152x259
+      text 2:790 "Today’s OPD sessions" abs(280,705) rel(24,20) 191x26
+      instance 2:791 "+  Create session" abs(1190,697) rel(934,12) 194x44
+      frame 2:793 "Session table headers" abs(256,759) rel(0,74) 1152x35
+        text 2:794 "DEPARTMENT / DOCTOR" abs(280,769) rel(24,10) 120x15
+        text 2:795 "SESSION" abs(611,769) rel(355,10) 44x15
+        text 2:796 "STATUS" abs(839,769) rel(583,10) 39x15
+        text 2:797 "WAITING" abs(1054,769) rel(798,10) 44x15
+        text 2:798 "CLEARS AT" abs(1179,769) rel(923,10) 55x15
+        text 2:799 "Text" abs(1316,769) rel(1060,10) 0x15
+      text 2:800 "General medicine" abs(280,806) rel(24,121) 109x19
+      text 2:801 "Dr. Aisha Mehta" abs(280,829) rel(24,144) 82x16
+      text 2:802 "9:00 AM – 1:00 PM" abs(611,817) rel(355,132) 107x17
+      frame 2:803 "In consultation" abs(831,812) rel(575,127) 103x25
+        text 2:804 "In consultation" abs(840,816) rel(9,4) 85x17
+      text 2:805 "12" abs(1074,817) rel(818,132) 15x19
+      text 2:806 "12:45 PM" abs(1179,817) rel(923,132) 54x17
+      text 2:807 "Manage →" abs(1306,817) rel(1050,132) 61x17
+      frame 2:808 "Divider" abs(280,860) rel(24,175) 1104x1
+      text 2:809 "Cardiology" abs(280,868) rel(24,183) 68x19
+      text 2:810 "Dr. Rohan Sen" abs(280,891) rel(24,206) 74x16
+      text 2:811 "9:00 AM – 1:00 PM" abs(611,879) rel(355,194) 107x17
+      frame 2:812 "Delayed · 15 min" abs(831,874) rel(575,189) 112x25
+        text 2:813 "Delayed · 15 min" abs(840,878) rel(9,4) 94x17
+      text 2:814 "9" abs(1074,879) rel(818,194) 9x19
+      text 2:815 "1:20 PM" abs(1179,879) rel(923,194) 46x17
+      text 2:816 "Manage →" abs(1306,879) rel(1050,194) 61x17
+      frame 2:817 "Divider" abs(280,922) rel(24,237) 1104x1
+    text 2:818 "Access is role-based. All session, staffing and " abs(256,971) rel(0,867) 514x16

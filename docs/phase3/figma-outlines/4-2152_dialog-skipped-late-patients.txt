@@ -1,0 +1,17 @@
+frame 4:2152 "Dialog · Skipped & late patients" 600x478  (abs = from frame top-left; rel = from parent)
+  text 4:2153 "Skipped & late patients" abs(28,26) rel(28,26) 256x33
+  text 4:2154 "Confirm arrival before reinserting. No visit is " abs(28,70) rel(28,70) 544x19
+  frame 4:2155 "Close dialog" abs(536,16) rel(536,16) 44x44
+    text 4:2156 "×" abs(551,26) rel(15,10) 15x24
+  frame 4:2157 "Skipped patient 021" abs(28,128) rel(28,128) 544x92
+  text 4:2158 "021" abs(44,146) rel(44,146) 43x35
+  text 4:2159 "Ritu Kapoor" abs(112,143) rel(112,143) 85x22
+  text 4:2160 "Called 10:02 AM · Patient now present" abs(112,173) rel(112,173) 216x17
+  frame 4:2161 "Skipped patient 023" abs(28,236) rel(28,236) 544x92
+  text 4:2162 "023" abs(44,254) rel(44,254) 47x35
+  text 4:2163 "Amit Sethi" abs(112,251) rel(112,251) 76x22
+  text 4:2164 "Called 10:15 AM · Not yet returned" abs(112,281) rel(112,281) 195x17
+  text 4:2165 "✓  Arrival confirmed for Ritu Kapoor · Token 021" abs(28,365) rel(28,365) 274x17
+  frame 4:2166 "Divider" abs(0,398) rel(0,398) 600x1
+  instance 4:2167 "Cancel" abs(28,416) rel(28,416) 112x44
+  instance 4:2169 "Reinsert 021 after next" abs(332,416) rel(332,416) 240x44

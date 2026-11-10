@@ -1,0 +1,67 @@
+frame 4:3874 "Dialog · General medicine · Full queue" 760x820  (abs = from frame top-left; rel = from parent)
+  text 4:3875 "General medicine · Full queue" abs(28,24) rel(28,24) 341x35
+  text 4:3876 "12 waiting · 9 checked in · 3 not arrived · Room" abs(28,70) rel(28,70) 704x19
+  frame 4:3877 "Close dialog" abs(696,16) rel(696,16) 44x44
+    text 4:3878 "×" abs(711,26) rel(15,10) 15x24
+  text 4:3879 "025" abs(28,122) rel(28,122) 27x20
+  text 4:3880 "Sunita Patel" abs(108,122) rel(108,122) 75x19
+  text 4:3881 "Checked in" abs(408,122) rel(408,122) 65x17
+  text 4:3882 "~8 min" abs(640,122) rel(640,122) 39x17
+  frame 4:3883 "Divider" abs(28,157) rel(28,157) 704x1
+  text 4:3884 "026" abs(28,170) rel(28,170) 28x20
+  text 4:3885 "Mohammed Ali" abs(108,170) rel(108,170) 93x19
+  text 4:3886 "Checked in" abs(408,170) rel(408,170) 65x17
+  text 4:3887 "~16 min" abs(640,170) rel(640,170) 45x17
+  frame 4:3888 "Divider" abs(28,205) rel(28,205) 704x1
+  text 4:3889 "027" abs(28,218) rel(28,218) 27x20
+  text 4:3890 "Ananya Rao" abs(108,218) rel(108,218) 74x19
+  text 4:3891 "Checked in" abs(408,218) rel(408,218) 65x17
+  text 4:3892 "~24 min" abs(640,218) rel(640,218) 46x17
+  frame 4:3893 "Divider" abs(28,253) rel(28,253) 704x1
+  text 4:3894 "028" abs(28,266) rel(28,266) 28x20
+  text 4:3895 "Vikram Singh" abs(108,266) rel(108,266) 83x19
+  text 4:3896 "Not arrived" abs(408,266) rel(408,266) 64x17
+  text 4:3897 "Pending" abs(640,266) rel(640,266) 47x17
+  frame 4:3898 "Divider" abs(28,301) rel(28,301) 704x1
+  text 4:3899 "029" abs(28,314) rel(28,314) 28x20
+  text 4:3900 "Neha Sharma" abs(108,314) rel(108,314) 84x19
+  text 4:3901 "Checked in" abs(408,314) rel(408,314) 65x17
+  text 4:3902 "~40 min" abs(640,314) rel(640,314) 47x17
+  frame 4:3903 "Divider" abs(28,349) rel(28,349) 704x1
+  text 4:3904 "030" abs(28,362) rel(28,362) 28x20
+  text 4:3905 "Rahul Bose" abs(108,362) rel(108,362) 69x19
+  text 4:3906 "Checked in" abs(408,362) rel(408,362) 65x17
+  text 4:3907 "~48 min" abs(640,362) rel(640,362) 47x17
+  frame 4:3908 "Divider" abs(28,397) rel(28,397) 704x1
+  text 4:3909 "031" abs(28,410) rel(28,410) 26x20
+  text 4:3910 "Deepak Jain" abs(108,410) rel(108,410) 77x19
+  text 4:3911 "Checked in" abs(408,410) rel(408,410) 65x17
+  text 4:3912 "~56 min" abs(640,410) rel(640,410) 47x17
+  frame 4:3913 "Divider" abs(28,445) rel(28,445) 704x1
+  text 4:3914 "032" abs(28,458) rel(28,458) 28x20
+  text 4:3915 "Pooja Shah" abs(108,458) rel(108,458) 70x19
+  text 4:3916 "Checked in" abs(408,458) rel(408,458) 65x17
+  text 4:3917 "~64 min" abs(640,458) rel(640,458) 47x17
+  frame 4:3918 "Divider" abs(28,493) rel(28,493) 704x1
+  text 4:3919 "033" abs(28,506) rel(28,506) 28x20
+  text 4:3920 "Arjun Verma" abs(108,506) rel(108,506) 77x19
+  text 4:3921 "Checked in" abs(408,506) rel(408,506) 65x17
+  text 4:3922 "~72 min" abs(640,506) rel(640,506) 46x17
+  frame 4:3923 "Divider" abs(28,541) rel(28,541) 704x1
+  text 4:3924 "034" abs(28,554) rel(28,554) 27x20
+  text 4:3925 "Kavya Menon" abs(108,554) rel(108,554) 84x19
+  text 4:3926 "Not arrived" abs(408,554) rel(408,554) 64x17
+  text 4:3927 "Pending" abs(640,554) rel(640,554) 47x17
+  frame 4:3928 "Divider" abs(28,589) rel(28,589) 704x1
+  text 4:3929 "035" abs(28,602) rel(28,602) 28x20
+  text 4:3930 "Nitin Gupta" abs(108,602) rel(108,602) 70x19
+  text 4:3931 "Checked in" abs(408,602) rel(408,602) 65x17
+  text 4:3932 "~88 min" abs(640,602) rel(640,602) 47x17
+  frame 4:3933 "Divider" abs(28,637) rel(28,637) 704x1
+  text 4:3934 "036" abs(28,650) rel(28,650) 28x20
+  text 4:3935 "Sana Khan" abs(108,650) rel(108,650) 67x19
+  text 4:3936 "Not arrived" abs(408,650) rel(408,650) 64x17
+  text 4:3937 "Pending" abs(640,650) rel(640,650) 47x17
+  frame 4:3938 "Divider" abs(28,685) rel(28,685) 704x1
+  text 4:3939 "Token numbers are assigned at booking; only chec" abs(28,729) rel(28,729) 402x16
+  instance 4:3940 "Close queue" abs(472,757) rel(472,757) 260x44

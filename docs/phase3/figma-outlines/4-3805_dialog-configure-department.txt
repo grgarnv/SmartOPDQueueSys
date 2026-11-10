@@ -1,0 +1,20 @@
+frame 4:3805 "Dialog · Configure department" 760x542  (abs = from frame top-left; rel = from parent)
+  text 4:3806 "Configure department" abs(28,24) rel(28,24) 259x35
+  text 4:3807 "General medicine · Department settings" abs(28,70) rel(28,70) 704x19
+  frame 4:3808 "Close dialog" abs(696,16) rel(696,16) 44x44
+    text 4:3809 "×" abs(711,26) rel(15,10) 15x24
+  text 4:3810 "Department name" abs(28,127) rel(28,127) 104x17
+  frame 4:3811 "Department name input" abs(28,152) rel(28,152) 704x44
+    text 4:3812 "General medicine" abs(41,164) rel(13,12) 107x19
+  text 4:3813 "Default room" abs(28,224) rel(28,224) 74x17
+  frame 4:3814 "Default room input" abs(28,249) rel(28,249) 340x44
+    text 4:3815 "Room 104 · Floor 1  ⌄" abs(41,261) rel(13,12) 127x19
+  text 4:3816 "Department lead" abs(392,224) rel(392,224) 97x17
+  frame 4:3817 "Department lead input" abs(392,249) rel(392,249) 340x44
+    text 4:3818 "Dr. Aisha Mehta  ⌄" abs(405,261) rel(13,12) 111x19
+  text 4:3819 "Availability" abs(28,326) rel(28,326) 79x22
+  text 4:3820 "●  Active · Accepts new appointments" abs(28,364) rel(28,364) 239x19
+  text 4:3821 "Existing checked-in patients are not affected by" abs(28,408) rel(28,408) 375x17
+  frame 4:3822 "Divider" abs(0,462) rel(0,462) 760x1
+  instance 4:3823 "Cancel" abs(28,480) rel(28,480) 140x44
+  instance 4:3825 "Save department" abs(472,480) rel(472,480) 260x44

@@ -4,3 +4,13 @@ app/opd.db-shm
 app/sim_results/
 __pycache__/
 app/backups/
+frontend/node_modules/
+frontend/dist/
+
+# macOS
+.DS_Store
+
+# Figma PNG exports (reference only, 7.6 MB; the app never imports them)
+frontend/src/design/figma-exports/
+# symlink to the exports for tooling (design/figma-exports -> ../frontend/src/design/figma-exports)
+/design/

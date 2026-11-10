@@ -1,0 +1,18 @@
+frame 4:2114 "Dialog · Approve priority override" 600x558  (abs = from frame top-left; rel = from parent)
+  text 4:2115 "Approve priority override" abs(28,26) rel(28,26) 279x33
+  text 4:2116 "Review the clinical request before changing queu" abs(28,70) rel(28,70) 544x19
+  frame 4:2117 "Close dialog" abs(536,16) rel(536,16) 44x44
+    text 4:2118 "×" abs(551,26) rel(15,10) 15x24
+  frame 4:2119 "Urgent patient summary" abs(28,127) rel(28,127) 544x98
+    text 4:2120 "E01 · Suresh Iyer · 67 years · Male" abs(44,139) rel(16,12) 273x25
+    text 4:2121 "P1 · Acute breathlessness" abs(44,174) rel(16,47) 173x20
+    text 4:2122 "Requested by Nurse Priya Nair · 10:32 AM" abs(44,200) rel(16,73) 218x16
+  text 4:2123 "024 continues → E01 next → 025 follows" abs(28,252) rel(28,252) 335x25
+  text 4:2124 "13 patients will wait. Routine estimates increas" abs(28,292) rel(28,292) 538x38
+  frame 4:2125 "Divider" abs(28,362) rel(28,362) 544x1
+  text 4:2126 "APPROVING AS" abs(28,385) rel(28,385) 75x15
+  text 4:2127 "Dr. Aisha Mehta · Authorized doctor" abs(28,408) rel(28,408) 241x20
+  text 4:2128 "✓  I confirm the clinical priority and queue imp" abs(28,445) rel(28,445) 286x17
+  frame 4:2129 "Divider" abs(0,478) rel(0,478) 600x1
+  instance 4:2130 "Cancel" abs(28,496) rel(28,496) 112x44
+  instance 4:2132 "Approve & insert E01" abs(332,496) rel(332,496) 240x44
